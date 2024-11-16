@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import social.network.microservice_friend.model.en.StatusCode;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @Builder
@@ -12,17 +14,16 @@ import social.network.microservice_friend.model.en.StatusCode;
 @Entity(name = "friendship")
 public class Friendship {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private UUID id;
 
     @Column(name = "account_id_Offer")
     @ToString.Exclude
-    private Integer accountIdOffer;
+    private UUID accountIdOffer;
 
 
     @Column(name = "account_id_answer")
     @ToString.Exclude
-    private Integer accountIdAnswer;
+    private UUID accountIdAnswer;
 
 
     @Column(name = "status_between")

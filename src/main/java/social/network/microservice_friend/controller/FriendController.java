@@ -9,6 +9,7 @@ import social.network.microservice_friend.service.FriendService;
 
 
 import java.util.Map;
+import java.util.UUID;
 
 
 @RestController
@@ -19,22 +20,22 @@ public class FriendController {
 
 
     @PutMapping("/{id}/approve")// http://localhost:8080/api/v1/friends/7/approve
-    public String approve(@PathVariable Integer id,@RequestHeader Map<String, String> headers) {
+    public String approve(@PathVariable UUID id, @RequestHeader Map<String, String> headers) {
         return friendService.approve(id);
     }
 
     @PutMapping("/block/{id}")
-    public String block(@PathVariable Integer id) {
+    public String block(@PathVariable UUID id) {
         return friendService.block(id);
     }
 
     @PutMapping("/{id}/request")
-    public String request(@PathVariable Integer id) {
+    public String request(@PathVariable UUID id) {
         return friendService.request(id);
     }
 
     @PutMapping("/subscribe/{id}")
-    public String subscribe(@PathVariable Integer id) {
+    public String subscribe(@PathVariable UUID id) {
         return friendService.subscribe(id);
     }
 

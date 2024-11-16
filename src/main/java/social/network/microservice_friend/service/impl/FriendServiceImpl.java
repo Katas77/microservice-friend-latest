@@ -12,6 +12,7 @@ import social.network.microservice_friend.repository.FriendshipRepository;
 import social.network.microservice_friend.service.FriendService;
 
 import java.text.MessageFormat;
+import java.util.UUID;
 
 
 @Service
@@ -22,7 +23,7 @@ public class FriendServiceImpl implements FriendService {
 
 
     @Override
-    public String approve(Integer id) throws BusinessLogicException {
+    public String approve(UUID id) throws BusinessLogicException {
         Friendship friend = repository.findById(id).orElseThrow(
                 () -> new BusinessLogicException(MessageFormat.format("Friend with ID {0} is NOT_FOUND", id)));
         friend.setStatusBetween(StatusCode.FRIEND);
@@ -31,7 +32,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public String block(Integer id) {
+    public String block(UUID id) {
         Friendship friend = repository.findById(id).orElseThrow();
         friend.setStatusBetween(StatusCode.BLOCKED);
         repository.save(friend);
@@ -40,12 +41,12 @@ public class FriendServiceImpl implements FriendService {
 
 
     @Override
-    public String request(Integer id) {
+    public String request(UUID id) {
         return null;
     }
 
     @Override
-    public String subscribe(Integer id) {
+    public String subscribe(UUID id) {
         return null;
     }
 

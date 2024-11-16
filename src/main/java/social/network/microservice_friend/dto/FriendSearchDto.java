@@ -8,6 +8,7 @@ import social.network.microservice_friend.model.en.StatusCode;
 
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 
 @Data
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FriendSearchDto {
-    private Integer[] id;
+    private UUID[] id;
     private String firstName;
     private LocalDate birthDateFrom;
     private LocalDate birthDateTo;

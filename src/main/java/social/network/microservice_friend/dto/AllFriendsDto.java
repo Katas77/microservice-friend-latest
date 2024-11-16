@@ -8,13 +8,14 @@ import social.network.microservice_friend.model.en.StatusCode;
 
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class AllFriendsDto {
-    private Integer id;
+    private UUID id;
     private String photo;
     private StatusCode statusCode;
     private String firstName;

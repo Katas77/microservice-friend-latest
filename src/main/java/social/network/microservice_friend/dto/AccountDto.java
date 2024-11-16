@@ -4,6 +4,7 @@ package social.network.microservice_friend.dto;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 
 public class AccountDto {
 
-    private Integer id;
+    private UUID id;
 
     private String photo;
 
