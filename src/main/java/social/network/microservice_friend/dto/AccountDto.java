@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class AccountDto {
 
-    private UUID id;
+    private String uuid;
 
     private String photo;
 

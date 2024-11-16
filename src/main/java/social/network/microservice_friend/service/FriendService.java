@@ -2,6 +2,7 @@ package social.network.microservice_friend.service;
 
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import social.network.microservice_friend.dto.AllFriendsDto;
 import social.network.microservice_friend.exception.BusinessLogicException;
 
@@ -9,19 +10,19 @@ import java.util.UUID;
 
 public interface FriendService {
 
-   String approve(UUID id) throws BusinessLogicException;
+   String approve(String uuid) throws BusinessLogicException, JsonProcessingException;
 
-    String block(UUID id);
+    String block(String uuid);
 
 
 
-    String request(UUID id);
+    String request(String uuid);
 
-   String subscribe(UUID id);
+   String subscribe(String uuid);
 
   AllFriendsDto findAll();
 
-    AllFriendsDto gettingFriendById(Integer accountId);
+    AllFriendsDto gettingFriendById(String uuidAccountId);
 
     AllFriendsDto recommendations();
 

@@ -6,6 +6,6 @@ import social.network.microservice_friend.model.Friendship;
 
 import java.util.UUID;
 
-public interface FriendshipRepository extends JpaRepository<Friendship, UUID> {
+public interface FriendshipRepository extends JpaRepository<Friendship, String> {
 
 }

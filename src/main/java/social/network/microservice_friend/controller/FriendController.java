@@ -1,6 +1,7 @@
 
 package social.network.microservice_friend.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.*;
@@ -19,24 +20,24 @@ public class FriendController {
     private final FriendService friendService;
 
 
-    @PutMapping("/{id}/approve")// http://localhost:8080/api/v1/friends/7/approve
-    public String approve(@PathVariable UUID id, @RequestHeader Map<String, String> headers) {
-        return friendService.approve(id);
+    @PutMapping("/{uuid}/approve")// http://localhost:8080/api/v1/friends/7/approve
+    public String approve(@PathVariable String uuid, @RequestHeader Map<String, String> headers) throws JsonProcessingException {
+        return friendService.approve(uuid);
     }
 
-    @PutMapping("/block/{id}")
-    public String block(@PathVariable UUID id) {
-        return friendService.block(id);
+    @PutMapping("/block/{uuid}")
+    public String block(@PathVariable String uuid) {
+        return friendService.block(uuid);
     }
 
-    @PutMapping("/{id}/request")
-    public String request(@PathVariable UUID id) {
-        return friendService.request(id);
+    @PutMapping("/{uuid}/request")
+    public String request(@PathVariable String uuid) {
+        return friendService.request(uuid);
     }
 
-    @PutMapping("/subscribe/{id}")
-    public String subscribe(@PathVariable UUID id) {
-        return friendService.subscribe(id);
+    @PutMapping("/subscribe/{uuid}")
+    public String subscribe(@PathVariable String uuid) {
+        return friendService.subscribe(uuid);
     }
 
     @GetMapping()
@@ -45,8 +46,8 @@ public class FriendController {
     }
 
     @GetMapping("/{accountId}")
-    public AllFriendsDto gettingFriendById(@PathVariable Integer accountId) {
-        return friendService.gettingFriendById(accountId);
+    public AllFriendsDto gettingFriendById(@PathVariable String uuid) {
+        return friendService.gettingFriendById(uuid);
     }
 
     @GetMapping("/recommendations")

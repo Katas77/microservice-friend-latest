@@ -14,7 +14,7 @@ import java.util.UUID;
 @Entity(name = "friendship")
 public class Friendship {
     @Id
-    private UUID id;
+    private String uuid;
 
     @Column(name = "account_id_Offer")
     @ToString.Exclude

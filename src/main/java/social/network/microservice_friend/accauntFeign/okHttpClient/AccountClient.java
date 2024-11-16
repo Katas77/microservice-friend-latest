@@ -1,3 +1,4 @@
+/*
 package social.network.microservice_friend.accaunt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,6 +14,7 @@ import social.network.microservice_friend.dto.AccountDto;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Component
@@ -33,7 +35,8 @@ public class AccountClient {
     }
 
     public Optional<String> getJson(String pathVariable) {
-        accUrl = accUrl + "/" + pathVariable;
+        UUID uuid= UUID.fromString(pathVariable);
+        accUrl = accUrl + "/" + uuid;
         var request = new Request.Builder()
                 .url(accUrl)
                 .build();
@@ -44,4 +47,4 @@ public class AccountClient {
             throw new BusinessLogicException("Ошибка подключения", e);
         }
     }
-}
+}*/

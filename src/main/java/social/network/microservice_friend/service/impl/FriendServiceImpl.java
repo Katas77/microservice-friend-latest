@@ -1,18 +1,19 @@
 package social.network.microservice_friend.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-;
 import org.springframework.stereotype.Service;
+import social.network.microservice_friend.accauntFeign.FeignClientAccount;
+import social.network.microservice_friend.dto.AccountDto;
 import social.network.microservice_friend.dto.AllFriendsDto;
 import social.network.microservice_friend.exception.BusinessLogicException;
 import social.network.microservice_friend.model.Friendship;
 import social.network.microservice_friend.model.en.StatusCode;
 import social.network.microservice_friend.repository.FriendshipRepository;
 import social.network.microservice_friend.service.FriendService;
-
 import java.text.MessageFormat;
-import java.util.UUID;
+
 
 
 @Service
@@ -20,33 +21,37 @@ import java.util.UUID;
 @Slf4j
 public class FriendServiceImpl implements FriendService {
     private final FriendshipRepository repository;
+   private final FeignClientAccount accountClient;
 
 
     @Override
-    public String approve(UUID id) throws BusinessLogicException {
-        Friendship friend = repository.findById(id).orElseThrow(
-                () -> new BusinessLogicException(MessageFormat.format("Friend with ID {0} is NOT_FOUND", id)));
+    public String approve(String uuid) throws BusinessLogicException, JsonProcessingException {
+        AccountDto account= accountClient.getAlbumById(uuid);
+        System.out.println(account.getCountry()+account.getFirstName());
+
+        Friendship friend = repository.findById(uuid).orElseThrow(
+                () -> new BusinessLogicException(MessageFormat.format("Friend with ID {0} is NOT_FOUND", uuid)));
         friend.setStatusBetween(StatusCode.FRIEND);
         repository.save(friend);
-        return MessageFormat.format("Friend with ID {0} is approve", id);
+        return MessageFormat.format("Friend with ID {0} is approve", uuid);
     }
 
     @Override
-    public String block(UUID id) {
-        Friendship friend = repository.findById(id).orElseThrow();
+    public String block(String uuid) {
+        Friendship friend = repository.findById(uuid).orElseThrow();
         friend.setStatusBetween(StatusCode.BLOCKED);
         repository.save(friend);
-        return MessageFormat.format("Friend with ID {0} is blocked", id);
+        return MessageFormat.format("Friend with ID {0} is blocked", uuid);
     }
 
 
     @Override
-    public String request(UUID id) {
+    public String request(String uuid) {
         return null;
     }
 
     @Override
-    public String subscribe(UUID id) {
+    public String subscribe(String uuid) {
         return null;
     }
 
@@ -56,7 +61,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public AllFriendsDto gettingFriendById(Integer accountId) {
+    public AllFriendsDto gettingFriendById(String accountId) {
         return null;
     }
 
