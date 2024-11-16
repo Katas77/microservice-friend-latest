@@ -13,7 +13,7 @@ import social.network.microservice_friend.model.en.StatusCode;
 import social.network.microservice_friend.repository.FriendshipRepository;
 import social.network.microservice_friend.service.FriendService;
 import java.text.MessageFormat;
-
+import java.util.Optional;
 
 
 @Service
@@ -26,8 +26,8 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public String approve(String uuid) throws BusinessLogicException, JsonProcessingException {
-        AccountDto account= accountClient.getAlbumById(uuid);
-        System.out.println(account.getCountry()+account.getFirstName());
+      Optional <AccountDto>  account= Optional.ofNullable(accountClient.getAccountById(uuid));
+        System.out.println(account.orElseThrow(() -> new BusinessLogicException(MessageFormat.format("Friend with ID {0} is NOT_FOUND", uuid))).getCountry());
 
         Friendship friend = repository.findById(uuid).orElseThrow(
                 () -> new BusinessLogicException(MessageFormat.format("Friend with ID {0} is NOT_FOUND", uuid)));

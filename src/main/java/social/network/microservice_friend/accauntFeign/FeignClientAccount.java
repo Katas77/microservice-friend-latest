@@ -10,7 +10,7 @@ import social.network.microservice_friend.dto.AccountDto;
 public interface FeignClientAccount {
 
     @GetMapping(value = "/{uuid}")
-    AccountDto getAlbumById(@PathVariable(value = "uuid") String uuid);
+    AccountDto getAccountById(@PathVariable(value = "uuid") String uuid);
 
 
     }
