@@ -12,6 +12,9 @@ public interface FeignClientAccount {
     @GetMapping(value = "/{uuid}")
     AccountDto getAccountById(@PathVariable(value = "uuid") String uuid);
 
+    @GetMapping(value = "/email/{email}")
+    AccountDto getAccountBayEmail(@PathVariable(value = "email") String email);
 
-    }
+
+}
 

@@ -7,6 +7,7 @@ import social.network.microservice_friend.model.en.StatusCode;
 import java.util.UUID;
 
 @Getter
+@ToString
 @Setter
 @Builder
 @AllArgsConstructor
@@ -17,17 +18,14 @@ public class Friendship {
     private String uuid;
 
     @Column(name = "account_id_Offer")
-    @ToString.Exclude
-    private UUID accountIdOffer;
+    private String accountOfferUUID;
 
 
     @Column(name = "account_id_answer")
-    @ToString.Exclude
-    private UUID accountIdAnswer;
+    private String accountAnswerUUID;
 
 
     @Column(name = "status_between")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @Enumerated(EnumType.STRING)
     private StatusCode statusBetween;
 }

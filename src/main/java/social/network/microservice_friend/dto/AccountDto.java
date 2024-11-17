@@ -11,7 +11,6 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class AccountDto {
 
     private String uuid;
@@ -37,5 +36,6 @@ public class AccountDto {
     private Integer ageTo;
 
     private Integer ageFrom;
+    private String email;
 
 }

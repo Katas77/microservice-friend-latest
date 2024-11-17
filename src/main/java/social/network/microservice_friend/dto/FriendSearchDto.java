@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import social.network.microservice_friend.model.en.StatusCode;
-
-
 import java.time.LocalDate;
-import java.util.UUID;
 
 
 @Data
@@ -16,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FriendSearchDto {
-    private UUID[] id;
+    private String[] uuids;
     private String firstName;
     private LocalDate birthDateFrom;
     private LocalDate birthDateTo;
