@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-friendship
+      author: Roman
+      changes:
+        - createTable:
+            tableName: friendship
+            columns:
+              - column:
+                  name: uuid
+                  type: varchar(255)
+                  autoIncrement: false
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: account_id_offer
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_id_answer
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status_between
+                  type: varchar(255)
+                  constraints:
+                    nullable: false

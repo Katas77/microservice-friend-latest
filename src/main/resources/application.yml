@@ -3,6 +3,9 @@ topic:
 server:
   port: 8082
 spring:
+  liquibase:
+    enabled: true
+    change-log: classpath:db/db.changelog-master.yaml
   eureka:
     client:
       service-url:

@@ -3,6 +3,7 @@ package social.network.microservice_friend.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -127,6 +128,16 @@ public class FriendServiceImpl implements FriendService {
     private AccountDto accountUUIDGetEmail(String email) {
         return Optional.ofNullable(accountClient.getAccountBayEmail(email))
                 .orElseThrow(() -> new BusinessLogicException(MessageFormat.format("Friend with ID {0} is NOT_FOUND", email)));
+    }
+    @PostConstruct
+    public  void great(){
+        Friendship friendship=Friendship.builder()
+                .uuid(String.valueOf(UUID.randomUUID()))
+                .accountOfferUUID(String.valueOf(UUID.randomUUID()))
+                .accountAnswerUUID(String.valueOf(UUID.randomUUID()))
+                .statusBetween(StatusCode.BLOCKED)
+                .build();
+        repository.save(friendship);
     }
 }
 //String token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlJvbWFuIiwiZW1haWwiOiJrcnA3N0BtYWlsLnJ1In0.QFbiuTijoW4YsxvlYakG0_m2KY_ak9v7aAXLQRpttd4";

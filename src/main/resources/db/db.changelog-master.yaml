@@ -1,0 +1,4 @@
+databaseChangeLog: #параметр в котором находятся миграции
+  - include: # список активных миграций
+      file: db/changeset/create-friendship-table.yaml # путь к файлу миграции
+

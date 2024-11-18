@@ -17,7 +17,7 @@ public class Friendship {
     @Id
     private String uuid;
 
-    @Column(name = "account_id_Offer")
+    @Column(name = "account_id_offer")
     private String accountOfferUUID;
 
 
