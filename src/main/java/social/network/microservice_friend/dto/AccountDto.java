@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class AccountDto {
 
-    private String uuid;
+    private UUID uuid;
 
     private String photo;
 

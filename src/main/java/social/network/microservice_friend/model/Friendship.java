@@ -15,14 +15,14 @@ import java.util.UUID;
 @Entity(name = "friendship")
 public class Friendship {
     @Id
-    private String uuid;
+    private UUID uuid;
 
     @Column(name = "account_id_offer")
-    private String accountOfferUUID;
+    private UUID accountOfferUUID;
 
 
     @Column(name = "account_id_answer")
-    private String accountAnswerUUID;
+    private UUID accountAnswerUUID;
 
 
     @Column(name = "status_between")

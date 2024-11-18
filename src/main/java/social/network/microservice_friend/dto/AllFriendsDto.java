@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class AllFriendsDto {
-    private String uuid;
+    private UUID uuid;
     private String photo;
     private StatusCode statusCode;
     private String firstName;

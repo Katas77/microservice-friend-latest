@@ -32,7 +32,7 @@ public class FriendServiceImpl implements FriendService {
 
 
     @Override
-    public String approve(String uuid) {
+    public String approve(UUID uuid) {
         Friendship friend = repository.findById(uuid).orElseThrow(
                 () -> new BusinessLogicException(MessageFormat.format("Friend with ID {0} is NOT_FOUND", uuid)));
         friend.setStatusBetween(StatusCode.FRIEND);
@@ -41,7 +41,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public String block(String uuid) {
+    public String block(UUID uuid) {
         Friendship friend = repository.findById(uuid).orElseThrow();
         friend.setStatusBetween(StatusCode.BLOCKED);
         repository.save(friend);
@@ -50,16 +50,15 @@ public class FriendServiceImpl implements FriendService {
 
 
     @Override
-    public String request(String uuid, Map<String, String> headers) throws JsonProcessingException {
-        String uuidFriendship = String.valueOf(UUID.randomUUID());
+    public String request(UUID uuid, Map<String, String> headers) throws JsonProcessingException {
+        AccountDto dto = account(UUID.fromString("b3999ffa-2df9-469e-9793-ee65e214846e"));
         String email = email(headers);
         AccountDto accountDto = accountUUIDGetEmail(email);
-        String accountOfferUUID = accountDto.getUuid();
         Friendship friendshipNew = Friendship.builder()
-                .accountOfferUUID(accountOfferUUID)
+                .accountOfferUUID(accountDto.getUuid())
                 .accountAnswerUUID(uuid)
                 .statusBetween(StatusCode.SUBSCRIBED)
-                .uuid(uuidFriendship)
+                .uuid(UUID.randomUUID())
                 .build();
         System.out.println(friendshipNew.getAccountAnswerUUID() + "              friendshipNew          " + friendshipNew.getStatusBetween());
         repository.save(friendshipNew);
@@ -69,7 +68,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public String subscribe(String uuid) {
+    public String subscribe(UUID uuid) {
         return null;
     }
 
@@ -79,7 +78,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public AllFriendsDto gettingFriendById(String accountId) {
+    public AllFriendsDto gettingFriendById(UUID accountId) {
         return null;
     }
 
@@ -109,13 +108,12 @@ public class FriendServiceImpl implements FriendService {
     }
 
 
-    private AccountDto account(String uuid) {
+    private AccountDto account(UUID uuid) {
         return Optional.ofNullable(accountClient.getAccountById(uuid))
                 .orElseThrow(() -> new BusinessLogicException(MessageFormat.format("Friend with ID {0} is NOT_FOUND", uuid)));
     }
 
     public String email(Map<String, String> headers) throws JsonProcessingException {
-
         String token = headers.get("authorization").substring(7);
         String[] chunks = token.split("\\.");
         Base64.Decoder decoder = Base64.getUrlDecoder();
@@ -128,14 +126,15 @@ public class FriendServiceImpl implements FriendService {
 
     private AccountDto accountUUIDGetEmail(String email) {
         return Optional.ofNullable(accountClient.getAccountBayEmail(email))
-                .orElseThrow(() -> new BusinessLogicException(MessageFormat.format("Friend with ID {0} is NOT_FOUND", email)));
+                .orElseThrow(() -> new BusinessLogicException(MessageFormat.format("Friend with email{0} is NOT_FOUND", email)));
     }
+
     @PostConstruct
-    public  void great(){
-        Friendship friendship=Friendship.builder()
-                .uuid(String.valueOf(UUID.randomUUID()))
-                .accountOfferUUID(String.valueOf(UUID.randomUUID()))
-                .accountAnswerUUID(String.valueOf(UUID.randomUUID()))
+    public void great() {
+        Friendship friendship = Friendship.builder()
+                .uuid(UUID.randomUUID())
+                .accountOfferUUID(UUID.randomUUID())
+                .accountAnswerUUID(UUID.randomUUID())
                 .statusBetween(StatusCode.BLOCKED)
                 .build();
         repository.save(friendship);

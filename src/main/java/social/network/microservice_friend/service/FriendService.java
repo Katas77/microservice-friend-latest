@@ -5,20 +5,21 @@ import social.network.microservice_friend.dto.AllFriendsDto;
 
 
 import java.util.Map;
+import java.util.UUID;
 
 public interface FriendService {
 
-    String approve(String uuid);
+    String approve(UUID uuid);
 
-    String block(String uuid);
+    String block(UUID  uuid);
 
-    String request(String uuid, Map<String, String> headers) throws JsonProcessingException;
+    String request(UUID  uuid, Map<String, String> headers) throws JsonProcessingException;
 
-    String subscribe(String uuid);
+    String subscribe(UUID  uuid);
 
     AllFriendsDto findAll();
 
-    AllFriendsDto gettingFriendById(String uuidAccountId);
+    AllFriendsDto gettingFriendById(UUID uuidAccountId);
 
     AllFriendsDto recommendations();
 
