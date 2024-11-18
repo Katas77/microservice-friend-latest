@@ -115,6 +115,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     public String email(Map<String, String> headers) throws JsonProcessingException {
+
         String token = headers.get("authorization").substring(7);
         String[] chunks = token.split("\\.");
         Base64.Decoder decoder = Base64.getUrlDecoder();
@@ -139,5 +140,7 @@ public class FriendServiceImpl implements FriendService {
                 .build();
         repository.save(friendship);
     }
+
+
 }
 //String token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlJvbWFuIiwiZW1haWwiOiJrcnA3N0BtYWlsLnJ1In0.QFbiuTijoW4YsxvlYakG0_m2KY_ak9v7aAXLQRpttd4";
