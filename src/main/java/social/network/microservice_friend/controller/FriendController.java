@@ -2,11 +2,12 @@
 package social.network.microservice_friend.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.RequiredArgsConstructor;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import social.network.microservice_friend.dto.AllFriendsDto;
 import social.network.microservice_friend.service.FriendService;
+
 
 
 import java.util.Map;
@@ -20,7 +21,7 @@ public class FriendController {
     private final FriendService friendService;
 
 
-    @PutMapping("/{uuid}/approve")// http://localhost:8080/api/v1/friends/7/approve
+    @PutMapping("/{uuid}/approve")//                     http://localhost:8080/api/v1/friends/b3999ffa-2df9-469e-9793-ee65e214846e/approve
     public String approve(@PathVariable UUID uuid) throws JsonProcessingException {
         return friendService.approve(uuid);
     }
@@ -30,8 +31,9 @@ public class FriendController {
         return friendService.block(uuid);
     }
 
-    @PutMapping("/{uuid}/request")//http://localhost:8080/api/v1/friends/8/request
+    @PutMapping("/{uuid}/request")//         http://localhost:8080/api/v1/friends/b3999ffa-2df9-469e-9793-ee65e214846e/request
     public String request(@PathVariable UUID uuid, @RequestHeader Map<String, String> headers) throws JsonProcessingException {
+
         return friendService.request(uuid,headers);
     }
 
@@ -41,7 +43,10 @@ public class FriendController {
     }
 
     @GetMapping()
-    public AllFriendsDto friendsAll() {
+    public AllFriendsDto friendsAll( @RequestHeader Map<String, String> headers) {
+        for (Map.Entry entry:headers.entrySet())
+        { System.out.println(entry.getKey()+"              "+entry.getValue());}
+
         return friendService.findAll();
     }
 

@@ -51,6 +51,7 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public String request(UUID uuid, Map<String, String> headers) throws JsonProcessingException {
+        System.out.println();
         AccountDto dto = account(UUID.fromString("b3999ffa-2df9-469e-9793-ee65e214846e"));
         String email = email(headers);
         AccountDto accountDto = accountUUIDGetEmail(email);
