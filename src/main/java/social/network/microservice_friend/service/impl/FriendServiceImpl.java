@@ -7,7 +7,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import social.network.microservice_friend.accauntFeign.FeignClientAccount;
+import social.network.microservice_friend.clientFeign.FeignClientAccount;
 import social.network.microservice_friend.dto.AccountDto;
 import social.network.microservice_friend.dto.AllFriendsDto;
 import social.network.microservice_friend.exception.BusinessLogicException;
