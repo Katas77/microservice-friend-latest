@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import social.network.microservice_friend.model.en.StatusCode;
-
-
 import java.time.LocalDate;
 import java.util.UUID;
 

@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterAfter(requestHeaderAuthenticationFilter(), HeaderWriterFilter.class)
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
-                        .requestMatchers(HttpMethod.GET, "api/v1/account/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "api/v1/account/friends/**").permitAll()
                         .requestMatchers("/api/v1/friends/**").authenticated())
                 .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer
                         .authenticationEntryPoint((request, response, authException) ->

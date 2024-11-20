@@ -7,7 +7,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import social.network.microservice_friend.clientFeign.FeignClientAccount;
+import social.network.microservice_friend.clientFeign.FeignClient;
 import social.network.microservice_friend.dto.AccountDto;
 import social.network.microservice_friend.dto.AllFriendsDto;
 import social.network.microservice_friend.exception.BusinessLogicException;
@@ -28,7 +28,7 @@ import java.util.UUID;
 @Slf4j
 public class FriendServiceImpl implements FriendService {
     private final FriendshipRepository repository;
-    private final FeignClientAccount accountClient;
+    private final FeignClient accountClient;
 
 
     @Override
