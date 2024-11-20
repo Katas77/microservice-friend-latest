@@ -33,20 +33,16 @@ public class FriendController {
 
     @PutMapping("/{uuid}/request")//         http://localhost:8080/api/v1/friends/b3999ffa-2df9-469e-9793-ee65e214846e/request
     public String request(@PathVariable UUID uuid, @RequestHeader Map<String, String> headers) throws JsonProcessingException {
-
         return friendService.request(uuid,headers);
     }
 
     @PutMapping("/subscribe/{uuid}")
-    public String subscribe(@PathVariable UUID uuid) {
-        return friendService.subscribe(uuid);
+    public String subscribe(@PathVariable UUID uuid, Map<String, String> headers) {
+        return friendService.subscribe(uuid,headers);
     }
 
     @GetMapping()
     public AllFriendsDto friendsAll( @RequestHeader Map<String, String> headers) {
-        for (Map.Entry entry:headers.entrySet())
-        { System.out.println(entry.getKey()+"              "+entry.getValue());}
-
         return friendService.findAll();
     }
 

@@ -15,7 +15,7 @@ public interface FriendService {
 
     String request(UUID  uuid, Map<String, String> headers) throws JsonProcessingException;
 
-    String subscribe(UUID  uuid);
+    String subscribe(UUID  uuid, Map<String, String> headers);
 
     AllFriendsDto findAll();
 

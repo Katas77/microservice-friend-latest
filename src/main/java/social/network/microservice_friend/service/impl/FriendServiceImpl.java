@@ -7,7 +7,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import social.network.microservice_friend.clientFeign.FeignClient;
+import social.network.microservice_friend.clientFeign.ClientFeign;
 import social.network.microservice_friend.dto.AccountDto;
 import social.network.microservice_friend.dto.AllFriendsDto;
 import social.network.microservice_friend.exception.BusinessLogicException;
@@ -28,7 +28,7 @@ import java.util.UUID;
 @Slf4j
 public class FriendServiceImpl implements FriendService {
     private final FriendshipRepository repository;
-    private final FeignClient accountClient;
+    private final ClientFeign accountClient;
 
 
     @Override
@@ -51,15 +51,13 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public String request(UUID uuid, Map<String, String> headers) throws JsonProcessingException {
-        AccountDto dtoUuid = account(uuid);
-        String email = email(headers);
-        System.out.println(dtoUuid.toString());
-        AccountDto accountEmail = accountUUIDGetEmail(email);
-        System.out.println(accountEmail.toString());
+        String email = emailByHeaders(headers);
+        AccountDto accountFrom = this.accountByEmail(email);
+        System.out.println(accountFrom.toString()+"    accountByEmail");
         Friendship friendshipNew = Friendship.builder()
-                .accountOfferUUID(accountEmail.getUuid())
+                .accountOfferUUID(accountFrom.getUuid())
                 .accountAnswerUUID(uuid)
-                .statusBetween(StatusCode.SUBSCRIBED)
+                .statusBetween(StatusCode.REQUEST_TO)
                 .uuid(UUID.randomUUID())
                 .build();
         System.out.println(friendshipNew.getAccountAnswerUUID() + "              friendshipNew          " + friendshipNew.getStatusBetween());
@@ -70,7 +68,20 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public String subscribe(UUID uuid) {
+    public String subscribe(UUID uuid, Map<String, String> headers) {
+
+        AccountDto accountToo = accountToo(uuid);
+
+
+        Friendship friendshipNew = Friendship.builder()
+                .accountOfferUUID(accountToo.getUuid())
+                .accountAnswerUUID(uuid)
+                .statusBetween(StatusCode.REQUEST_TO)
+                .uuid(UUID.randomUUID())
+                .build();
+
+
+
         return null;
     }
 
@@ -110,12 +121,12 @@ public class FriendServiceImpl implements FriendService {
     }
 
 
-    private AccountDto account(UUID uuid) {
+    private AccountDto accountToo(UUID uuid) {
         return Optional.ofNullable(accountClient.getAccountById(uuid))
                 .orElseThrow(() -> new BusinessLogicException(MessageFormat.format("Friend with ID {0} is NOT_FOUND", uuid)));
     }
 
-    public String email(Map<String, String> headers) throws JsonProcessingException {
+    public String emailByHeaders(Map<String, String> headers) throws JsonProcessingException {
         String token = headers.get("authorization").substring(7);
         String[] chunks = token.split("\\.");
         Base64.Decoder decoder = Base64.getUrlDecoder();
@@ -125,8 +136,17 @@ public class FriendServiceImpl implements FriendService {
         JsonNode jsonNode = mapper.readTree(payload);
         return jsonNode.get("email").asText();
     }
+    public String  idByHeaders(Map<String, String> headers) throws JsonProcessingException {
+        String token = headers.get("authorization").substring(7);
+        String[] chunks = token.split("\\.");
+        Base64.Decoder decoder = Base64.getUrlDecoder();
+        String payload = new String(decoder.decode(chunks[1]));
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.readTree(payload);
+        return jsonNode.get("ID").asText();
+    }
 
-    private AccountDto accountUUIDGetEmail(String email) {
+    private AccountDto accountByEmail(String email) {
         return Optional.ofNullable(accountClient.getAccountBayEmail(email))
                 .orElseThrow(() -> new BusinessLogicException(MessageFormat.format("Friend with email{0} is NOT_FOUND", email)));
     }
