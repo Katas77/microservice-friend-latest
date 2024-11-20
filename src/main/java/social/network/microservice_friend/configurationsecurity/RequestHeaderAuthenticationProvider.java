@@ -11,6 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 import social.network.microservice_friend.clientFeign.FeignClient;
+import social.network.microservice_friend.dto.CheckDto;
 
 import java.util.ArrayList;
 @Component
@@ -23,13 +24,12 @@ public class RequestHeaderAuthenticationProvider implements AuthenticationProvid
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-
         String authSecretToken = String.valueOf(authentication.getPrincipal());
-        System.out.println(String.valueOf(authentication.getPrincipal()));
-        if(StringUtils.isBlank(authSecretToken) || !client.validToken(authSecretToken).isValidToken() ) {   // !authSecretToken.equals(token)
+        System.out.println(authentication);
+        if(StringUtils.isBlank(authSecretToken) || !client.validToken(authSecretToken).getValidToken()) {//authSecretToken.equals(token)
+            System.out.println("Bad Request Header Credentials");
             throw new BadCredentialsException("Bad Request Header Credentials");
         }
-        System.out.println(StringUtils.isBlank(authSecretToken) || !authSecretToken.equals(token));
         return new PreAuthenticatedAuthenticationToken(authentication.getPrincipal(), null, new ArrayList<>());
     }
 
