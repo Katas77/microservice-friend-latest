@@ -51,12 +51,13 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public String request(UUID uuid, Map<String, String> headers) throws JsonProcessingException {
-        AccountDto dto = account(uuid);
+        AccountDto dtoUuid = account(uuid);
         String email = email(headers);
-        System.out.println(dto.toString());
-        AccountDto accountDto2 = accountUUIDGetEmail(email);
+        System.out.println(dtoUuid.toString());
+        AccountDto accountEmail = accountUUIDGetEmail(email);
+        System.out.println(accountEmail.toString());
         Friendship friendshipNew = Friendship.builder()
-                .accountOfferUUID(accountDto2.getUuid())
+                .accountOfferUUID(accountEmail.getUuid())
                 .accountAnswerUUID(uuid)
                 .statusBetween(StatusCode.SUBSCRIBED)
                 .uuid(UUID.randomUUID())

@@ -27,8 +27,7 @@ public class RequestHeaderAuthenticationProvider implements AuthenticationProvid
         String authSecretToken = String.valueOf(authentication.getPrincipal());
         System.out.println(authentication);
         if(StringUtils.isBlank(authSecretToken) || !client.validToken(authSecretToken).getValidToken()) {//authSecretToken.equals(token)
-            System.out.println("Bad Request Header Credentials");
-            throw new BadCredentialsException("Bad Request Header Credentials");
+            throw new BadCredentialsException("Bad Request invalid or missing token");
         }
         return new PreAuthenticatedAuthenticationToken(authentication.getPrincipal(), null, new ArrayList<>());
     }
