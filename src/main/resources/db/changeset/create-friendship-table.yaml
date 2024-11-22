@@ -14,12 +14,12 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: account_id_offer
+                  name: account_id_to
                   type: UUID
                   constraints:
                     nullable: false
               - column:
-                  name: account_id_answer
+                  name: account_id_from
                   type: UUID
                   constraints:
                     nullable: false

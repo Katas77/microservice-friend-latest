@@ -1,0 +1,9 @@
+String token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlJvbWFuIiwiZW1haWwiOiJrcnA3N0BtYWlsLnJ1In0.QFbiuTijoW4YsxvlYakG0_m2KY_ak9v7aAXLQRpttd4";
+
+ http://localhost:8080/api/v1/friends/b3999ffa-2df9-469e-9793-ee65e214846e/approve
+
+http://localhost:8080/api/v1/friends/b3999ffa-2df9-469e-9793-ee65e214846e/request
+
+http://localhost:8080/api/v1/friends/count
+
+http://localhost:8080/api/v1/friends/5c1db40f-8ea8-4b43-9310-3f2357fb5536

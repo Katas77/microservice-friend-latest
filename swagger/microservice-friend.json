@@ -1,0 +1,449 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8082/",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Friend Service",
+      "description": "Работа с друзьями"
+    }
+  ],
+  "paths": {
+    "/api/v1/friends/{id}/approve": {
+      "put": {
+        "tags": [
+          "Friend Service"
+        ],
+        "summary": "Подтверждение дружбы",
+        "operationId": "approveFriend",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/friends/block/{id}": {
+      "put": {
+        "tags": [
+          "Friend Service"
+        ],
+        "summary": "Блокировка друга",
+        "operationId": "blockFriend",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/friends/{id}/request": {
+      "post": {
+        "tags": [
+          "Friend Service"
+        ],
+        "summary": "Добавление друга",
+        "operationId": "addFriend",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/friends/subscribe/{id}": {
+      "post": {
+        "tags": [
+          "Friend Service"
+        ],
+        "summary": "Подписка",
+        "operationId": "subscribe",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/friends": {
+      "get": {
+        "tags": [
+          "Friend Service"
+        ],
+        "summary": "Получение всех друзей",
+        "operationId": "getFriends",
+        "parameters": [
+          {
+            "name": "dto",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/FriendSearchDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllFriendsDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/friends/{accountId}": {
+      "get": {
+        "tags": [
+          "Friend Service"
+        ],
+        "summary": "Получение друга по id",
+        "operationId": "getFriendByAccountDto",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/friends/recommendations": {
+      "get": {
+        "tags": [
+          "Friend Service"
+        ],
+        "summary": "Рекомендации",
+        "operationId": "getByRecommendation",
+        "responses": {
+          "200": {
+            "description": "Successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationFriendsDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/friends/friendId": {
+      "get": {
+        "tags": [
+          "Friend Service"
+        ],
+        "summary": "Получение id друзей",
+        "operationId": "getFriendId",
+        "responses": {
+          "200": {
+            "description": "Successfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/friends/count": {
+      "get": {
+        "tags": [
+          "Friend Service"
+        ],
+        "summary": "Счетчик заявок в друзья",
+        "operationId": "requestCount",
+        "responses": {
+          "200": {
+            "description": "Successfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/friends/blockFriendId": {
+      "get": {
+        "tags": [
+          "Friend Service"
+        ],
+        "summary": "Получение id заблокированных друзей",
+        "operationId": "getBlockFriendId",
+        "responses": {
+          "200": {
+            "description": "Successfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/friends/{id}": {
+      "delete": {
+        "tags": [
+          "Friend Service"
+        ],
+        "summary": "Удаление друга",
+        "operationId": "deleteFriend",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FriendSearchDto": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "birthDateFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "birthDateTo": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "ageTo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ageFrom": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "statusCode": {
+            "type": "string",
+            "enum": [
+              "FRIEND",
+              "REQUEST_TO",
+              "REQUEST_FROM",
+              "BLOCKED",
+              "DECLINED",
+              "SUBSCRIBED",
+              "NONE",
+              "WATCHING",
+              "REJECTING"
+            ]
+          }
+        }
+      },
+      "AllFriendsDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "photo": {
+            "type": "string"
+          },
+          "statusCode": {
+            "type": "string",
+            "enum": [
+              "FRIEND",
+              "REQUEST_TO",
+              "REQUEST_FROM",
+              "BLOCKED",
+              "DECLINED",
+              "SUBSCRIBED",
+              "NONE",
+              "WATCHING",
+              "REJECTING"
+            ]
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isOnline": {
+            "type": "boolean"
+          }
+        }
+      },
+      "RecommendationFriendsDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "photo": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

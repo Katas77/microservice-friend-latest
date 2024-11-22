@@ -15,8 +15,9 @@ spring:
   main:
     allow-circular-references: true
   jpa:
+    hibernate:
+      ddl-auto: none
     generate-ddl: true
-    hibernate.generate-ddl: none
   datasource:
     url: jdbc:postgresql://localhost:5432/app_db
     username: friend

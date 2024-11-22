@@ -17,12 +17,12 @@ public class Friendship {
     @Id
     private UUID uuid;
 
-    @Column(name = "account_id_offer")
-    private UUID accountOfferUUID;
+    @Column(name = "account_id_to")
+    private UUID account_id_to;
 
 
-    @Column(name = "account_id_answer")
-    private UUID accountAnswerUUID;
+    @Column(name = "account_id_from")
+    private UUID account_id_from;
 
 
     @Column(name = "status_between")

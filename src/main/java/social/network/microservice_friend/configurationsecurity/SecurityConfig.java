@@ -18,16 +18,17 @@ import org.springframework.security.web.header.HeaderWriterFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.util.Collections;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     private final RequestHeaderAuthenticationProvider requestHeaderAuthenticationProvider;
 
 
-
     @Autowired
-    public SecurityConfig( RequestHeaderAuthenticationProvider requestHeaderAuthenticationProvider){
+    public SecurityConfig(RequestHeaderAuthenticationProvider requestHeaderAuthenticationProvider) {
         this.requestHeaderAuthenticationProvider = requestHeaderAuthenticationProvider;
     }
 
@@ -49,7 +50,7 @@ public class SecurityConfig {
     @Bean
     public RequestHeaderAuthenticationFilter requestHeaderAuthenticationFilter() {
         RequestHeaderAuthenticationFilter filter = new RequestHeaderAuthenticationFilter();
-        filter.setPrincipalRequestHeader("Authorization");
+        filter.setPrincipalRequestHeader("authorization");
         filter.setExceptionIfHeaderMissing(false);
         filter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/api/**"));
         filter.setAuthenticationManager(authenticationManager());

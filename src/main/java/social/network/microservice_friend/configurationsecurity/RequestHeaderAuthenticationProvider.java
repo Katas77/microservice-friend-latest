@@ -13,18 +13,17 @@ import org.springframework.stereotype.Component;
 import social.network.microservice_friend.clientFeign.ClientFeign;
 
 import java.util.ArrayList;
+
 @Component
 @RequiredArgsConstructor
 public class RequestHeaderAuthenticationProvider implements AuthenticationProvider {
 
     private final ClientFeign client;
-    private final String token="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlJvbWFuIiwiZW1haWwiOiJrcnA3N0BtYWlsLnJ1In0.QFbiuTijoW4YsxvlYakG0_m2KY_ak9v7aAXLQRpttd4";
-
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String authSecretToken = String.valueOf(authentication.getPrincipal());
-        if(StringUtils.isBlank(authSecretToken) || !client.validToken(authSecretToken).getValidToken()) {//authSecretToken.equals(token)
+        if (StringUtils.isBlank(authSecretToken) || !client.validToken(authSecretToken)) {//authSecretToken.equals(token)
             throw new BadCredentialsException("Bad Request invalid or missing token");
         }
         return new PreAuthenticatedAuthenticationToken(authentication.getPrincipal(), null, new ArrayList<>());

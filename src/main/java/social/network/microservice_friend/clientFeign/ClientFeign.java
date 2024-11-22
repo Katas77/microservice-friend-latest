@@ -1,24 +1,23 @@
 package social.network.microservice_friend.clientFeign;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import social.network.microservice_friend.dto.AccountDto;
-import social.network.microservice_friend.dto.CheckDto;
+
 
 import java.util.UUID;
 
-@FeignClient(name = "accountClient", url = "http://localhost:8080/api/v1/account")
+@FeignClient(name = "accountClient", url = "http://localhost:8080/api/v1")
 public interface ClientFeign {
 
-    @GetMapping(value = "/{uuid}")
+    @GetMapping(value = "/account/{uuid}")
     AccountDto getAccountById(@PathVariable(value = "uuid") UUID uuid);
 
-    @GetMapping(value = "/email/{email}")
+    @GetMapping(value = "/account/email/{email}")
     AccountDto getAccountBayEmail(@PathVariable(value = "email") String email);
 
-    @GetMapping(value = "/authentication/{token}")
-    CheckDto validToken(@PathVariable(value = "token") String token);
+    @RequestMapping(method = RequestMethod.GET, value = "/auth/validate-token")
+    boolean validToken(@RequestHeader(value = "authorization", required = true) String authorizationHeader);;
 
 }
 

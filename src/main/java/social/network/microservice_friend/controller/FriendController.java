@@ -9,7 +9,6 @@ import social.network.microservice_friend.dto.AllFriendsDto;
 import social.network.microservice_friend.service.FriendService;
 
 
-
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,8 +20,8 @@ public class FriendController {
     private final FriendService friendService;
 
 
-    @PutMapping("/{uuid}/approve")//                     http://localhost:8080/api/v1/friends/b3999ffa-2df9-469e-9793-ee65e214846e/approve
-    public String approve(@PathVariable UUID uuid) throws JsonProcessingException {
+    @PutMapping("/{uuid}/approve")
+    public String approve(@PathVariable UUID uuid) {
         return friendService.approve(uuid);
     }
 
@@ -31,23 +30,23 @@ public class FriendController {
         return friendService.block(uuid);
     }
 
-    @PutMapping("/{uuid}/request")//         http://localhost:8080/api/v1/friends/b3999ffa-2df9-469e-9793-ee65e214846e/request
+    @PutMapping("/{uuid}/request")
     public String request(@PathVariable UUID uuid, @RequestHeader Map<String, String> headers) throws JsonProcessingException {
-        return friendService.request(uuid,headers);
+        return friendService.request(uuid, headers);
     }
 
     @PutMapping("/subscribe/{uuid}")
-    public String subscribe(@PathVariable UUID uuid, Map<String, String> headers) {
-        return friendService.subscribe(uuid,headers);
+    public String subscribe(@PathVariable UUID uuid, Map<String, String> headers) throws JsonProcessingException {
+        return friendService.subscribe(uuid, headers);
     }
 
     @GetMapping()
-    public AllFriendsDto friendsAll( @RequestHeader Map<String, String> headers) {
+    public AllFriendsDto friendsAll(@RequestHeader Map<String, String> headers) {
         return friendService.findAll();
     }
 
     @GetMapping("/{accountId}")
-    public AllFriendsDto gettingFriendById(@PathVariable UUID uuid) {
+    public AllFriendsDto getFriendById(@PathVariable UUID uuid) {
         return friendService.gettingFriendById(uuid);
     }
 
@@ -71,9 +70,9 @@ public class FriendController {
         return friendService.blockFriendId();
     }
 
-    @DeleteMapping("/{id}")
-    public String dell(@PathVariable Integer id) {
-        return friendService.dell(id);
+    @DeleteMapping("/{uuid}")
+    public String dell(@PathVariable UUID uuid, @RequestHeader("authorization") String headerToken) throws JsonProcessingException {
+        return friendService.dell(uuid, headerToken);
     }
 
 }
