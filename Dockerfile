@@ -1,15 +1,16 @@
-FROM openjdk:17-oracle
-
+FROM openjdk:17-jdk-slim
 WORKDIR /app
-
 COPY target/microservice-friend-0.0.1-SNAPSHOT.jar app.jar
-
-CMD ["java", "-jar", "app.jar"]
-
+EXPOSE 8082
+ENTRYPOINT ["java", "-jar", "app.jar"]
 
 
 #( PS C:\Users\krp77\IdeaProjects\socketserver>  docker build -t microservice_friend .)
 #(PS C:\Users\krp77\IdeaProjects\socketserver>  docker run microservice_friend  )
+
+
+
+
 
 # docker container ls
 # docker container ls -a

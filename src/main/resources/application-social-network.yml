@@ -1,4 +1,7 @@
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
   liquibase:
     enabled: true
     change-log: classpath:db/db.changelog-master.yaml
@@ -8,11 +11,8 @@ spring:
     driver-class-name: org.postgresql.Driver
     password: ${POSTGRES_PASSWORD:postgres}
     username: ${POSTGRES_USER:postgres}
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost/social_network_friend_db}
-  jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: true
+    url: jdbc:postgresql://194.67.88.81:5432/friend_db
+
 eureka:
   client:
     service-url:
