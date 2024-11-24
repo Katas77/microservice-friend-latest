@@ -1,0 +1,22 @@
+spring:
+  liquibase:
+    enabled: true
+    change-log: classpath:db/db.changelog-master.yaml
+  application:
+    name: social-network-friend
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: ${POSTGRES_PASSWORD:postgres}
+    username: ${POSTGRES_USER:postgres}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost/social_network_friend_db}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://194.67.88.81:8761/eureka/
+    fetch-registry: true
+
+

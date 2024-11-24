@@ -17,7 +17,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-    generate-ddl: true
   datasource:
     url: jdbc:postgresql://localhost:5432/app_db
     username: friend

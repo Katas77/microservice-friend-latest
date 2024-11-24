@@ -1,4 +1,3 @@
-
 package social.network.microservice_friend.configurationsecurity;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,7 @@ public class SecurityConfig {
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterAfter(requestHeaderAuthenticationFilter(), HeaderWriterFilter.class)
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
-                        .requestMatchers(HttpMethod.GET, "api/v1/account/friends/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/default/**").permitAll()
                         .requestMatchers("/api/v1/friends/**").authenticated())
                 .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer
                         .authenticationEntryPoint((request, response, authException) ->
@@ -52,7 +51,7 @@ public class SecurityConfig {
         RequestHeaderAuthenticationFilter filter = new RequestHeaderAuthenticationFilter();
         filter.setPrincipalRequestHeader("authorization");
         filter.setExceptionIfHeaderMissing(false);
-        filter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/api/**"));
+        filter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/api/v1/friends/**"));
         filter.setAuthenticationManager(authenticationManager());
         return filter;
     }
@@ -62,3 +61,4 @@ public class SecurityConfig {
         return new ProviderManager(Collections.singletonList(requestHeaderAuthenticationProvider));
     }
 }
+

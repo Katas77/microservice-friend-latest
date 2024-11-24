@@ -1,4 +1,5 @@
 
+
 package social.network.microservice_friend.configurationsecurity;
 
 import io.micrometer.common.util.StringUtils;
@@ -34,6 +35,7 @@ public class RequestHeaderAuthenticationProvider implements AuthenticationProvid
         return authentication.equals(PreAuthenticatedAuthenticationToken.class);
     }
 }
+
 
 
 
