@@ -1,1 +1,1 @@
-create schema  app_schema;
+create schema  friend_schema;

@@ -1,4 +1,4 @@
-package social.network.microservice_friend.configurationsecurity;
+package social.network.microservice_friend.configuration.configurationsecurity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

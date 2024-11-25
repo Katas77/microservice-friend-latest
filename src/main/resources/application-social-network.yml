@@ -8,9 +8,11 @@ spring:
   application:
     name: social-network-friend
   datasource:
+    schema: friend_schema
+    connection-init-sql: create schema if not exists friend_schema
     driver-class-name: org.postgresql.Driver
-    password: ${POSTGRES_PASSWORD:postgres}
-    username: ${POSTGRES_USER:postgres}
+    password: postgres
+    username: postgres
     url: jdbc:postgresql://194.67.88.81:5432/friend_db
 
 eureka:

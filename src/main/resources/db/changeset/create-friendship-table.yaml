@@ -25,6 +25,6 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: status_between
-                  type: UUID
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false

@@ -1,6 +1,6 @@
 
 
-package social.network.microservice_friend.configurationsecurity;
+package social.network.microservice_friend.configuration.configurationsecurity;
 
 import io.micrometer.common.util.StringUtils;
 

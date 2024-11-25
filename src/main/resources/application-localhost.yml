@@ -18,13 +18,12 @@ spring:
     hibernate:
       ddl-auto: none
   datasource:
-    url: jdbc:postgresql://localhost:5432/app_db
+    url: jdbc:postgresql://localhost:5432/friend_db
     username: friend
     password: friend
-    hikari:
-      schema: app_schema
-      connection-init-sql: create schema if not exists app_schema
-      connection-timeout: 10000
+    schema: friend_schema
+    connection-init-sql: create schema if not exists friend_schema
+
 
 account:
   url: http://localhost:8080/api/v1/account/{id}
