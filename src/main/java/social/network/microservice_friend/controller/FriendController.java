@@ -21,13 +21,13 @@ public class FriendController {
 
 
     @PutMapping("/{uuid}/approve")
-    public String approve(@PathVariable UUID uuid) {
-        return friendService.approve(uuid);
+    public String approve(@PathVariable UUID uuid,@RequestHeader("authorization") String headerToken) throws JsonProcessingException {
+        return friendService.approve(uuid,headerToken);
     }
 
     @PutMapping("/block/{uuid}")
-    public String block(@PathVariable UUID uuid) {
-        return friendService.block(uuid);
+    public String block(@PathVariable UUID uuid,@RequestHeader("authorization") String headerToken) throws JsonProcessingException {
+        return friendService.block(uuid,headerToken);
     }
 
     @PutMapping("/{uuid}/request")
@@ -61,8 +61,8 @@ public class FriendController {
     }
 
     @GetMapping("/count")
-    public Integer friendRequestCounter() {
-        return friendService.friendRequestCounter();
+    public Integer friendRequestCounter(@RequestHeader("authorization") String headerToken) throws JsonProcessingException {
+        return friendService.friendRequestCounter(headerToken);
     }
 
     @GetMapping("/blockFriendId")

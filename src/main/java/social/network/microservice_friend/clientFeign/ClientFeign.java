@@ -17,7 +17,7 @@ public interface ClientFeign {
     AccountDto getAccountBayEmail(@PathVariable(value = "email") String email);
 
     @RequestMapping(method = RequestMethod.GET, value = "/auth/validate-token")
-    boolean validToken(@RequestHeader(value = "authorization", required = true) String authorizationHeader);;
+    boolean validToken(@RequestHeader(value = "authorization", required = true) String authorizationToken);;
 
 }
 

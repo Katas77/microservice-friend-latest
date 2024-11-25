@@ -30,18 +30,22 @@ public class FriendServiceImpl implements FriendService {
 
 
     @Override
-    public String approve(UUID uuidTo) {
-        Friendship friend = repository.findById(uuidTo).orElseThrow(
-                () -> new BusinessLogicException(MessageFormat.format("Friend with ID {0} is NOT_FOUND", uuidTo)));
+    public String approve(UUID uuidTo,String headerToken) throws JsonProcessingException {
+        UUID uuidFrom= UUID.fromString(idByHeaders(headerToken));
+        System.out.println(uuidTo);
+        System.out.println(uuidFrom);
+        Friendship friend = repository.findToAndFrom(uuidTo,uuidFrom).orElseThrow(
+                () -> new BusinessLogicException(MessageFormat.format("Friendship with uuidTo{0} is NOT_FOUND", uuidTo)));
         friend.setStatusBetween(StatusCode.FRIEND);
         repository.save(friend);
-        return MessageFormat.format("Friend with ID {0} is approve", uuidTo);
+        return MessageFormat.format("Friendship with ID {0} is approve", uuidTo);
     }
 
     @Override
-    public String block(UUID uuidTo) {
-        Friendship friend = repository.findById(uuidTo).orElseThrow(
-                () -> new BusinessLogicException(MessageFormat.format("Friend with ID {0} is NOT_FOUND", uuidTo)));
+    public String block(UUID uuidTo,String headerToken) throws JsonProcessingException {
+        UUID uuidFrom= UUID.fromString(idByHeaders(headerToken));
+        Friendship friend = repository.findToAndFrom(uuidTo,uuidFrom).orElseThrow(
+                () -> new BusinessLogicException(MessageFormat.format("Friendship with uuidTo{0} is BLOCKED", uuidTo)));
         friend.setStatusBetween(StatusCode.BLOCKED);
         repository.save(friend);
         return MessageFormat.format("Friend with ID {0} is blocked", uuidTo);
@@ -50,24 +54,24 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public String request(UUID uuidTo, Map<String, String> headers) throws JsonProcessingException {
-        String email = emailByHeaders(headers);
-        AccountDto accountFrom = accountByEmail(email);
-        System.out.println(accountFrom.toString() + "    accountByEmail");
+        UUID uuidFrom= UUID.fromString(idByHeaders( headers.get("authorization")));
+        AccountDto accountFrom = accountById(uuidFrom);
+        System.out.println(uuidTo);
+        System.out.println(uuidFrom);
         Friendship friendshipNew = Friendship.builder()
                 .account_id_to(uuidTo)
-                .account_id_from(accountFrom.getUuid())
+                .account_id_from(uuidFrom)
                 .statusBetween(StatusCode.REQUEST_TO)
                 .uuid(UUID.randomUUID())
                 .build();
         repository.save(friendshipNew);
-        return MessageFormat.format("Friendship with ID {0} is save", uuidTo);
+        return MessageFormat.format("Friendship with ID {0} REQUEST_TO", uuidTo);
 
     }
 
     @Override
     public String subscribe(UUID uuidTo, Map<String, String> headers) throws JsonProcessingException {
-        String token = headers.get("authorization").substring(7);
-        UUID uuidFrom = UUID.fromString(idByHeaders(token));
+        UUID uuidFrom= UUID.fromString(idByHeaders( headers.get("authorization").substring(7)));
         Friendship friendship = Friendship.builder()
                 .account_id_to(uuidTo)
                 .account_id_from(uuidFrom)
@@ -99,8 +103,9 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public Integer friendRequestCounter() {
-        return repository.findAllStatus_between();
+    public Integer friendRequestCounter(String headerToken) throws JsonProcessingException {
+        UUID uuidFrom= UUID.fromString(idByHeaders(headerToken.substring(7)));
+        return repository.findAllStatus_between(uuidFrom);
     }
 
     @Override
@@ -109,12 +114,14 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public String dell(UUID uuid, String headerToken) throws JsonProcessingException {
+    public String dell(UUID uuidTo, String headerToken) throws JsonProcessingException {
         UUID uuidFrom = UUID.fromString(idByHeaders(headerToken));
-        ArrayList<Friendship> friendships = (ArrayList<Friendship>) repository.findAllUudTo(uuid);
-        Friendship friendship = friendships.stream().filter(friendship1 -> friendship1.equals(uuidFrom)).findFirst().orElseThrow();
+        ArrayList<Friendship> friendships = (ArrayList<Friendship>) repository.findAllUudTo(uuidTo);
+        System.out.println(friendships.size());
+        Friendship friendship = friendships.stream().filter(friendship1 -> friendship1.getAccount_id_from().equals(uuidFrom)).findFirst().orElseThrow(
+                () -> new BusinessLogicException(MessageFormat.format("Friendship with uuidTo{0} is NOT_FOUND", uuidTo)));
         repository.delete(friendship);
-        return MessageFormat.format("friendship with ID {0} is Dell", uuid);
+        return MessageFormat.format("friendship with ID {0} is Dell", uuidTo);
     }
 
 
@@ -149,11 +156,15 @@ public class FriendServiceImpl implements FriendService {
 
     @PostConstruct
     public void great() {
+
+        	Random random = new Random();
+        int b= random.nextInt(0,3);
+        StatusCode[] statusCodes={StatusCode.FRIEND,StatusCode.BLOCKED,StatusCode.REQUEST_TO,StatusCode.SUBSCRIBED};
         Friendship friendship = Friendship.builder()
                 .uuid(UUID.randomUUID())
                 .account_id_to(UUID.randomUUID())
                 .account_id_from(UUID.randomUUID())
-                .statusBetween(StatusCode.BLOCKED)
+                .statusBetween(statusCodes[b])
                 .build();
         repository.save(friendship);
     }

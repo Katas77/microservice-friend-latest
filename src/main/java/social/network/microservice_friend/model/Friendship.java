@@ -26,6 +26,6 @@ public class Friendship {
 
 
     @Column(name = "status_between")
-    @Enumerated(EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     private StatusCode statusBetween;
 }

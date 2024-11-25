@@ -9,9 +9,9 @@ import java.util.UUID;
 
 public interface FriendService {
 
-    String approve(UUID uuid);
+    String approve(UUID uuid,String headerToken) throws JsonProcessingException;
 
-    String block(UUID  uuid);
+    String block(UUID  uuid,String headerToken) throws JsonProcessingException;
 
     String request(UUID  uuid, Map<String, String> headers) throws JsonProcessingException;
 
@@ -25,7 +25,7 @@ public interface FriendService {
 
     Integer[] friendId();
 
-    Integer friendRequestCounter();
+    Integer friendRequestCounter(String headerToken) throws JsonProcessingException;
 
     Integer blockFriendId();
 
