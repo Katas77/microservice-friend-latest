@@ -3,6 +3,8 @@ package social.network.microservice_friend.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nimbusds.jose.JWEObject;
+import com.nimbusds.jwt.SignedJWT;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,7 @@ import social.network.microservice_friend.service.FriendService;
 
 
 import java.text.MessageFormat;
+import java.text.ParseException;
 import java.util.*;
 
 
@@ -30,7 +33,7 @@ public class FriendServiceImpl implements FriendService {
 
 
     @Override
-    public String approve(UUID uuidTo,String headerToken) throws JsonProcessingException {
+    public String approve(UUID uuidTo,String headerToken) throws JsonProcessingException, ParseException {
         UUID uuidFrom= UUID.fromString(idByHeaders(headerToken));
         System.out.println(uuidTo);
         System.out.println(uuidFrom);
@@ -42,7 +45,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public String block(UUID uuidTo,String headerToken) throws JsonProcessingException {
+    public String block(UUID uuidTo,String headerToken) throws JsonProcessingException, ParseException {
         UUID uuidFrom= UUID.fromString(idByHeaders(headerToken));
         Friendship friend = repository.findToAndFrom(uuidTo,uuidFrom).orElseThrow(
                 () -> new BusinessLogicException(MessageFormat.format("Friendship with uuidTo{0} is BLOCKED", uuidTo)));
@@ -53,7 +56,7 @@ public class FriendServiceImpl implements FriendService {
 
 
     @Override
-    public String request(UUID uuidTo, Map<String, String> headers) throws JsonProcessingException {
+    public String request(UUID uuidTo, Map<String, String> headers) throws JsonProcessingException, ParseException {
         UUID uuidFrom= UUID.fromString(idByHeaders( headers.get("authorization")));
         AccountDto accountFrom = accountById(uuidFrom);
         System.out.println(uuidTo);
@@ -70,7 +73,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public String subscribe(UUID uuidTo, Map<String, String> headers) throws JsonProcessingException {
+    public String subscribe(UUID uuidTo, Map<String, String> headers) throws JsonProcessingException, ParseException {
         UUID uuidFrom= UUID.fromString(idByHeaders( headers.get("authorization").substring(7)));
         Friendship friendship = Friendship.builder()
                 .account_id_to(uuidTo)
@@ -103,7 +106,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public Integer friendRequestCounter(String headerToken) throws JsonProcessingException {
+    public Integer friendRequestCounter(String headerToken) throws JsonProcessingException, ParseException {
         UUID uuidFrom= UUID.fromString(idByHeaders(headerToken.substring(7)));
         return repository.findAllStatus_between(uuidFrom);
     }
@@ -114,7 +117,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public String dell(UUID uuidTo, String headerToken) throws JsonProcessingException {
+    public String dell(UUID uuidTo, String headerToken) throws JsonProcessingException, ParseException {
         UUID uuidFrom = UUID.fromString(idByHeaders(headerToken));
         ArrayList<Friendship> friendships = (ArrayList<Friendship>) repository.findAllUudTo(uuidTo);
         System.out.println(friendships.size());
@@ -143,7 +146,9 @@ public class FriendServiceImpl implements FriendService {
         return mapper.readTree(payload).get("email").asText();
     }
 
-    public String idByHeaders(String headerToken) throws JsonProcessingException {
+    public String idByHeaders(String headerToken) throws JsonProcessingException, ParseException {
+        System.out.println(   SignedJWT.parse(headerToken.substring(7)).getPayload().toJSONObject().get("id").toString());
+
         String token = headerToken.substring(7);
         String[] chunks = token.split("\\.");
         Base64.Decoder decoder = Base64.getUrlDecoder();

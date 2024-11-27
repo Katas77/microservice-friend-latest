@@ -1,7 +1,7 @@
 topic:
   post-server: topic-post-server
 server:
-  port: 8082
+  port: 8087
 spring:
   liquibase:
     enabled: true
