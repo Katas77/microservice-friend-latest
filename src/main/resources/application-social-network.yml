@@ -2,18 +2,22 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+
   liquibase:
     enabled: true
     change-log: classpath:db/db.changelog-master.yaml
+
   application:
     name: social-network-friend
+
   datasource:
-    schema: friend_schema
-    connection-init-sql: create schema if not exists friend_schema
-    driver-class-name: org.postgresql.Driver
     password: postgres
     username: postgres
     url: jdbc:postgresql://194.67.88.81:5432/friend_db
+    hikari:
+      schema: friend_schema
+      connection-init-sql: create schema if not exists friend_schema
+      connection-timeout: 10000
 
 eureka:
   client:
@@ -24,3 +28,5 @@ server:
   port: 8087
 
 
+api:
+  url: http://194.67.88.81:8080/api/v1

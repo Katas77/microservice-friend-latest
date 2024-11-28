@@ -1,9 +1,6 @@
 
-
 package social.network.microservice_friend.configuration.configurationsecurity;
-
 import io.micrometer.common.util.StringUtils;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -23,8 +20,8 @@ public class RequestHeaderAuthenticationProvider implements AuthenticationProvid
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String authSecretToken = String.valueOf(authentication.getPrincipal());
-        if (StringUtils.isBlank(authSecretToken) || !client.validToken(authSecretToken)) {//authSecretToken.equals(token)
+        String authToken = String.valueOf(authentication.getPrincipal());
+        if (StringUtils.isBlank(authToken) || !client.validToken(authToken)) {
             throw new BadCredentialsException("Bad Request invalid or missing token");
         }
         return new PreAuthenticatedAuthenticationToken(authentication.getPrincipal(), null, new ArrayList<>());
