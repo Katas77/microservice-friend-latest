@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import social.network.microservice_friend.clientFeign.ClientFeign;
 import social.network.microservice_friend.dto.AccountDto;
 import social.network.microservice_friend.dto.AllFriendsDto;
+import social.network.microservice_friend.dto.FriendSearchDto;
 import social.network.microservice_friend.exception.BusinessLogicException;
 import social.network.microservice_friend.model.Friendship;
 import social.network.microservice_friend.model.en.StatusCode;
@@ -77,7 +78,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public AllFriendsDto findAll() {
+    public AllFriendsDto findAll(FriendSearchDto request) {
         return null;
     }
 

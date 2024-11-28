@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import social.network.microservice_friend.dto.AccountDto;
 import social.network.microservice_friend.dto.AllFriendsDto;
+import social.network.microservice_friend.dto.FriendSearchDto;
 import social.network.microservice_friend.service.FriendService;
 
 
@@ -43,8 +44,8 @@ public class FriendController {
     }
 
     @GetMapping()
-    public AllFriendsDto friendsAll(@RequestHeader Map<String, String> headers) {
-        return friendService.findAll();
+    public AllFriendsDto friendsAll(@RequestBody FriendSearchDto request, @RequestHeader Map<String, String> headers) {
+        return friendService.findAll(request);
     }
 
     @GetMapping("/{accountId}")

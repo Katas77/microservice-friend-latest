@@ -3,6 +3,7 @@ package social.network.microservice_friend.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import social.network.microservice_friend.dto.AccountDto;
 import social.network.microservice_friend.dto.AllFriendsDto;
+import social.network.microservice_friend.dto.FriendSearchDto;
 
 
 import java.text.ParseException;
@@ -19,7 +20,7 @@ public interface FriendService {
 
     String subscribe(UUID  uuid, Map<String, String> headers) throws JsonProcessingException, ParseException;
 
-    AllFriendsDto findAll();
+    AllFriendsDto findAll(FriendSearchDto request);
 
     AccountDto gettingFriendById(UUID uuidAccountId);
 
