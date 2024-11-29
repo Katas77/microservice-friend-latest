@@ -1,10 +1,7 @@
 package social.network.microservice_friend.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import social.network.microservice_friend.model.en.StatusCode;
+import lombok.*;
+import social.network.microservice_friend.dto.en.AccountStatus;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -12,10 +9,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class AllFriendsDto {
-    private UUID uuid;
+    private UUID id;
     private String photo;
-    private StatusCode statusCode;
+    private AccountStatus statusCode;
     private String firstName;
     private String lastName;
     private String city;

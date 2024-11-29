@@ -1,6 +1,6 @@
 package social.network.microservice_friend.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jwt.SignedJWT;
 import jakarta.annotation.PostConstruct;
@@ -12,6 +12,7 @@ import social.network.microservice_friend.dto.AccountDto;
 import social.network.microservice_friend.dto.AllFriendsDto;
 import social.network.microservice_friend.dto.FriendSearchDto;
 import social.network.microservice_friend.exception.BusinessLogicException;
+import social.network.microservice_friend.mapper.MapperDTO;
 import social.network.microservice_friend.model.Friendship;
 import social.network.microservice_friend.model.en.StatusCode;
 import social.network.microservice_friend.repository.FriendshipRepository;
@@ -25,11 +26,15 @@ import java.util.*;
 @RequiredArgsConstructor
 @Slf4j
 public class FriendServiceImpl implements FriendService {
+    private final MapperDTO  mapper;
     private final FriendshipRepository repository;
     private final ClientFeign accountClient;
 
+
     @Override
     public String approve(UUID uuidTo, String headerToken) throws ParseException {
+        AllFriendsDto dto=mapper.convertToAllFriend(accountById(UUID.fromString("b3999ffa-2df9-469e-9793-ee65e214846e")));
+        System.out.println(dto);
         UUID uuidFrom = UUID.fromString(idByHeaders(headerToken));
         log.info(String.valueOf(uuidFrom));
         Friendship friend = repository.findToAndFrom(uuidTo, uuidFrom).orElseThrow(
@@ -114,8 +119,11 @@ public class FriendServiceImpl implements FriendService {
         UUID uuidFrom = UUID.fromString(idByHeaders(headerToken));
         List<Friendship> friendships = repository.findsBLOCKED(uuidFrom);
         List<UUID> uuids = new ArrayList<>();
-        friendships.stream().filter(friendship -> friendship.getAccount_id_from().equals(uuidFrom)).forEach(friendship -> uuids.add(friendship.getAccount_id_to()));
-        friendships.stream().filter(friendship -> friendship.getAccount_id_to().equals(uuidFrom)).forEach(friendship -> uuids.add(friendship.getAccount_id_from()));
+       for (Friendship friendship:friendships)
+       {if (friendship.getAccount_id_from().equals(uuidFrom))
+       {uuids.add(friendship.getAccount_id_to());}
+           else uuids.add(friendship.getAccount_id_from());
+       }
         return uuids.toArray(new UUID[0]);
     }
 
@@ -123,7 +131,6 @@ public class FriendServiceImpl implements FriendService {
     public String dell(UUID uuidTo, String headerToken) throws ParseException {
         UUID uuidFrom = UUID.fromString(idByHeaders(headerToken));
         ArrayList<Friendship> friendships = (ArrayList<Friendship>) repository.findAllUudTo(uuidTo);
-        System.out.println(friendships.size());
         Friendship friendship = friendships.stream().filter(friendship1 -> friendship1.getAccount_id_from().equals(uuidFrom)).findFirst().orElseThrow(
                 () -> new BusinessLogicException(MessageFormat.format("Friendship with uuidTo{0} is NOT_FOUND", uuidTo)));
         repository.delete(friendship);
@@ -163,7 +170,7 @@ public class FriendServiceImpl implements FriendService {
         repository.save(friendship2);
     }
 
-    public String emailByHeaders(Map<String, String> headers) throws JsonProcessingException {
+ /*   public String emailByHeaders(Map<String, String> headers) throws JsonProcessingException {
         String token = headers.get("authorization").substring(7);
         String[] chunks = token.split("\\.");
         Base64.Decoder decoder = Base64.getUrlDecoder();
@@ -176,6 +183,6 @@ public class FriendServiceImpl implements FriendService {
     private AccountDto accountByEmail(String email) {
         return Optional.ofNullable(accountClient.getAccountBayEmail(email))
                 .orElseThrow(() -> new BusinessLogicException(MessageFormat.format("Friend with email{0} is NOT_FOUND", email)));
-    }
+    }*/
 }
 
