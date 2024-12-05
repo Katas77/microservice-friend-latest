@@ -11,7 +11,7 @@ spring:
     name: social-network-friend
 
   datasource:
-    password: postgres
+    password: rkljerkgjerhgperoewkgreoierpgrelil
     username: postgres
     url: jdbc:postgresql://194.67.88.81:5432/friend_db
     hikari:
@@ -26,6 +26,7 @@ eureka:
     fetch-registry: true
 server:
   port: 8087
+
 
 
 api:

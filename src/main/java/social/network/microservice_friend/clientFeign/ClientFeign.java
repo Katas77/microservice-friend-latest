@@ -12,6 +12,7 @@ public interface ClientFeign {
 
     @GetMapping(value = "/account/{id}")
     AccountDto getAccountById(@PathVariable(value = "id") UUID id);
+
     @RequestMapping(method = RequestMethod.GET, value = "/auth/validate-token")
     boolean validToken(@RequestHeader(value = "authorization", required = true) String authorizationToken);
     @GetMapping(value = "/account/email/{email}")

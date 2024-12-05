@@ -1,47 +1,43 @@
 package social.network.microservice_friend.service.impl;
 
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jwt.SignedJWT;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import social.network.microservice_friend.aop.Logger;
+import social.network.microservice_friend.aop.LoggerThrowing;
 import social.network.microservice_friend.clientFeign.ClientFeign;
-import social.network.microservice_friend.dto.AccountDto;
-import social.network.microservice_friend.dto.AllFriendsDto;
-import social.network.microservice_friend.dto.FriendSearchDto;
+import social.network.microservice_friend.dto.*;
 import social.network.microservice_friend.exception.BusinessLogicException;
 import social.network.microservice_friend.mapper.MapperDTO;
 import social.network.microservice_friend.model.Friendship;
 import social.network.microservice_friend.model.en.StatusCode;
 import social.network.microservice_friend.repository.FriendshipRepository;
 import social.network.microservice_friend.service.FriendService;
+
 import java.text.MessageFormat;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.*;
-
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class FriendServiceImpl implements FriendService {
-    private final MapperDTO  mapper;
+    private final MapperDTO mapper;
     private final FriendshipRepository repository;
     private final ClientFeign accountClient;
 
-
+    @LoggerThrowing
     @Override
     public String approve(UUID uuidTo, String headerToken) throws ParseException {
-        AllFriendsDto dto=mapper.convertToAllFriend(accountById(UUID.fromString("b3999ffa-2df9-469e-9793-ee65e214846e")));
-        System.out.println(dto);
         UUID uuidFrom = UUID.fromString(idByHeaders(headerToken));
-        log.info(String.valueOf(uuidFrom));
         Friendship friend = repository.findToAndFrom(uuidTo, uuidFrom).orElseThrow(
                 () -> new BusinessLogicException(MessageFormat.format("Friendship with uuidTo{0} is NOT_FOUND", uuidTo)));
         friend.setStatusBetween(StatusCode.FRIEND);
         repository.save(friend);
-        return MessageFormat.format("Friendship with ID {0} is approve", uuidTo);
+        return MessageFormat.format("Friendship with uuidTo {0} is approve", uuidTo);
     }
 
     @Override
@@ -65,7 +61,7 @@ public class FriendServiceImpl implements FriendService {
                 .uuid(UUID.randomUUID())
                 .build();
         repository.save(friendshipNew);
-        return MessageFormat.format("Friendship with ID {0} REQUEST_FROM", uuidTo);
+        return MessageFormat.format("Friendship with uuidTo {0} REQUEST_FROM", uuidTo);
 
     }
 
@@ -75,17 +71,30 @@ public class FriendServiceImpl implements FriendService {
         Friendship friendship = Friendship.builder()
                 .account_id_to(uuidTo)
                 .account_id_from(uuidFrom)
-                .statusBetween(StatusCode.REQUEST_TO)
+                .statusBetween(StatusCode.SUBSCRIBED)
                 .uuid(UUID.randomUUID())
                 .build();
         repository.save(friendship);
-        return null;
+        return MessageFormat.format("Friendship with uuidTo {0} SUBSCRIBED", uuidTo);
     }
 
+    @Logger
     @Override
-    public AllFriendsDto findAll(FriendSearchDto request) {
-        return null;
+    public AllFriendsDtoList gettingAllFriends(SearchDto searchDto) {
+        log.info(searchDto.toString());
+        List<AccountDto> accountDtoList = new ArrayList<>();
+        searchDto.getIds().forEach(uuid -> accountDtoList.add(accountById(uuid)));
+        List<AccountDto> filter = accountDtoList.stream()
+                .filter(accountDto -> searchDto.getFirstName() == null | accountDto.getFirstName().equals(searchDto.getFirstName()))
+                .filter(accountDto -> searchDto.getCity() == null | accountDto.getCity().equals(searchDto.getCity()))
+                .filter(accountDto -> searchDto.getCountry() == null | accountDto.getCountry().equals(searchDto.getCountry()))
+                .filter(accountDto -> searchDto.getStatusCode() == null | accountDto.getStatusCode().equals(searchDto.getStatusCode()))
+                .filter(accountDto -> validBirthDate(accountDto.getBirthDate(), searchDto.getBirthDateFrom(), searchDto.getBirthDateTo()))
+                .filter(accountDto -> validAge(accountDto.getBirthDate(), searchDto.getAgeFrom(), searchDto.getAgeTo()))
+                .toList();
+        return mapper.accountsListToAllFriends(filter);
     }
+
 
     @Override
     public AccountDto gettingFriendById(UUID accountId) {
@@ -93,18 +102,26 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public AllFriendsDto recommendations() {
-        return null;
+    public RecommendDtoList recommendations(String headerToken) throws ParseException {
+        UUID uuidFrom = UUID.fromString(idByHeaders(headerToken));
+        List<AccountDto> accountDtoList = new ArrayList<>();
+        List<UUID> uuidFriends = uuidFriends(uuidFrom);
+        for (UUID uuid : uuidFriends) {
+            List<UUID> friendsOfFriend = uuidFriends(uuid);
+            for (UUID uuid2 : friendsOfFriend) {
+                List<UUID> friendsOfFriend2 = uuidFriends(uuid2);
+                if (mutualFriends(uuidFriends, friendsOfFriend2) >= 2) {
+                    accountDtoList.add(accountById(uuid2));
+                }
+            }
+        }
+        return mapper.accountsListToRecommends(accountDtoList);
     }
 
     @Override
     public UUID[] friendIds(String headerToken) throws ParseException {
         UUID uuidFrom = UUID.fromString(idByHeaders(headerToken));
-        List<Friendship> friendships = repository.findFRIENDS(uuidFrom);
-        List<UUID> uuids = new ArrayList<>();
-        friendships.stream().filter(friendship -> friendship.getAccount_id_from().equals(uuidFrom)).forEach(friendship -> uuids.add(friendship.getAccount_id_to()));
-        friendships.stream().filter(friendship -> friendship.getAccount_id_to().equals(uuidFrom)).forEach(friendship -> uuids.add(friendship.getAccount_id_from()));
-        return uuids.toArray(new UUID[0]);
+        return uuidFriends(uuidFrom).toArray(new UUID[0]);
     }
 
 
@@ -119,11 +136,11 @@ public class FriendServiceImpl implements FriendService {
         UUID uuidFrom = UUID.fromString(idByHeaders(headerToken));
         List<Friendship> friendships = repository.findsBLOCKED(uuidFrom);
         List<UUID> uuids = new ArrayList<>();
-       for (Friendship friendship:friendships)
-       {if (friendship.getAccount_id_from().equals(uuidFrom))
-       {uuids.add(friendship.getAccount_id_to());}
-           else uuids.add(friendship.getAccount_id_from());
-       }
+        for (Friendship friendship : friendships) {
+            if (friendship.getAccount_id_from().equals(uuidFrom)) {
+                uuids.add(friendship.getAccount_id_to());
+            } else uuids.add(friendship.getAccount_id_from());
+        }
         return uuids.toArray(new UUID[0]);
     }
 
@@ -134,10 +151,10 @@ public class FriendServiceImpl implements FriendService {
         Friendship friendship = friendships.stream().filter(friendship1 -> friendship1.getAccount_id_from().equals(uuidFrom)).findFirst().orElseThrow(
                 () -> new BusinessLogicException(MessageFormat.format("Friendship with uuidTo{0} is NOT_FOUND", uuidTo)));
         repository.delete(friendship);
-        return MessageFormat.format("friendship with ID {0} is Dell", uuidTo);
+        return MessageFormat.format("friendship with uuidTo {0} is Dell", uuidTo);
     }
 
-
+    @LoggerThrowing
     private AccountDto accountById(UUID id) {
         return Optional.ofNullable(accountClient.getAccountById(id))
                 .orElseThrow(() -> new BusinessLogicException(MessageFormat.format("Friend with ID {0} is NOT_FOUND", id)));
@@ -145,9 +162,44 @@ public class FriendServiceImpl implements FriendService {
 
 
     public String idByHeaders(String headerToken) throws ParseException {
-        return SignedJWT.parse(headerToken.substring(7)).getPayload().toJSONObject().get("id").toString();
+        return SignedJWT.parse(headerToken.substring(7)).getPayload().toJSONObject().get("sub").toString();
     }
 
+
+    private Integer mutualFriends(List<UUID> uuidFriends, List<UUID> friendsOfFriend) {
+        List<UUID> all = new ArrayList<>();
+        all.addAll(uuidFriends);
+        all.addAll(friendsOfFriend);
+        Set<UUID> set = new HashSet<>(all);
+        return (all.size() - set.size());
+    }
+
+    private List<UUID> uuidFriends(UUID uuidFrom) {
+        List<Friendship> friendships = repository.findFRIENDS(uuidFrom);
+        List<UUID> uuidFriends = new ArrayList<>();
+        friendships.stream().filter(friendship -> friendship.getAccount_id_from().equals(uuidFrom)).forEach(friendship -> uuidFriends.add(friendship.getAccount_id_to()));
+        friendships.stream().filter(friendship -> friendship.getAccount_id_to().equals(uuidFrom)).forEach(friendship -> uuidFriends.add(friendship.getAccount_id_from()));
+        return uuidFriends;
+    }
+
+    private boolean validBirthDate(LocalDate birthDate, LocalDate birthDateFrom, LocalDate birthDateTo) {
+        if (birthDate == null) {
+            return false;
+        }
+        birthDateFrom = birthDateFrom == null ? LocalDate.of(1, 1, 1) : birthDateFrom;
+        birthDateTo = birthDateTo == null ? LocalDate.now() : birthDateTo;
+        return !(birthDate.isBefore(birthDateFrom) || birthDate.isAfter(birthDateTo));
+    }
+
+    private boolean validAge(LocalDate birthDate, Integer ageFrom, Integer ageTo) {
+        if (birthDate == null) {
+            return false;
+        }
+        int age = LocalDate.now().getYear() - birthDate.getYear();
+        ageFrom = ageFrom == null ? 0 : ageFrom;
+        ageTo = ageTo == null ? 1000 : ageTo;
+        return !(age < ageFrom || age > ageTo);
+    }
 
     @PostConstruct
     public void great() {
@@ -165,24 +217,10 @@ public class FriendServiceImpl implements FriendService {
                 .uuid(UUID.randomUUID())
                 .account_id_to(UUID.fromString("b3999ffa-2df9-469e-9793-ee65e214846e"))
                 .account_id_from(UUID.randomUUID())
-                .statusBetween(StatusCode.BLOCKED)
+                .statusBetween(statusCodes[b])
                 .build();
         repository.save(friendship2);
     }
 
- /*   public String emailByHeaders(Map<String, String> headers) throws JsonProcessingException {
-        String token = headers.get("authorization").substring(7);
-        String[] chunks = token.split("\\.");
-        Base64.Decoder decoder = Base64.getUrlDecoder();
-        String header = new String(decoder.decode(chunks[0]));
-        String payload = new String(decoder.decode(chunks[1]));
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readTree(payload).get("email").asText();
-    }
-
-    private AccountDto accountByEmail(String email) {
-        return Optional.ofNullable(accountClient.getAccountBayEmail(email))
-                .orElseThrow(() -> new BusinessLogicException(MessageFormat.format("Friend with email{0} is NOT_FOUND", email)));
-    }*/
 }
 

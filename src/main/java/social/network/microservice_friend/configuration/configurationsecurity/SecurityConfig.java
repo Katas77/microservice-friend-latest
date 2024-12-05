@@ -1,5 +1,6 @@
 package social.network.microservice_friend.configuration.configurationsecurity;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,15 +23,9 @@ import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
     private final RequestHeaderAuthenticationProvider requestHeaderAuthenticationProvider;
-
-
-    @Autowired
-    public SecurityConfig(RequestHeaderAuthenticationProvider requestHeaderAuthenticationProvider) {
-        this.requestHeaderAuthenticationProvider = requestHeaderAuthenticationProvider;
-    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(Customizer.withDefaults()).csrf(AbstractHttpConfigurer::disable)

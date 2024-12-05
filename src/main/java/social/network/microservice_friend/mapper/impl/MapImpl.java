@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import social.network.microservice_friend.dto.AccountDto;
 import social.network.microservice_friend.dto.AllFriendsDto;
+import social.network.microservice_friend.dto.RecommendDto;
 import social.network.microservice_friend.mapper.MapperDTO;
 
 
@@ -23,6 +24,16 @@ public class MapImpl implements MapperDTO {
                 .city(account.getCity())
                 .country(account.getCountry())
                 .birthDate(account.getBirthDate())
+                .build();
+    }
+
+    @Override
+    public RecommendDto convertToRecommend(AccountDto account) {
+        return RecommendDto.builder()
+                .id(account.getId())
+                .firstName(account.getFirstName())
+                .lastName(account.getLastName())
+                .photo(account.getPhoto())
                 .build();
     }
 
