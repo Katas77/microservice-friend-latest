@@ -1,5 +1,6 @@
 
 package social.network.microservice_friend.configuration.configurationsecurity;
+
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +25,8 @@ public class RequestHeaderAuthenticationProvider implements AuthenticationProvid
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String authToken = String.valueOf(authentication.getPrincipal());
-        boolean valid=StringUtils.isBlank(authToken)|| !client.validToken(authToken);
-       log.info("authentication is   ",valid);
-        if (valid) {
+        log.info(authToken);
+        if (StringUtils.isBlank(authToken) || !client.validToken(authToken)) {
             throw new BadCredentialsException("Bad Request invalid or missing token");
         }
         return new PreAuthenticatedAuthenticationToken(authentication.getPrincipal(), null, new ArrayList<>());

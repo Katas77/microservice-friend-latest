@@ -29,11 +29,11 @@ public class FriendServiceImpl implements FriendService {
     private final FriendshipRepository repository;
     private final ClientFeign accountClient;
 
-    @LoggerThrowing
+
     @Override
     public String approve(UUID uuidTo, String headerToken) throws ParseException {
-        UUID uuidFrom = UUID.fromString(idByHeaders(headerToken));
-        Friendship friend = repository.findToAndFrom(uuidTo, uuidFrom).orElseThrow(
+        log.info("approve is call");
+        Friendship friend = repository.findToAndFrom(uuidTo, uuidFrom(headerToken)).orElseThrow(
                 () -> new BusinessLogicException(MessageFormat.format("Friendship with uuidTo{0} is NOT_FOUND", uuidTo)));
         friend.setStatusBetween(StatusCode.FRIEND);
         repository.save(friend);
@@ -42,8 +42,7 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public String block(UUID uuidTo, String headerToken) throws ParseException {
-        UUID uuidFrom = UUID.fromString(idByHeaders(headerToken));
-        Friendship friend = repository.findToAndFrom(uuidTo, uuidFrom).orElseThrow(
+        Friendship friend = repository.findToAndFrom(uuidTo, uuidFrom(headerToken)).orElseThrow(
                 () -> new BusinessLogicException(MessageFormat.format("Friendship with uuidTo{0} is BLOCKED", uuidTo)));
         friend.setStatusBetween(StatusCode.BLOCKED);
         repository.save(friend);
@@ -53,10 +52,10 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public String request(UUID uuidTo, Map<String, String> headers) throws ParseException {
-        UUID uuidFrom = UUID.fromString(idByHeaders(headers.get("authorization")));
+        log.info("request is call");
         Friendship friendshipNew = Friendship.builder()
                 .account_id_to(uuidTo)
-                .account_id_from(uuidFrom)
+                .account_id_from(uuidFrom(headers.get("authorization")))
                 .statusBetween(StatusCode.REQUEST_FROM)
                 .uuid(UUID.randomUUID())
                 .build();
@@ -67,23 +66,30 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public String subscribe(UUID uuidTo, Map<String, String> headers) throws ParseException {
-        UUID uuidFrom = UUID.fromString(idByHeaders(headers.get("authorization")));
-        Friendship friendship = Friendship.builder()
-                .account_id_to(uuidTo)
-                .account_id_from(uuidFrom)
-                .statusBetween(StatusCode.SUBSCRIBED)
-                .uuid(UUID.randomUUID())
-                .build();
-        repository.save(friendship);
+        log.info("SUBSCRIBED is call");
+        Optional<Friendship> friendshipOptional = repository.findToAndFrom(uuidTo, uuidFrom(headers.get("authorization")));
+        if (friendshipOptional.isEmpty()) {
+            Friendship friendship = Friendship.builder()
+                    .account_id_to(uuidTo)
+                    .account_id_from(uuidFrom(headers.get("authorization")))
+                    .statusBetween(StatusCode.SUBSCRIBED)
+                    .uuid(UUID.randomUUID())
+                    .build();
+            repository.save(friendship);
+        } else {
+            Friendship friendship2 = friendshipOptional.get();
+            friendship2.setStatusBetween(StatusCode.SUBSCRIBED);
+            repository.save(friendship2);
+        }
         return MessageFormat.format("Friendship with uuidTo {0} SUBSCRIBED", uuidTo);
     }
 
     @Logger
     @Override
-    public AllFriendsDtoList gettingAllFriends(SearchDto searchDto) {
+    public AllFriendsDtoList gettingAllFriends(String headerToken, SearchDto searchDto) {
         log.info(searchDto.toString());
         List<AccountDto> accountDtoList = new ArrayList<>();
-        searchDto.getIds().forEach(uuid -> accountDtoList.add(accountById(uuid)));
+        searchDto.getIds().forEach(uuid -> accountDtoList.add(accountById(uuid, headerToken)));
         List<AccountDto> filter = accountDtoList.stream()
                 .filter(accountDto -> searchDto.getFirstName() == null | accountDto.getFirstName().equals(searchDto.getFirstName()))
                 .filter(accountDto -> searchDto.getCity() == null | accountDto.getCity().equals(searchDto.getCity()))
@@ -97,21 +103,21 @@ public class FriendServiceImpl implements FriendService {
 
 
     @Override
-    public AccountDto gettingFriendById(UUID accountId) {
-        return accountById(accountId);
+    public AccountDto gettingFriendById(UUID accountId, String headerToken) {
+        return accountById(accountId, headerToken);
     }
 
     @Override
     public RecommendDtoList recommendations(String headerToken) throws ParseException {
-        UUID uuidFrom = UUID.fromString(idByHeaders(headerToken));
+        log.info("recommendations   is  call");
         List<AccountDto> accountDtoList = new ArrayList<>();
-        List<UUID> uuidFriends = uuidFriends(uuidFrom);
+        List<UUID> uuidFriends = uuidFriends(uuidFrom(headerToken));
         for (UUID uuid : uuidFriends) {
             List<UUID> friendsOfFriend = uuidFriends(uuid);
             for (UUID uuid2 : friendsOfFriend) {
                 List<UUID> friendsOfFriend2 = uuidFriends(uuid2);
                 if (mutualFriends(uuidFriends, friendsOfFriend2) >= 2) {
-                    accountDtoList.add(accountById(uuid2));
+                    accountDtoList.add(accountById(uuid2, headerToken));
                 }
             }
         }
@@ -120,20 +126,19 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public UUID[] friendIds(String headerToken) throws ParseException {
-        UUID uuidFrom = UUID.fromString(idByHeaders(headerToken));
-        return uuidFriends(uuidFrom).toArray(new UUID[0]);
+        return uuidFriends(uuidFrom(headerToken)).toArray(new UUID[0]);
     }
 
 
     @Override
     public Integer friendRequestCounter(String headerToken) throws ParseException {
-        UUID uuidFrom = UUID.fromString(idByHeaders(headerToken));
-        return repository.countREQUEST_TO(uuidFrom);
+        log.info("friendRequestCounter    is call");
+        return repository.countREQUEST_TO(uuidFrom(headerToken));
     }
 
     @Override
     public UUID[] blockFriendId(String headerToken) throws ParseException {
-        UUID uuidFrom = UUID.fromString(idByHeaders(headerToken));
+        UUID uuidFrom = uuidFrom(headerToken);
         List<Friendship> friendships = repository.findsBLOCKED(uuidFrom);
         List<UUID> uuids = new ArrayList<>();
         for (Friendship friendship : friendships) {
@@ -146,7 +151,7 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public String dell(UUID uuidTo, String headerToken) throws ParseException {
-        UUID uuidFrom = UUID.fromString(idByHeaders(headerToken));
+        UUID uuidFrom = uuidFrom(headerToken);
         ArrayList<Friendship> friendships = (ArrayList<Friendship>) repository.findAllUudTo(uuidTo);
         Friendship friendship = friendships.stream().filter(friendship1 -> friendship1.getAccount_id_from().equals(uuidFrom)).findFirst().orElseThrow(
                 () -> new BusinessLogicException(MessageFormat.format("Friendship with uuidTo{0} is NOT_FOUND", uuidTo)));
@@ -155,14 +160,14 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @LoggerThrowing
-    private AccountDto accountById(UUID id) {
-        return Optional.ofNullable(accountClient.getAccountById(id))
+    private AccountDto accountById(UUID id, String headerToken) {
+        return Optional.ofNullable(accountClient.getAccountById(id, headerToken))
                 .orElseThrow(() -> new BusinessLogicException(MessageFormat.format("Friend with ID {0} is NOT_FOUND", id)));
     }
 
 
-    public String idByHeaders(String headerToken) throws ParseException {
-        return SignedJWT.parse(headerToken.substring(7)).getPayload().toJSONObject().get("sub").toString();
+    public UUID uuidFrom(String headerToken) throws ParseException {
+        return UUID.fromString(SignedJWT.parse(headerToken.substring(7)).getPayload().toJSONObject().get("sub").toString());
     }
 
 

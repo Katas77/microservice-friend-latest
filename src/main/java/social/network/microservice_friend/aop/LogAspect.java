@@ -6,21 +6,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
-
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 import social.network.microservice_friend.dto.SearchDto;
-
-
 import java.util.UUID;
-
 
 @Aspect
 @Component
 @Slf4j
 @AllArgsConstructor
 public class LogAspect {
-
 
     @AfterThrowing("@annotation(LoggerThrowing)")
     public void account(JoinPoint joinPoint) {

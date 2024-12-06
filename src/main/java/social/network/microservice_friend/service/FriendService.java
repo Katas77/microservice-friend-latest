@@ -15,9 +15,9 @@ public interface FriendService {
 
     String subscribe(UUID uuid, Map<String, String> headers) throws ParseException;
 
-    AllFriendsDtoList gettingAllFriends(SearchDto searchDto);
+    AllFriendsDtoList gettingAllFriends(String headerToken, SearchDto searchDto);
 
-    AccountDto gettingFriendById(UUID uuidAccountId);
+    AccountDto gettingFriendById(UUID uuidAccountId, String headerToken);
 
     RecommendDtoList recommendations(String headerToken) throws ParseException;
 

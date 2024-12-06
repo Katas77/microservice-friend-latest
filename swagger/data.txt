@@ -14,3 +14,29 @@ http://localhost:8082/api/v1/default/size
 
 
 CREATE DATABASE friend_db;
+
+{
+    "id": "4a001ad4-52e8-41d2-8170-c28705c765b5",
+    "email": "eee@ru",
+    "phone": null,
+    "photo": null,
+    "about": null,
+    "city": null,
+    "country": null,
+    "statusCode": null,
+    "firstName": "",
+    "lastName": "",
+    "regDate": "2024-12-04T13:22:32.227782",
+    "birthDate": null,
+    "messagePermission": null,
+    "lastOnlineTime": "2024-12-04T13:22:32.227822",
+    "isOnline": false,
+    "isBlocked": false,
+    "isDeleted": false,
+    "photoId": null,
+    "photoName": null,
+    "role": null,
+    "createdOn": "2024-12-04T13:22:33.531025",
+    "updatedOn": "2024-12-04T13:22:33.531086",
+    "password": null
+}
