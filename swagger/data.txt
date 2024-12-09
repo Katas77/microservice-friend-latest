@@ -40,3 +40,6 @@ CREATE DATABASE friend_db;
     "updatedOn": "2024-12-04T13:22:33.531086",
     "password": null
 }
+
+
+SELECT * FROM friend_schema.friendship WHERE (friendship.account_id_to='b3999ffa-2df9-469e-9793-ee65e214846e' or friendship.account_id_from='b3999ffa-2df9-469e-9793-ee65e214846e') AND (friendship.account_id_to='4a001ad4-52e8-41d2-8170-c28705c765b5' or friendship.account_id_from='4a001ad4-52e8-41d2-8170-c28705c765b5')

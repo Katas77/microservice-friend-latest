@@ -8,7 +8,7 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
-import social.network.microservice_friend.dto.SearchDto;
+
 import java.util.UUID;
 
 @Aspect
@@ -22,30 +22,15 @@ public class LogAspect {
         Object[] objects = joinPoint.getArgs();
         for (Object object : objects) {
             if (object instanceof UUID) {
-                {
-                    log.info("Account with ID {0} is NOT_FOUND", object);
-                }
-                if (object instanceof Exception) {
-                    {
-                        log.info(object.toString());
-                    }
+                {log.info("Account with ID {}  is NOT_FOUND", object);}
             }
-        }
-
     }}
 
     @Before("@annotation(Logger)")
     public void searchDto(JoinPoint joinPoint) {
-        Object[] objects = joinPoint.getArgs();
-        for (Object object : objects) {
-            if (object instanceof SearchDto) {
-                {
-                    log.info(object.toString());
-                }
-            }
-        }
-
+        log.info("Method  {} is    calling", joinPoint.getSignature().getName());
     }
+
 }
 
 
