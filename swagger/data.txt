@@ -13,7 +13,11 @@ http://localhost:8082/api/v1/default/hello
 http://localhost:8082/api/v1/default/size
 
 
-CREATE DATABASE friend_db;
+CREATE DATABASE friend_db
+"id":fa6f76bb-6be7-493e-bbdc-caf03cb7eb6a
+"id":494e2d92-26bb-4524-aaeb-46308a412b2a
+
+
 
 {
     "id": "4a001ad4-52e8-41d2-8170-c28705c765b5",
@@ -43,3 +47,27 @@ CREATE DATABASE friend_db;
 
 
 SELECT * FROM friend_schema.friendship WHERE (friendship.account_id_to='b3999ffa-2df9-469e-9793-ee65e214846e' or friendship.account_id_from='b3999ffa-2df9-469e-9793-ee65e214846e') AND (friendship.account_id_to='4a001ad4-52e8-41d2-8170-c28705c765b5' or friendship.account_id_from='4a001ad4-52e8-41d2-8170-c28705c765b5')
+
+
+/*
+    @PostConstruct
+    public void great() {
+        Random random = new Random();
+       int b = random.nextInt(0, 3);
+        StatusCode[] statusCodes = {StatusCode.FRIEND, StatusCode.BLOCKED, StatusCode.REQUEST_TO, StatusCode.SUBSCRIBED};
+        Friendship friendship = Friendship.builder()
+                .uuid(UUID.randomUUID())
+                .account_id_to(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))
+                .account_id_from(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a"))
+                .statusBetween(StatusCode.REQUEST_FROM)
+                .build();
+        repository.save(friendship);
+        Friendship friendship2 = Friendship.builder()
+                .uuid(UUID.randomUUID())
+                .account_id_to(UUID.fromString("fa6f76bb-6be7-493e-bbdc-caf03cb7eb6a"))
+                .account_id_from(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))
+                .statusBetween(StatusCode.FRIEND)
+                .build();
+        repository.save(friendship2);
+
+    }*/

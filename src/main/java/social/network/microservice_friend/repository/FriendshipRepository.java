@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface FriendshipRepository extends JpaRepository<Friendship, UUID> {
 
 
-    @Query(value = "SELECT COUNT(*) FROM friend_schema.friendship WHERE (friendship.account_id_to=?1 or friendship.account_id_from=?1) AND friendship.status_between='REQUEST_FROM'", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM friend_schema.friendship WHERE (friendship.account_id_to=?1 or friendship.account_id_from=?1) AND (friendship.status_between='REQUEST_TO'or friendship.status_between='REQUEST_FROM')", nativeQuery = true)
     Integer countREQUEST_TO(UUID uuidFrom);
 
     @Query(value = "SELECT * FROM friend_schema.friendship WHERE (friendship.account_id_to=?1 or friendship.account_id_from=?1) AND (friendship.account_id_to=?2 or friendship.account_id_from=?2)", nativeQuery = true)

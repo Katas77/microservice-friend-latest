@@ -31,7 +31,7 @@ public class FriendServiceImpl implements FriendService {
 
 @Logger
     @Override
-    public String approve(UUID uuidTo, String headerToken) throws ParseException {
+    public String approveService(UUID uuidTo, String headerToken) throws ParseException {
         Friendship friend = repository.findToAndFrom(uuidTo, uuidFrom(headerToken)).orElseThrow(
                 () -> new BusinessLogicException(MessageFormat.format("Friendship with uuidTo{0} is NOT_FOUND", uuidTo)));
         friend.setStatusBetween(StatusCode.FRIEND);
@@ -100,7 +100,7 @@ public class FriendServiceImpl implements FriendService {
 
     @Logger
     @Override
-    public AllFriendsDtoList gettingAllFriends(String headerToken, SearchDto searchDto) {
+    public AllFriendsDtoList gettingAllFriendsService(String headerToken, SearchDto searchDto) {
         log.info(searchDto.toString());
         List<AccountDto> accountDtoList = new ArrayList<>();
         searchDto.getIds().forEach(uuid -> accountDtoList.add(accountById(uuid, headerToken)));
@@ -117,13 +117,13 @@ public class FriendServiceImpl implements FriendService {
 
     @Logger
     @Override
-    public AccountDto gettingFriendById(UUID accountId, String headerToken) {
+    public AccountDto gettingFriendByIdService(UUID accountId, String headerToken) {
         return accountById(accountId, headerToken);
     }
     @Logger
     @Override
-    public RecommendDtoList recommendations(String headerToken) throws ParseException {
-        List<AccountDto> accountDtoList = new ArrayList<>();
+    public RecommendDtoList recommendationsService(String headerToken) throws ParseException {
+       List<AccountDto> accountDtoList = new ArrayList<>();
         List<UUID> uuidFriends = uuidFriends(uuidFrom(headerToken));
         for (UUID uuid : uuidFriends) {
             List<UUID> friendsOfFriend = uuidFriends(uuid);
@@ -134,12 +134,13 @@ public class FriendServiceImpl implements FriendService {
                 }
             }
         }
+        accountDtoList.add(accountById(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"),headerToken));
         return mapper.accountsListToRecommends(accountDtoList);
     }
     @Logger
     @Override
-    public UUID[] friendIds(String headerToken) throws ParseException {
-        return uuidFriends(uuidFrom(headerToken)).toArray(new UUID[0]);
+    public List <UUID>friendIds(String headerToken) throws ParseException {
+        return uuidFriends(uuidFrom(headerToken));
     }
 
     @Logger
@@ -149,7 +150,7 @@ public class FriendServiceImpl implements FriendService {
     }
     @Logger
     @Override
-    public UUID[] blockFriendId(String headerToken) throws ParseException {
+    public List< UUID> blockFriendId(String headerToken) throws ParseException {
         UUID uuidFrom = uuidFrom(headerToken);
         List<Friendship> friendships = repository.findsBLOCKED(uuidFrom);
         List<UUID> uuids = new ArrayList<>();
@@ -158,7 +159,7 @@ public class FriendServiceImpl implements FriendService {
                 uuids.add(friendship.getAccount_id_to());
             } else uuids.add(friendship.getAccount_id_from());
         }
-        return uuids.toArray(new UUID[0]);
+        return uuids;
     }
     @Logger
     @Override
@@ -216,27 +217,6 @@ public class FriendServiceImpl implements FriendService {
         return !(age < ageFrom || age > ageTo);
     }
 
-    @PostConstruct
-    public void great() {
-        Random random = new Random();
-        int b = random.nextInt(0, 3);
-        StatusCode[] statusCodes = {StatusCode.FRIEND, StatusCode.BLOCKED, StatusCode.REQUEST_TO, StatusCode.SUBSCRIBED};
-        Friendship friendship = Friendship.builder()
-                .uuid(UUID.randomUUID())
-                .account_id_to(UUID.randomUUID())
-                .account_id_from(UUID.randomUUID())
-                .statusBetween(statusCodes[b])
-                .build();
-        repository.save(friendship);
-        Friendship friendship2 = Friendship.builder()
-                .uuid(UUID.randomUUID())
-                .account_id_to(UUID.randomUUID())
-                .account_id_from(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))
-                .statusBetween(StatusCode.REQUEST_FROM)
-                .build();
-        repository.save(friendship2);
-
-    }
 
 }
 
