@@ -23,7 +23,7 @@ public interface FriendshipRepository extends JpaRepository<Friendship, UUID> {
     List<Friendship> findFRIENDS(UUID uuidFrom);
 
     @Query(value = "SELECT * FROM friend_schema.friendship WHERE friendship.status_between='BLOCKED' AND (friendship.account_id_to=?1 or friendship.account_id_from=?1)", nativeQuery = true)
-    List<Friendship>  findsBLOCKED( UUID uuidFrom);
+    List<Friendship> findsBLOCKED(UUID uuidFrom);
 
 
 }

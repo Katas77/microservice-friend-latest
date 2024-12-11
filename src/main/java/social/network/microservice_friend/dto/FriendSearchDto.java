@@ -8,15 +8,15 @@ import social.network.microservice_friend.dto.en.AccountStatus;
 
 
 import java.time.LocalDate;
-import java.util.List;
+
 import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SearchDto {
-    private List <UUID> ids;
+public class FriendSearchDto {
+    private UUID [] ids;
     private String firstName;
     private LocalDate birthDateFrom;
     private LocalDate birthDateTo;

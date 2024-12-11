@@ -25,7 +25,6 @@ public class RequestHeaderAuthenticationProvider implements AuthenticationProvid
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String authToken = String.valueOf(authentication.getPrincipal());
-        log.info(authToken);
         if (StringUtils.isBlank(authToken) || !client.validToken(authToken)) {
             throw new BadCredentialsException("Bad Request invalid or missing token");
         }

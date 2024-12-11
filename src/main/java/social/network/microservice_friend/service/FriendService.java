@@ -16,17 +16,17 @@ public interface FriendService {
 
     String subscribe(UUID uuid, Map<String, String> headers) throws ParseException;
 
-    AllFriendsDtoList gettingAllFriendsService(String headerToken, SearchDto searchDto);
+    List<AllFriendsDto> gettingAllFriendsService(String headerToken, FriendSearchDto friendSearchDto);
 
     AccountDto gettingFriendByIdService(UUID uuidAccountId, String headerToken);
 
-    RecommendDtoList recommendationsService(String headerToken) throws ParseException;
+    List<RecommendDto> recommendationsService(String headerToken) throws ParseException;
 
-  List<UUID> friendIds(String headerToken) throws ParseException;
+    UUID[] friendIds(String headerToken) throws ParseException;
 
     Integer friendRequestCounter(String headerToken) throws ParseException;
 
-   List <UUID> blockFriendId(String headerToken) throws ParseException;
+    UUID[] blockFriendId(String headerToken) throws ParseException;
 
     String dell(UUID uuid, String headerToken) throws ParseException;
 

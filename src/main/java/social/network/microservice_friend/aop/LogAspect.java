@@ -29,9 +29,9 @@ public class LogAspect {
 
     @Before("@annotation(Logger)")
     public void searchDto(JoinPoint joinPoint) {
-        log.info("            Method  {} is    calling", joinPoint.getSignature().getName());
+        log.info("Method  {} is    calling", joinPoint.getSignature().getName());
         Object[] objects = joinPoint.getArgs();
-        Arrays.stream(objects).forEach(o -> System.out.println(o.toString()));
+        Arrays.stream(objects).forEach(o -> System.out.println(o.toString()+"  joinPoint "));
     }
 
 }
