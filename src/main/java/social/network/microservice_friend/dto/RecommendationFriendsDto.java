@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-public class RecommendDto {
+public class RecommendationFriendsDto {
     private UUID id;
     private String photo;
     private String firstName;

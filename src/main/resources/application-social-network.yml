@@ -1,4 +1,18 @@
 spring:
+  kafka:
+    properties:
+      spring:
+        json:
+          trusted:
+            packages: '*'
+    bootstrap-servers: 194.67.88.81:9092
+    consumer:
+      group-id: "order-1"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  topic: { send-order: notifications-topic, status-order: account-events-topic }
+
   jpa:
     hibernate:
       ddl-auto: none

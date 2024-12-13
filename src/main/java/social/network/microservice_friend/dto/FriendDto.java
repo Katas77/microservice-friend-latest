@@ -10,7 +10,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @ToString
-public class AllFriendsDto {
+public class FriendDto {
     private UUID id;
     private String photo;
     private AccountStatus statusCode;
@@ -21,3 +21,7 @@ public class AllFriendsDto {
     private LocalDate birthDate;
     private Boolean isOnline;
 }
+
+
+
+

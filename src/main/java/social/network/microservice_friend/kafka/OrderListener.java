@@ -1,24 +1,27 @@
+/*
+
 
 package social.network.microservice_friend.kafka;
 
 
-/*
-
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
 public class OrderListener {
-    private final UserRepository repository;
 
-    @KafkaListener(id = "foo", topics = "${topic.post-server}")
+    @KafkaListener(id = "foo", topics = "${spring.topic.status-order}")
     public void receive(@Payload String data) {
-        Account user=new Account();//
-        repository.save(user);
-        log.info("save user: {}", data);
-
+        log.info("KafkaListener: {}", data);
     }
 
 }
 
+
 */
+

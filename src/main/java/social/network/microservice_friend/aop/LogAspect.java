@@ -1,6 +1,5 @@
 
 package social.network.microservice_friend.aop;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -31,7 +30,7 @@ public class LogAspect {
     public void searchDto(JoinPoint joinPoint) {
         log.info("Method  {} is    calling", joinPoint.getSignature().getName());
         Object[] objects = joinPoint.getArgs();
-        Arrays.stream(objects).forEach(o -> System.out.println(o.toString()+"  joinPoint "));
+        Arrays.stream(objects).filter(o -> !o.toString().startsWith("Bearer")).forEach(o -> System.out.println(o.toString()+"     -  parameters" ));
     }
 
 }

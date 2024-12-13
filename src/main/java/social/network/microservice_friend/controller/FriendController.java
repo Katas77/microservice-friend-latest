@@ -1,13 +1,15 @@
 package social.network.microservice_friend.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import social.network.microservice_friend.aop.Logger;
 import social.network.microservice_friend.dto.*;
-import social.network.microservice_friend.service.FriendService;
+import social.network.microservice_friend.dto.responsF.FriendsRs;
+import social.network.microservice_friend.dto.responsF.RecommendationFriendsRs;
+import social.network.microservice_friend.service.FriendServiceOne;
+import social.network.microservice_friend.service.FriendServiceTwo;
 
 import java.text.ParseException;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -15,8 +17,8 @@ import java.util.UUID;
 @RequestMapping("/api/v1/friends")
 @RequiredArgsConstructor
 public class FriendController {
-    private final FriendService friendService;
-
+    private final FriendServiceOne friendService;
+    private final FriendServiceTwo friendService2;
 
     @PutMapping("/{uuid}/approve")
     public String approve(@PathVariable UUID uuid, @RequestHeader("authorization") String headerToken) throws ParseException {
@@ -41,13 +43,13 @@ public class FriendController {
 
     @GetMapping("/{accountId}")
     public AccountDto getFriendById(@PathVariable UUID accountId, @RequestHeader("authorization") String headerToken) {
-        return friendService.gettingFriendByIdService(accountId, headerToken);
+        return friendService2.gettingFriendByIdService(accountId, headerToken);
     }
 
-    @Logger
+
     @GetMapping("/recommendations")
-    public List<RecommendDto> recommendations(@RequestHeader("authorization") String headerToken) throws ParseException {
-        return friendService.recommendationsService(headerToken);
+    public RecommendationFriendsRs recommendations(@RequestHeader("authorization") String headerToken,  Pageable pageable) throws ParseException {
+        return friendService2.recommendationsService(headerToken, pageable);
     }
 
 
@@ -68,16 +70,18 @@ public class FriendController {
         return friendService.blockFriendId(headerToken);
     }
 
-    @Logger
+
     @DeleteMapping("/{uuid}")
     public String dell(@PathVariable UUID uuid, @RequestHeader("authorization") String headerToken) throws ParseException {
         return friendService.dell(uuid, headerToken);
     }
 
-    @Logger
+
     @GetMapping()
-    public List<AllFriendsDto> gettingAllFriends(@ModelAttribute("friendSearchDto") FriendSearchDto friendSearchDto, @RequestHeader("authorization") String headerToken) {
-        return friendService.gettingAllFriendsService(headerToken, friendSearchDto);
+    public FriendsRs gettingAllFriends(@ModelAttribute("friendSearchDto") FriendSearchDto friendSearchDto, @RequestHeader("authorization") String headerToken, Pageable pageable) {
+     FriendsRs friendsRs=friendService2.gettingAllFriendsService(headerToken, friendSearchDto,pageable);
+        System.out.println(friendsRs.toString());
+        return friendsRs;
     }
 
 /*    @Logger

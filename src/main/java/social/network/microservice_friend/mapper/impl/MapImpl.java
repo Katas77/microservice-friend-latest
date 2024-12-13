@@ -4,8 +4,8 @@ package social.network.microservice_friend.mapper.impl;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import social.network.microservice_friend.dto.AccountDto;
-import social.network.microservice_friend.dto.AllFriendsDto;
-import social.network.microservice_friend.dto.RecommendDto;
+import social.network.microservice_friend.dto.FriendDto;
+import social.network.microservice_friend.dto.RecommendationFriendsDto;
 import social.network.microservice_friend.mapper.MapperDTO;
 
 
@@ -13,8 +13,8 @@ import social.network.microservice_friend.mapper.MapperDTO;
 @Primary
 public class MapImpl implements MapperDTO {
     @Override
-    public AllFriendsDto convertToAllFriend(AccountDto account) {
-        return AllFriendsDto.builder()
+    public FriendDto convertToFriendDto(AccountDto account) {
+        return FriendDto.builder()
                 .id(account.getId())
                 .photo(account.getPhoto())
                 .statusCode(account.getStatusCode())
@@ -28,8 +28,8 @@ public class MapImpl implements MapperDTO {
     }
 
     @Override
-    public RecommendDto convertToRecommend(AccountDto account) {
-        return RecommendDto.builder()
+    public RecommendationFriendsDto convertToRecommend(AccountDto account) {
+        return RecommendationFriendsDto.builder()
                 .id(account.getId())
                 .firstName(account.getFirstName())
                 .lastName(account.getLastName())
