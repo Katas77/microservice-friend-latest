@@ -11,7 +11,7 @@ import java.util.UUID;
 @Builder
 @ToString
 public class FriendDto {
-    private UUID id;
+    private UUID friendId;
     private String photo;
     private AccountStatus statusCode;
     private String firstName;

@@ -15,7 +15,7 @@ public class MapImpl implements MapperDTO {
     @Override
     public FriendDto convertToFriendDto(AccountDto account) {
         return FriendDto.builder()
-                .id(account.getId())
+                .friendId(account.getId())
                 .photo(account.getPhoto())
                 .statusCode(account.getStatusCode())
                 .firstName(account.getFirstName())

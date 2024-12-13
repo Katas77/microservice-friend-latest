@@ -14,6 +14,7 @@ import social.network.microservice_friend.dto.AccountDto;
 import social.network.microservice_friend.dto.FriendDto;
 import social.network.microservice_friend.dto.FriendSearchDto;
 import social.network.microservice_friend.dto.RecommendationFriendsDto;
+import social.network.microservice_friend.dto.en.AccountStatus;
 import social.network.microservice_friend.dto.responsF.FriendsRs;
 import social.network.microservice_friend.dto.responsF.RecommendationFriendsRs;
 import social.network.microservice_friend.exception.BusinessLogicException;
@@ -161,9 +162,15 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
 
     private List<AccountDto> defaultAccountDto(String headerToken) {
         List<AccountDto> filter = new ArrayList<>();
-        filter.add(accountById(UUID.fromString("0bc856ad-b35a-4b19-8969-4cc848fc5198"), headerToken));
-        filter.add(accountById(UUID.fromString("02f18c32-33a5-4b6c-811d-bc33ffc45312"), headerToken));
-        filter.add(accountById(UUID.fromString("2636f06b-764c-4c66-87ce-3d2a090d9897"), headerToken));
+        AccountDto accountDto1=accountById(UUID.fromString("0bc856ad-b35a-4b19-8969-4cc848fc5198"), headerToken);
+        AccountDto accountDto2=accountById(UUID.fromString("02f18c32-33a5-4b6c-811d-bc33ffc45312"), headerToken);
+        AccountDto accountDto3=accountById(UUID.fromString("2636f06b-764c-4c66-87ce-3d2a090d9897"), headerToken);
+        accountDto2.setStatusCode(AccountStatus.REQUEST_FROM);
+        accountDto3.setStatusCode(AccountStatus.REQUEST_FROM);
+        accountDto1.setStatusCode(AccountStatus.REQUEST_FROM);
+        filter.add(accountDto1);
+        filter.add(accountDto2);
+        filter.add(accountDto3);
         return filter;
     }
 
