@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import social.network.microservice_friend.dto.en.AccountStatus;
+import social.network.microservice_friend.model.en.StatusCode;
 
 
 import java.time.LocalDate;
@@ -24,6 +24,6 @@ public class FriendSearchDto {
     private String country;
     private Integer ageTo;
     private Integer ageFrom;
-    private AccountStatus statusCode;
+    private StatusCode statusCode;
 
 }

@@ -17,7 +17,6 @@ public class MapImpl implements MapperDTO {
         return FriendDto.builder()
                 .friendId(account.getId())
                 .photo(account.getPhoto())
-                .statusCode(account.getStatusCode())
                 .firstName(account.getFirstName())
                 .lastName(account.getLastName())
                 .isOnline(account.getIsOnline())
@@ -30,7 +29,7 @@ public class MapImpl implements MapperDTO {
     @Override
     public RecommendationFriendsDto convertToRecommend(AccountDto account) {
         return RecommendationFriendsDto.builder()
-                .id(account.getId())
+                .friendId(account.getId())
                 .firstName(account.getFirstName())
                 .lastName(account.getLastName())
                 .photo(account.getPhoto())

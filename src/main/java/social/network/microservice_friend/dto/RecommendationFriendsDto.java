@@ -12,7 +12,7 @@ import java.util.UUID;
 @Setter
 @Builder
 public class RecommendationFriendsDto {
-    private UUID id;
+    private UUID friendId;
     private String photo;
     private String firstName;
     private String lastName;
