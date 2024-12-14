@@ -20,6 +20,7 @@ import social.network.microservice_friend.dto.responsF.RecommendationFriendsRs;
 import social.network.microservice_friend.exception.BusinessLogicException;
 import social.network.microservice_friend.mapper.MapperDTO;
 import social.network.microservice_friend.model.Friendship;
+import social.network.microservice_friend.model.en.StatusCode;
 import social.network.microservice_friend.repository.FriendshipRepository;
 import social.network.microservice_friend.service.FriendServiceTwo;
 
@@ -38,27 +39,28 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
 
     @Logger
     @Override
-    public FriendsRs gettingAllFriendsService(String headerToken, FriendSearchDto friendSearchDto, Pageable pageable) {
+    public FriendsRs gettingAllFriendsService(String headerToken, FriendSearchDto friendSearchDto, Pageable pageable) throws ParseException {
         log.info(friendSearchDto.toString());
-        if (friendSearchDto.getIds() == null) {
-            List<FriendDto> friendDtoList = mapper.accountsListToFriendDtoList(defaultAccountDto(headerToken));
-            Page<FriendDto> friendPage = convertListToPage(friendDtoList, pageable);
-            return FriendsRs.builder()
-                    .content(friendPage.getContent())
-                    .totalElements(friendPage.getTotalElements())
-                    .totalPages(friendPage.getTotalPages())
-                    .build();
-        } else {
-            List<AccountDto> filter2 = search1(friendSearchDto, headerToken);
-            List<FriendDto> list2 = mapper.accountsListToFriendDtoList(filter2);
-            Page<FriendDto> friendPage2 = convertListToPage(list2, pageable);
-            return FriendsRs.builder()
-                    .content(friendPage2.getContent())
-                    .totalElements(friendPage2.getTotalElements())
-                    .totalPages(friendPage2.getTotalPages())
-                    .build();
-
+        if (friendSearchDto.getStatusCode() == null) {
+            return new FriendsRs();
         }
+        if (friendSearchDto.getIds() == null&!friendSearchDto.getStatusCode().equals(StatusCode.FRIEND)) {
+            String statusCode = String.valueOf(friendSearchDto.getStatusCode());
+            friendSearchDto.setIds(repository.findIdStatus_between(statusCode, uuidFrom(headerToken)));
+        }
+        if (friendSearchDto.getIds() == null&friendSearchDto.getStatusCode().equals(StatusCode.FRIEND)) {
+            friendSearchDto.setIds(uuidFriends(uuidFrom(headerToken)));
+        }
+        List<AccountDto> filter2 = search1(friendSearchDto, headerToken);
+        List<FriendDto> friendDtoList = mapper.accountsListToFriendDtoList(filter2, friendSearchDto.getStatusCode());
+        Page<FriendDto> friendPage2 = convertListToPage(friendDtoList, pageable);
+        return FriendsRs.builder()
+                .content(friendPage2.getContent())
+                .totalElements(friendPage2.getTotalElements())
+                .totalPages(friendPage2.getTotalPages())
+                .build();
+
+
     }
 
     @Logger
@@ -98,11 +100,21 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         return Optional.ofNullable(accountClient.getAccountById(id, headerToken))
                 .orElseThrow(() -> new BusinessLogicException(MessageFormat.format("Friend with ID {0} is NOT_FOUND", id)));
     }
-
+    private List<AccountDto> search1(FriendSearchDto friendSearchDto, String headerToken) {
+        List<AccountDto> accountDtoList = new ArrayList<>();
+        friendSearchDto.getIds().forEach(uuid -> accountDtoList.add(accountById(uuid, headerToken)));
+        return accountDtoList.stream()
+                .filter(accountDto -> friendSearchDto.getFirstName() == null || accountDto.getFirstName().equals(friendSearchDto.getFirstName()))
+                .filter(accountDto -> friendSearchDto.getCity() == null || accountDto.getCity().equals(friendSearchDto.getCity()))
+                .filter(accountDto -> friendSearchDto.getCountry() == null || accountDto.getCountry().equals(friendSearchDto.getCountry()))
+                .filter(accountDto -> validBirthDate(accountDto.getBirthDate(), friendSearchDto.getBirthDateFrom(), friendSearchDto.getBirthDateTo()))
+                .filter(accountDto -> validAge(accountDto.getBirthDate(), friendSearchDto.getAgeFrom(), friendSearchDto.getAgeTo()))
+                .toList();
+    }
 
     private boolean validBirthDate(LocalDate birthDate, LocalDate birthDateFrom, LocalDate birthDateTo) {
         if (birthDate == null) {
-            return false;
+            return true;
         }
                 birthDateFrom = birthDateFrom == null ? LocalDate.of(1, 1, 1) : birthDateFrom;
         birthDateTo = birthDateTo == null ? LocalDate.now() : birthDateTo;
@@ -111,7 +123,7 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
 
     private boolean validAge(LocalDate birthDate, Integer ageFrom, Integer ageTo) {
         if (birthDate == null) {
-            return false;
+            return true;
         }
         int age = LocalDate.now().getYear() - birthDate.getYear();
         ageFrom = ageFrom == null ? 0 : ageFrom;
@@ -147,18 +159,7 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         return uuidFriends;
     }
 
-    private List<AccountDto> search1(FriendSearchDto friendSearchDto, String headerToken) {
-        List<AccountDto> accountDtoList = new ArrayList<>();
-        Arrays.stream(friendSearchDto.getIds()).forEach(uuid -> accountDtoList.add(accountById(uuid, headerToken)));
-        return accountDtoList.stream()
-                .filter(accountDto -> friendSearchDto.getFirstName() == null | accountDto.getFirstName().equals(friendSearchDto.getFirstName()))
-                .filter(accountDto -> friendSearchDto.getCity() == null | accountDto.getCity().equals(friendSearchDto.getCity()))
-                .filter(accountDto -> friendSearchDto.getCountry() == null | accountDto.getCountry().equals(friendSearchDto.getCountry()))
-                .filter(accountDto -> friendSearchDto.getStatusCode() == null | accountDto.getStatusCode().equals(friendSearchDto.getStatusCode()))
-                .filter(accountDto -> validBirthDate(accountDto.getBirthDate(), friendSearchDto.getBirthDateFrom(), friendSearchDto.getBirthDateTo()))
-                .filter(accountDto -> validAge(accountDto.getBirthDate(), friendSearchDto.getAgeFrom(), friendSearchDto.getAgeTo()))
-                .toList();
-    }
+
 
     private List<AccountDto> defaultAccountDto(String headerToken) {
         List<AccountDto> filter = new ArrayList<>();

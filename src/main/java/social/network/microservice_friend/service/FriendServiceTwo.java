@@ -9,7 +9,7 @@ import java.text.ParseException;
 import java.util.UUID;
 
 public interface FriendServiceTwo {
-    FriendsRs gettingAllFriendsService(String headerToken, FriendSearchDto friendSearchDto,Pageable pageable);
+    FriendsRs gettingAllFriendsService(String headerToken, FriendSearchDto friendSearchDto,Pageable pageable) throws ParseException;
 
     AccountDto gettingFriendByIdService(UUID uuidAccountId, String headerToken);
 

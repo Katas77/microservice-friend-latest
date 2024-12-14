@@ -106,7 +106,7 @@ public class FriendServiceOneImpl implements FriendServiceOne {
     @Logger
     @Override
     public Integer friendRequestCounter(String headerToken) throws ParseException {
-        return repository.countREQUEST_TO(uuidFrom(headerToken));
+        return repository.countREQUEST_FROM(uuidFrom(headerToken));
     }
 
     @Logger

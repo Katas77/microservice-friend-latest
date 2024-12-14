@@ -78,7 +78,7 @@ public class FriendController {
 
 
     @GetMapping()
-    public FriendsRs gettingAllFriends(@ModelAttribute("friendSearchDto") FriendSearchDto friendSearchDto, @RequestHeader("authorization") String headerToken, Pageable pageable) {
+    public FriendsRs gettingAllFriends(@ModelAttribute("friendSearchDto") FriendSearchDto friendSearchDto, @RequestHeader("authorization") String headerToken, Pageable pageable) throws ParseException {
      FriendsRs friendsRs=friendService2.gettingAllFriendsService(headerToken, friendSearchDto,pageable);
         System.out.println(friendsRs.toString());
         return friendsRs;
