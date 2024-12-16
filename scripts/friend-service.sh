@@ -1,8 +1,3 @@
 echo "Starting friend-service..."
-
-docker run -d \
---name friend2 \
---network social-network-net \
---restart always \
- rmi romakat77/microservice-friend:latest
-echo "Post-service running..."
+docker run --name friend2 -p 8087:8087 romakat77/microservice-friend:latest
+echo "friend-service running..."
