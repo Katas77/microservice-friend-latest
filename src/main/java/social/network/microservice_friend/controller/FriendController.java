@@ -10,6 +10,7 @@ import social.network.microservice_friend.service.FriendServiceOne;
 import social.network.microservice_friend.service.FriendServiceTwo;
 
 import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -54,7 +55,7 @@ public class FriendController {
 
 
     @GetMapping("/friendId")
-    public UUID[] friendId(@RequestHeader("authorization") String headerToken) throws ParseException {
+    public List<UUID> friendId(@RequestHeader("authorization") String headerToken) throws ParseException {
         return friendService.friendIds(headerToken);
     }
 
@@ -66,7 +67,7 @@ public class FriendController {
 
 
     @GetMapping("/blockFriendId")
-    public UUID[] blockFriendId(@RequestHeader("authorization") String headerToken) throws ParseException {
+    public List<UUID>  blockFriendId(@RequestHeader("authorization") String headerToken) throws ParseException {
         return friendService.blockFriendId(headerToken);
     }
 

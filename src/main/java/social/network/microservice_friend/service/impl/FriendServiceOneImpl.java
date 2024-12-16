@@ -99,8 +99,8 @@ public class FriendServiceOneImpl implements FriendServiceOne {
 
     @Logger
     @Override
-    public UUID[] friendIds(String headerToken) throws ParseException {
-        return uuidFriends(uuidFrom(headerToken)).toArray(new UUID[0]);
+    public List<UUID>  friendIds(String headerToken) throws ParseException {
+        return uuidFriends(uuidFrom(headerToken));
     }
 
     @Logger
@@ -111,7 +111,7 @@ public class FriendServiceOneImpl implements FriendServiceOne {
 
     @Logger
     @Override
-    public UUID[] blockFriendId(String headerToken) throws ParseException {
+    public List<UUID>  blockFriendId(String headerToken) throws ParseException {
         UUID uuidFrom = uuidFrom(headerToken);
         List<Friendship> friendships = repository.findsBLOCKED(uuidFrom);
         List<UUID> uuids = new ArrayList<>();
@@ -120,7 +120,7 @@ public class FriendServiceOneImpl implements FriendServiceOne {
                 uuids.add(friendship.getAccount_id_to());
             } else uuids.add(friendship.getAccount_id_from());
         }
-        return uuids.toArray(new UUID[0]);
+        return uuids;
     }
 
     @Logger

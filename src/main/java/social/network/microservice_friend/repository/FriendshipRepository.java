@@ -4,7 +4,6 @@ package social.network.microservice_friend.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import social.network.microservice_friend.model.Friendship;
-import social.network.microservice_friend.model.en.StatusCode;
 
 
 import java.util.List;
@@ -24,8 +23,11 @@ public interface FriendshipRepository extends JpaRepository<Friendship, UUID> {
 
     @Query(value = "SELECT * FROM friend_schema.friendship WHERE friendship.status_between='BLOCKED' AND (friendship.account_id_to=?1 or friendship.account_id_from=?1)", nativeQuery = true)
     List<Friendship> findsBLOCKED(UUID uuidFrom);
-    @Query(value = "SELECT friendship.account_id_from FROM friend_schema.friendship WHERE friendship.status_between=?1 AND friendship.account_id_to=?2", nativeQuery = true)
-    List <UUID> findIdStatus_between(String statusBetween, UUID headerUUID);
 
+    @Query(value = "SELECT friendship.account_id_from FROM friend_schema.friendship WHERE friendship.status_between=?1 AND friendship.account_id_to=?2", nativeQuery = true)
+    List<UUID> findIdStatusREQUEST_FROM(String statusBetween, UUID headerUUID);
+
+    @Query(value = "SELECT friendship.account_id_from FROM friend_schema.friendship WHERE friendship.status_between='SUBSCRIBED' AND friendship.account_id_from=?1", nativeQuery = true)
+    List<UUID> findIdStatus_SUBSCRIBED(UUID headerUUID);
 
 }

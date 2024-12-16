@@ -22,6 +22,7 @@ import social.network.microservice_friend.mapper.MapperDTO;
 import social.network.microservice_friend.model.Friendship;
 import social.network.microservice_friend.model.en.StatusCode;
 import social.network.microservice_friend.repository.FriendshipRepository;
+import social.network.microservice_friend.service.FriendServiceOne;
 import social.network.microservice_friend.service.FriendServiceTwo;
 
 import java.text.MessageFormat;
@@ -36,6 +37,7 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
     private final MapperDTO mapper;
     private final FriendshipRepository repository;
     private final ClientFeign accountClient;
+    private final FriendServiceOne friendServiceOne;
 
     @Logger
     @Override
@@ -44,13 +46,20 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         if (friendSearchDto.getStatusCode() == null) {
             return new FriendsRs();
         }
-        if (friendSearchDto.getIds() == null&!friendSearchDto.getStatusCode().equals(StatusCode.FRIEND)) {
+        if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.REQUEST_FROM)) {
             String statusCode = String.valueOf(friendSearchDto.getStatusCode());
-            friendSearchDto.setIds(repository.findIdStatus_between(statusCode, uuidFrom(headerToken)));
+            friendSearchDto.setIds(repository.findIdStatusREQUEST_FROM(statusCode, uuidFrom(headerToken)));
         }
-        if (friendSearchDto.getIds() == null&friendSearchDto.getStatusCode().equals(StatusCode.FRIEND)) {
+        if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.SUBSCRIBED)) {
+            friendSearchDto.setIds(repository.findIdStatus_SUBSCRIBED(uuidFrom(headerToken)));
+        }
+        if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.BLOCKED)) {
+            friendSearchDto.setIds(friendServiceOne.blockFriendId(headerToken));
+        }
+        if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.FRIEND)) {
             friendSearchDto.setIds(uuidFriends(uuidFrom(headerToken)));
         }
+
         List<AccountDto> filter2 = search1(friendSearchDto, headerToken);
         List<FriendDto> friendDtoList = mapper.accountsListToFriendDtoList(filter2, friendSearchDto.getStatusCode());
         Page<FriendDto> friendPage2 = convertListToPage(friendDtoList, pageable);
@@ -100,6 +109,7 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         return Optional.ofNullable(accountClient.getAccountById(id, headerToken))
                 .orElseThrow(() -> new BusinessLogicException(MessageFormat.format("Friend with ID {0} is NOT_FOUND", id)));
     }
+
     private List<AccountDto> search1(FriendSearchDto friendSearchDto, String headerToken) {
         List<AccountDto> accountDtoList = new ArrayList<>();
         friendSearchDto.getIds().forEach(uuid -> accountDtoList.add(accountById(uuid, headerToken)));
@@ -116,7 +126,7 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         if (birthDate == null) {
             return true;
         }
-                birthDateFrom = birthDateFrom == null ? LocalDate.of(1, 1, 1) : birthDateFrom;
+        birthDateFrom = birthDateFrom == null ? LocalDate.of(1, 1, 1) : birthDateFrom;
         birthDateTo = birthDateTo == null ? LocalDate.now() : birthDateTo;
         return !(birthDate.isBefore(birthDateFrom) || birthDate.isAfter(birthDateTo));
     }
@@ -160,12 +170,11 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
     }
 
 
-
     private List<AccountDto> defaultAccountDto(String headerToken) {
         List<AccountDto> filter = new ArrayList<>();
-        AccountDto accountDto1=accountById(UUID.fromString("0bc856ad-b35a-4b19-8969-4cc848fc5198"), headerToken);
-        AccountDto accountDto2=accountById(UUID.fromString("02f18c32-33a5-4b6c-811d-bc33ffc45312"), headerToken);
-        AccountDto accountDto3=accountById(UUID.fromString("2636f06b-764c-4c66-87ce-3d2a090d9897"), headerToken);
+        AccountDto accountDto1 = accountById(UUID.fromString("0bc856ad-b35a-4b19-8969-4cc848fc5198"), headerToken);
+        AccountDto accountDto2 = accountById(UUID.fromString("02f18c32-33a5-4b6c-811d-bc33ffc45312"), headerToken);
+        AccountDto accountDto3 = accountById(UUID.fromString("2636f06b-764c-4c66-87ce-3d2a090d9897"), headerToken);
         accountDto2.setStatusCode(AccountStatus.REQUEST_FROM);
         accountDto3.setStatusCode(AccountStatus.REQUEST_FROM);
         accountDto1.setStatusCode(AccountStatus.REQUEST_FROM);
