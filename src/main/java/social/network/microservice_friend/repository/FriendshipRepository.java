@@ -31,4 +31,6 @@ public interface FriendshipRepository extends JpaRepository<Friendship, UUID> {
     List<UUID> findIdStatus_SUBSCRIBED(UUID headerUUID);
     @Query(value = "SELECT friendship.account_id_to FROM friend_schema.friendship WHERE friendship.status_between='REQUEST_FROM' AND friendship.account_id_from=?1", nativeQuery = true)
     List<UUID> findIdStatusREQUEST_TO( UUID uuid);
+    @Query(value = "SELECT friendship.account_id_from FROM friend_schema.friendship WHERE friendship.status_between='WATCHING' AND friendship.account_id_to=?1", nativeQuery = true)
+    List<UUID> findIdStatusWATCHING(UUID uuid);
 }

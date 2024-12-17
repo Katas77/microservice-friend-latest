@@ -43,11 +43,12 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
     @Override
     public FriendsRs gettingAllFriendsService(String headerToken, FriendSearchDto friendSearchDto, Pageable pageable) throws ParseException {
         log.info(friendSearchDto.toString());
-        if (friendSearchDto.getStatusCode() == null) {
-            return statusCodeNull(headerToken,pageable);
-        }
+
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.REQUEST_FROM)) {
             friendSearchDto.setIds(repository.findIdStatusREQUEST_FROM(uuidFrom(headerToken)));
+        }
+        if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.WATCHING)) {
+            friendSearchDto.setIds(repository.findIdStatusWATCHING(uuidFrom(headerToken)));
         }
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.REQUEST_TO)) {
             friendSearchDto.setIds(repository.findIdStatusREQUEST_TO(uuidFrom(headerToken)));
@@ -61,7 +62,7 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.FRIEND)) {
             friendSearchDto.setIds(uuidFriends(uuidFrom(headerToken)));
         }
-
+        if (!(friendSearchDto.getIds() == null)){
         List<AccountDto> filter2 = search1(friendSearchDto, headerToken);
         List<FriendDto> friendDtoList = mapper.accountsListToFriendDtoList(filter2, friendSearchDto.getStatusCode());
         Page<FriendDto> friendPage2 = convertListToPage(friendDtoList, pageable);
@@ -69,10 +70,12 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
                 .content(friendPage2.getContent())
                 .totalElements(friendPage2.getTotalElements())
                 .totalPages(friendPage2.getTotalPages())
-                .build();
+                .build();}
+            return statusCodeNull(headerToken,pageable);
+        }
 
 
-    }
+
 
     @Logger
     @Override
