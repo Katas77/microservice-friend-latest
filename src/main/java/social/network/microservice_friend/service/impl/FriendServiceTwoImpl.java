@@ -48,9 +48,7 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         }
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.REQUEST_FROM)) {
             friendSearchDto.setIds(repository.findIdStatusREQUEST_FROM(uuidFrom(headerToken)));
-        }
-        if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.WATCHING)) {
-            friendSearchDto.setIds(repository.findIdStatusWATCHING(uuidFrom(headerToken)));
+
         }
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.REQUEST_TO)) {
             friendSearchDto.setIds(repository.findIdStatusREQUEST_TO(uuidFrom(headerToken)));
@@ -63,6 +61,7 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         }
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.FRIEND)) {
             friendSearchDto.setIds(uuidFriends(uuidFrom(headerToken)));
+            log.info("size friend           =     {}",uuidFriends(uuidFrom(headerToken)).size());
         }
 
         List<AccountDto> filter2 = search1(friendSearchDto, headerToken);
