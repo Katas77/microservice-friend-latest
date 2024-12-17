@@ -44,7 +44,7 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
     public FriendsRs gettingAllFriendsService(String headerToken, FriendSearchDto friendSearchDto, Pageable pageable) throws ParseException {
         log.info(friendSearchDto.toString());
         if (friendSearchDto.getStatusCode() == null) {
-            return statusCodeNull(headerToken,pageable);
+            return new FriendsRs();
         }
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.REQUEST_FROM)) {
             friendSearchDto.setIds(repository.findIdStatusREQUEST_FROM(uuidFrom(headerToken)));
