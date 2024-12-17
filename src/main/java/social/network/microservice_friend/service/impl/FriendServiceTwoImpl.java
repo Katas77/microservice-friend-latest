@@ -50,6 +50,10 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
             friendSearchDto.setIds(repository.findIdStatusREQUEST_FROM(uuidFrom(headerToken)));
 
         }
+        if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.WATCHING)) {
+            friendSearchDto.setIds(repository.findIdStatusWATCHING(uuidFrom(headerToken)));
+        }
+
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.REQUEST_TO)) {
             friendSearchDto.setIds(repository.findIdStatusREQUEST_TO(uuidFrom(headerToken)));
         }
@@ -61,11 +65,8 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         }
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.FRIEND)) {
             friendSearchDto.setIds(uuidFriends(uuidFrom(headerToken)));
-            log.info("size friend           =     {}",uuidFriends(uuidFrom(headerToken)).size());
         }
-
         List<AccountDto> filter2 = search1(friendSearchDto, headerToken);
-        log.info("size            =     {}",friendSearchDto.getIds().size());
         List<FriendDto> friendDtoList = mapper.accountsListToFriendDtoList(filter2, friendSearchDto.getStatusCode());
         Page<FriendDto> friendPage2 = convertListToPage(friendDtoList, pageable);
         return FriendsRs.builder()
@@ -116,6 +117,8 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
     }
 
     private List<AccountDto> search1(FriendSearchDto friendSearchDto, String headerToken) {
+        if (friendSearchDto.getIds()==null)
+        {friendSearchDto.setIds(new ArrayList<UUID>());}
         List<AccountDto> accountDtoList = new ArrayList<>();
         friendSearchDto.getIds().forEach(uuid -> accountDtoList.add(accountById(uuid, headerToken)));
         return accountDtoList.stream()

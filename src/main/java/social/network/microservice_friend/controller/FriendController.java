@@ -1,6 +1,7 @@
 package social.network.microservice_friend.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import social.network.microservice_friend.dto.*;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/friends")
 @RequiredArgsConstructor
+@Slf4j
 public class FriendController {
     private final FriendServiceOne friendService;
     private final FriendServiceTwo friendService2;
@@ -81,26 +83,10 @@ public class FriendController {
     @GetMapping()
     public FriendsRs gettingAllFriends(@ModelAttribute("friendSearchDto") FriendSearchDto friendSearchDto, @RequestHeader("authorization") String headerToken, Pageable pageable) throws ParseException {
      FriendsRs friendsRs=friendService2.gettingAllFriendsService(headerToken, friendSearchDto,pageable);
-        System.out.println(friendsRs.toString());
-        System.out.println(friendsRs.getContent().size()+"                           !");
+        log.info("                    friendsRs           =        {}",friendsRs.toString());
         return friendsRs;
     }
 
-/*    @Logger
-    @GetMapping()
-    public AllFriendsDtoList gettingAllFriends(@RequestParam("ids") UUID [] ids, @RequestParam("firstName") String firstName, @RequestParam("birthDateFrom") LocalDate birthDateFrom, @RequestParam("birthDateTo") LocalDate birthDateTo, @RequestHeader("authorization") String headerToken,
-                                               @RequestParam("city") String city, @RequestParam("country") String country, @RequestParam("ageTo") Integer ageTo, @RequestParam("ageFrom") Integer ageFrom, @RequestParam("statusCode") AccountStatus statusCode) {
-        return friendService.gettingAllFriendsService(headerToken, FriendSearchDto.builder()
-                .ids(ids)
-                .firstName(firstName)
-                .birthDateFrom(birthDateFrom)
-                .birthDateTo(birthDateTo)
-                .city(city)
-                .country(country)
-                .ageTo(ageTo)
-                .ageFrom(ageFrom)
-                .statusCode(statusCode)
-                .build());
-    }*/
+
 
 }
