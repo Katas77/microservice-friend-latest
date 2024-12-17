@@ -44,11 +44,13 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
     public FriendsRs gettingAllFriendsService(String headerToken, FriendSearchDto friendSearchDto, Pageable pageable) throws ParseException {
         log.info(friendSearchDto.toString());
         if (friendSearchDto.getStatusCode() == null) {
-            return new FriendsRs();
+            return statusCodeNull(headerToken,pageable);
         }
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.REQUEST_FROM)) {
-            String statusCode = String.valueOf(friendSearchDto.getStatusCode());
-            friendSearchDto.setIds(repository.findIdStatusREQUEST_FROM(statusCode, uuidFrom(headerToken)));
+            friendSearchDto.setIds(repository.findIdStatusREQUEST_FROM(uuidFrom(headerToken)));
+        }
+        if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.REQUEST_TO)) {
+            friendSearchDto.setIds(repository.findIdStatusREQUEST_TO(uuidFrom(headerToken)));
         }
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.SUBSCRIBED)) {
             friendSearchDto.setIds(repository.findIdStatus_SUBSCRIBED(uuidFrom(headerToken)));
@@ -183,6 +185,33 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         filter.add(accountDto3);
         return filter;
     }
+    private FriendsRs statusCodeNull(String headerToken,Pageable pageable) throws ParseException {
+        List <UUID> listREQUEST_FROM=repository.findIdStatusREQUEST_FROM(uuidFrom(headerToken));
+        List<AccountDto> accountREQUEST_FROM=listREQUEST_FROM.stream().map(uuid->accountById(uuid,headerToken)).toList();
+        List<FriendDto> friendDtoList = mapper.accountsListToFriendDtoList(accountREQUEST_FROM,StatusCode.REQUEST_FROM);
+
+        List <UUID> listREQUEST_TO=repository.findIdStatusREQUEST_TO(uuidFrom(headerToken));
+        List<AccountDto> accountREQUEST_TO=listREQUEST_TO.stream().map(uuid->accountById(uuid,headerToken)).toList();
+        friendDtoList.addAll( mapper.accountsListToFriendDtoList(accountREQUEST_TO,StatusCode.REQUEST_TO));
+
+        List <UUID> listSUBSCRIBED=repository.findIdStatus_SUBSCRIBED(uuidFrom(headerToken));
+        List<AccountDto> accountSUBSCRIBED =listSUBSCRIBED.stream().map(uuid->accountById(uuid,headerToken)).toList();
+        friendDtoList.addAll( mapper.accountsListToFriendDtoList(accountSUBSCRIBED,StatusCode.SUBSCRIBED));
+
+        List <UUID> listBLOCKED=friendServiceOne.blockFriendId(headerToken);
+        List<AccountDto> accountBLOCKED =listBLOCKED.stream().map(uuid->accountById(uuid,headerToken)).toList();
+        friendDtoList.addAll( mapper.accountsListToFriendDtoList(accountBLOCKED,StatusCode.BLOCKED));
+
+        List <UUID> listFRIEND=uuidFriends(uuidFrom(headerToken));
+        List<AccountDto> accountFRIEND =listFRIEND.stream().map(uuid->accountById(uuid,headerToken)).toList();
+        friendDtoList.addAll( mapper.accountsListToFriendDtoList(accountFRIEND,StatusCode.FRIEND));
+
+        Page<FriendDto> friendPage = convertListToPage(friendDtoList, pageable);
+        return FriendsRs.builder()
+                .content(friendPage.getContent())
+                .totalElements(friendPage.getTotalElements())
+                .totalPages(friendPage.getTotalPages())
+                .build();}
 
 
 }

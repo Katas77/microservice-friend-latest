@@ -1,6 +1,7 @@
 package social.network.microservice_friend.service.impl;
 
 import com.nimbusds.jwt.SignedJWT;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -144,6 +145,10 @@ public class FriendServiceOneImpl implements FriendServiceOne {
         friendships.stream().filter(friendship -> friendship.getAccount_id_to().equals(uuidFrom)).forEach(friendship -> uuidFriends.add(friendship.getAccount_id_from()));
         return uuidFriends;
     }
+
+
+
+
 
 }
 
