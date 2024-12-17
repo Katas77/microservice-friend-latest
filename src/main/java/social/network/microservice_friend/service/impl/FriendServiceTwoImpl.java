@@ -43,7 +43,9 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
     @Override
     public FriendsRs gettingAllFriendsService(String headerToken, FriendSearchDto friendSearchDto, Pageable pageable) throws ParseException {
         log.info(friendSearchDto.toString());
-
+        if (friendSearchDto.getStatusCode() == null) {
+            return statusCodeNull(headerToken,pageable);
+        }
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.REQUEST_FROM)) {
             friendSearchDto.setIds(repository.findIdStatusREQUEST_FROM(uuidFrom(headerToken)));
         }
@@ -62,20 +64,19 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.FRIEND)) {
             friendSearchDto.setIds(uuidFriends(uuidFrom(headerToken)));
         }
-        if (!(friendSearchDto.getIds() == null)){
+
         List<AccountDto> filter2 = search1(friendSearchDto, headerToken);
+        log.info("size            =     {}",friendSearchDto.getIds().size());
         List<FriendDto> friendDtoList = mapper.accountsListToFriendDtoList(filter2, friendSearchDto.getStatusCode());
         Page<FriendDto> friendPage2 = convertListToPage(friendDtoList, pageable);
         return FriendsRs.builder()
                 .content(friendPage2.getContent())
                 .totalElements(friendPage2.getTotalElements())
                 .totalPages(friendPage2.getTotalPages())
-                .build();}
-            return statusCodeNull(headerToken,pageable);
-        }
+                .build();
 
 
-
+    }
 
     @Logger
     @Override

@@ -82,6 +82,7 @@ public class FriendController {
     public FriendsRs gettingAllFriends(@ModelAttribute("friendSearchDto") FriendSearchDto friendSearchDto, @RequestHeader("authorization") String headerToken, Pageable pageable) throws ParseException {
      FriendsRs friendsRs=friendService2.gettingAllFriendsService(headerToken, friendSearchDto,pageable);
         System.out.println(friendsRs.toString());
+        System.out.println(friendsRs.getContent().size()+"                           !");
         return friendsRs;
     }
 
