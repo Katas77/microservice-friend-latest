@@ -1,0 +1,18 @@
+{
+  "totalElements": 1,
+  "totalPages": 1,
+  "content": [
+    {
+      "friendId": "494e2d92-26bb-4524-aaeb-46308a412b2a",
+      "photo": "best photo",
+      "statusCode": "REQUEST_FROM",
+      "firstName": "Ivan",
+      "lastName": "Ivanov",
+      "city": null,
+      "country": "Niger",
+      "birthDate": [2024,12,19],
+      "isOnline": true
+    }
+
+  ]
+}

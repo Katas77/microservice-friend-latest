@@ -44,7 +44,7 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
     public FriendsRs gettingAllFriendsService(String headerToken, FriendSearchDto friendSearchDto, Pageable pageable) throws ParseException {
         log.info(friendSearchDto.toString());
         if (friendSearchDto.getStatusCode() == null) {
-            return statusCodeNull(headerToken,pageable);
+            return statusCodeNull(headerToken, pageable);
         }
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.REQUEST_FROM)) {
             friendSearchDto.setIds(repository.findIdStatusREQUEST_FROM(uuidFrom(headerToken)));
@@ -117,8 +117,9 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
     }
 
     private List<AccountDto> search1(FriendSearchDto friendSearchDto, String headerToken) {
-        if (friendSearchDto.getIds()==null)
-        {friendSearchDto.setIds(new ArrayList<UUID>());}
+        if (friendSearchDto.getIds() == null) {
+            friendSearchDto.setIds(new ArrayList<UUID>());
+        }
         List<AccountDto> accountDtoList = new ArrayList<>();
         friendSearchDto.getIds().forEach(uuid -> accountDtoList.add(accountById(uuid, headerToken)));
         return accountDtoList.stream()
@@ -130,7 +131,7 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
                 .toList();
     }
 
-    private boolean validBirthDate(LocalDate birthDate, LocalDate birthDateFrom, LocalDate birthDateTo) {
+    public boolean validBirthDate(LocalDate birthDate, LocalDate birthDateFrom, LocalDate birthDateTo) {
         if (birthDate == null) {
             return true;
         }
@@ -139,7 +140,7 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         return !(birthDate.isBefore(birthDateFrom) || birthDate.isAfter(birthDateTo));
     }
 
-    private boolean validAge(LocalDate birthDate, Integer ageFrom, Integer ageTo) {
+    public boolean validAge(LocalDate birthDate, Integer ageFrom, Integer ageTo) {
         if (birthDate == null) {
             return true;
         }
@@ -149,14 +150,14 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         return !(age < ageFrom || age > ageTo);
     }
 
-    private <T> Page<T> convertListToPage(List<T> list, Pageable pageable) {
+    public <T> Page<T> convertListToPage(List<T> list, Pageable pageable) {
         int start = (int) pageable.getOffset();
         int end = Math.min(pageable.getPageSize(), list.size());
         return new PageImpl<>(list.subList(start, end), pageable, list.size());
     }
 
 
-    private Integer mutualFriends(List<UUID> uuidFriends, List<UUID> friendsOfFriend) {
+    public Integer mutualFriends(List<UUID> uuidFriends, List<UUID> friendsOfFriend) {
         List<UUID> all = new ArrayList<>();
         all.addAll(uuidFriends);
         all.addAll(friendsOfFriend);
@@ -164,12 +165,12 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         return (all.size() - set.size());
     }
 
-    private UUID uuidFrom(String headerToken) throws ParseException {
+    public UUID uuidFrom(String headerToken) throws ParseException {
         return UUID.fromString(SignedJWT.parse(headerToken.substring(7)).getPayload().toJSONObject().get("sub").toString());
     }
 
 
-    private List<UUID> uuidFriends(UUID uuidFrom) {
+    public List<UUID> uuidFriends(UUID uuidFrom) {
         List<Friendship> friendships = repository.findFRIENDS(uuidFrom);
         List<UUID> uuidFriends = new ArrayList<>();
         friendships.stream().filter(friendship -> friendship.getAccount_id_from().equals(uuidFrom)).forEach(friendship -> uuidFriends.add(friendship.getAccount_id_to()));
@@ -191,33 +192,34 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         filter.add(accountDto3);
         return filter;
     }
-    private FriendsRs statusCodeNull(String headerToken,Pageable pageable) throws ParseException {
-        List <UUID> listREQUEST_FROM=repository.findIdStatusREQUEST_FROM(uuidFrom(headerToken));
-        List<AccountDto> accountREQUEST_FROM=listREQUEST_FROM.stream().map(uuid->accountById(uuid,headerToken)).toList();
-        List<FriendDto> friendDtoList = mapper.accountsListToFriendDtoList(accountREQUEST_FROM,StatusCode.REQUEST_FROM);
 
-        List <UUID> listREQUEST_TO=repository.findIdStatusREQUEST_TO(uuidFrom(headerToken));
-        List<AccountDto> accountREQUEST_TO=listREQUEST_TO.stream().map(uuid->accountById(uuid,headerToken)).toList();
-        friendDtoList.addAll( mapper.accountsListToFriendDtoList(accountREQUEST_TO,StatusCode.REQUEST_TO));
+    private FriendsRs statusCodeNull(String headerToken, Pageable pageable) throws ParseException {
+        List<UUID> listREQUEST_FROM = repository.findIdStatusREQUEST_FROM(uuidFrom(headerToken));
+        List<AccountDto> accountREQUEST_FROM = listREQUEST_FROM.stream().map(uuid -> accountById(uuid, headerToken)).toList();
+        List<FriendDto> friendDtoList = mapper.accountsListToFriendDtoList(accountREQUEST_FROM, StatusCode.REQUEST_FROM);
 
-        List <UUID> listSUBSCRIBED=repository.findIdStatus_SUBSCRIBED(uuidFrom(headerToken));
-        List<AccountDto> accountSUBSCRIBED =listSUBSCRIBED.stream().map(uuid->accountById(uuid,headerToken)).toList();
-        friendDtoList.addAll( mapper.accountsListToFriendDtoList(accountSUBSCRIBED,StatusCode.SUBSCRIBED));
+        List<UUID> listREQUEST_TO = repository.findIdStatusREQUEST_TO(uuidFrom(headerToken));
+        List<AccountDto> accountREQUEST_TO = listREQUEST_TO.stream().map(uuid -> accountById(uuid, headerToken)).toList();
+        friendDtoList.addAll(mapper.accountsListToFriendDtoList(accountREQUEST_TO, StatusCode.REQUEST_TO));
 
-        List <UUID> listBLOCKED=friendServiceOne.blockFriendId(headerToken);
-        List<AccountDto> accountBLOCKED =listBLOCKED.stream().map(uuid->accountById(uuid,headerToken)).toList();
-        friendDtoList.addAll( mapper.accountsListToFriendDtoList(accountBLOCKED,StatusCode.BLOCKED));
+        List<UUID> listSUBSCRIBED = repository.findIdStatus_SUBSCRIBED(uuidFrom(headerToken));
+        List<AccountDto> accountSUBSCRIBED = listSUBSCRIBED.stream().map(uuid -> accountById(uuid, headerToken)).toList();
+        friendDtoList.addAll(mapper.accountsListToFriendDtoList(accountSUBSCRIBED, StatusCode.SUBSCRIBED));
 
-        List <UUID> listFRIEND=uuidFriends(uuidFrom(headerToken));
-        List<AccountDto> accountFRIEND =listFRIEND.stream().map(uuid->accountById(uuid,headerToken)).toList();
-        friendDtoList.addAll( mapper.accountsListToFriendDtoList(accountFRIEND,StatusCode.FRIEND));
+        List<UUID> listBLOCKED = friendServiceOne.blockFriendId(headerToken);
+        List<AccountDto> accountBLOCKED = listBLOCKED.stream().map(uuid -> accountById(uuid, headerToken)).toList();
+        friendDtoList.addAll(mapper.accountsListToFriendDtoList(accountBLOCKED, StatusCode.BLOCKED));
+
+        List<UUID> listFRIEND = uuidFriends(uuidFrom(headerToken));
+        List<AccountDto> accountFRIEND = listFRIEND.stream().map(uuid -> accountById(uuid, headerToken)).toList();
+        friendDtoList.addAll(mapper.accountsListToFriendDtoList(accountFRIEND, StatusCode.FRIEND));
 
         Page<FriendDto> friendPage = convertListToPage(friendDtoList, pageable);
         return FriendsRs.builder()
                 .content(friendPage.getContent())
                 .totalElements(friendPage.getTotalElements())
                 .totalPages(friendPage.getTotalPages())
-                .build();}
-
+                .build();
+    }
 
 }

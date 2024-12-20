@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import social.network.microservice_friend.aop.Logger;
 import social.network.microservice_friend.dto.*;
 import social.network.microservice_friend.dto.responsF.FriendsRs;
 import social.network.microservice_friend.dto.responsF.RecommendationFriendsRs;
@@ -24,23 +25,23 @@ public class FriendController {
     private final FriendServiceTwo friendService2;
 
     @PutMapping("/{uuid}/approve")
-    public String approve(@PathVariable UUID uuid, @RequestHeader("authorization") String headerToken) throws ParseException {
+    public Message approve(@PathVariable UUID uuid, @RequestHeader("authorization") String headerToken) throws ParseException {
         return friendService.approveService(uuid, headerToken);
     }
 
     @PutMapping("/block/{uuid}")
-    public String block(@PathVariable UUID uuid, @RequestHeader("authorization") String headerToken) throws ParseException {
+    public Message block(@PathVariable UUID uuid, @RequestHeader("authorization") String headerToken) throws ParseException {
         return friendService.block(uuid, headerToken);
     }
 
     @PostMapping("/{uuid}/request")
-    public String request(@PathVariable UUID uuid, @RequestHeader Map<String, String> headers) throws ParseException {
-        return friendService.request(uuid, headers);
+    public Message request(@PathVariable UUID uuid, @RequestHeader("authorization") String headerToken) throws ParseException {
+        return friendService.request(uuid, headerToken);
     }
 
     @PostMapping("/subscribe/{uuid}")
-    public String subscribe(@PathVariable UUID uuid, @RequestHeader Map<String, String> headers) throws ParseException {
-        return friendService.subscribe(uuid, headers);
+    public Message subscribe(@PathVariable UUID uuid, @RequestHeader("authorization") String headerToken) throws ParseException {
+        return friendService.subscribe(uuid, headerToken);
     }
 
 
@@ -57,7 +58,7 @@ public class FriendController {
 
 
     @GetMapping("/friendId")
-    public List<UUID> friendId(@RequestHeader("authorization") String headerToken) throws ParseException {
+    public List<UUID> friendIds(@RequestHeader("authorization") String headerToken) throws ParseException {
         return friendService.friendIds(headerToken);
     }
 
@@ -67,15 +68,15 @@ public class FriendController {
         return friendService.friendRequestCounter(headerToken);
     }
 
-
+@Logger
     @GetMapping("/blockFriendId")
-    public List<UUID>  blockFriendId(@RequestHeader("authorization") String headerToken) throws ParseException {
+    public List<UUID> blockFriendIds(@RequestHeader("authorization") String headerToken) throws ParseException {
         return friendService.blockFriendId(headerToken);
     }
 
 
     @DeleteMapping("/{uuid}")
-    public String dell(@PathVariable UUID uuid, @RequestHeader("authorization") String headerToken) throws ParseException {
+    public Message dell(@PathVariable UUID uuid, @RequestHeader("authorization") String headerToken) throws ParseException {
         return friendService.dell(uuid, headerToken);
     }
 

@@ -10,79 +10,99 @@ import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import social.network.microservice_friend.dto.Message;
 
 @ControllerAdvice
 @Slf4j
 public class FriendExceptionHandler {
 
     @ExceptionHandler(BusinessLogicException.class)
-    public ResponseEntity<String> handleException(BusinessLogicException e) {
+    public ResponseEntity<Message> handleException(BusinessLogicException e) {
         log.error("BusinessLogicException is    calling {}", e.getMessage());
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(e.getMessage());
+                .status(HttpStatus.NOT_FOUND)
+                .body(Message.builder()
+                        .message(e.getMessage())
+                        .build());
 
     }
 
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<String> handleExceptionNull(NullPointerException e) {
+    public ResponseEntity<Message> handleExceptionNull(NullPointerException e) {
         log.error("NullPointerException is    calling {}", e.getMessage());
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body("Что-то пошло не так, задайте параметры поиска");
+                .body(Message.builder()
+                        .message(e.getMessage())
+                        .build());
 
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleExceptionIllegalA(IllegalArgumentException e) {
+    public ResponseEntity<Message> handleExceptionIllegalA(IllegalArgumentException e) {
         log.error("IllegalArgumentException  is    calling {}", e.getMessage());
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(e.getMessage());
+                .body(Message.builder()
+                        .message(e.getMessage())
+                        .build());
 
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<String> handleException(HttpRequestMethodNotSupportedException e) {
+    public ResponseEntity<Message> handleException(HttpRequestMethodNotSupportedException e) {
         log.error("HttpRequestMethodNotSupportedException is    calling {}", e.getMessage());
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(e.getMessage());
+                .body(Message.builder()
+                        .message(e.getMessage())
+                        .build());
+
 
     }
 
     @ExceptionHandler(FeignException.class)
-    public ResponseEntity<String> handleExceptionFeignException(FeignException e) {
+    public ResponseEntity<Message> handleExceptionFeignException(FeignException e) {
         log.error("FeignException  is    calling {}", e.getMessage());
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(e.getMessage());
+                .body(Message.builder()
+                        .message(e.getMessage())
+                        .build());
 
     }
 
     @ExceptionHandler(MissingPathVariableException.class)
-    public ResponseEntity<String> handleExceptionPath(MissingPathVariableException e) {
+    public ResponseEntity<Message> handleExceptionPath(MissingPathVariableException e) {
         log.error("MissingPathVariableException  is    calling {}", e.getMessage());
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(e.getMessage());
+                .body(Message.builder()
+                        .message(e.getMessage())
+                        .build());
 
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseEntity<String> handleExceptionServlet(MissingServletRequestParameterException e) {
+    public ResponseEntity<Message> handleExceptionServlet(MissingServletRequestParameterException e) {
         log.error("MissingServletRequestParameterException  is  calling {}", e.getMessage());
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(e.getMessage());
+                .body(Message.builder()
+                        .message(e.getMessage())
+                        .build());
+
     }
 
     @ExceptionHandler(NonUniqueResultException.class)
-    public ResponseEntity<String> handleExceptionServlet(NonUniqueResultException e) {
+    public ResponseEntity<Message> handleExceptionServlet(NonUniqueResultException e) {
         log.error("NonUniqueResultException  is    calling {}", e.getMessage());
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(e.getMessage());
+                .body(Message.builder()
+                        .message(e.getMessage())
+                        .build());
+
     }
 
 }

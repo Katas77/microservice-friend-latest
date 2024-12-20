@@ -1,19 +1,21 @@
 package social.network.microservice_friend.service;
 
 
+import social.network.microservice_friend.dto.Message;
+
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 public interface FriendServiceOne {
-    String approveService(UUID uuid, String headerToken) throws ParseException;
+    Message approveService(UUID uuid, String headerToken) throws ParseException;
 
-    String block(UUID uuid, String headerToken) throws ParseException;
+    Message block(UUID uuid, String headerToken) throws ParseException;
 
-    String request(UUID uuid, Map<String, String> headers) throws ParseException;
+    Message request(UUID uuid, String headerToken) throws ParseException;
 
-    String subscribe(UUID uuid, Map<String, String> headers) throws ParseException;
+    Message subscribe(UUID uuid, String headerToken) throws ParseException;
 
     List<UUID> friendIds(String headerToken) throws ParseException;
 
@@ -21,6 +23,6 @@ public interface FriendServiceOne {
 
     List<UUID>  blockFriendId(String headerToken) throws ParseException;
 
-    String dell(UUID uuid, String headerToken) throws ParseException;
+    Message dell(UUID uuid, String headerToken) throws ParseException;
 
 }

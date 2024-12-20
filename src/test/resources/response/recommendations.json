@@ -1,0 +1,12 @@
+{
+  "totalElements": 1,
+  "totalPages": 1,
+  "content": [
+    {
+      "friendId": "0bc856ad-b35a-4b19-8969-4cc848fc5198",
+      "photo": "best photo",
+      "firstName": "Ivan",
+      "lastName": "Ivanov"
+    }
+  ]
+}
