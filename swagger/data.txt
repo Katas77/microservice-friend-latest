@@ -13,9 +13,6 @@ http://localhost:8082/api/v1/default/hello
 http://localhost:8082/api/v1/default/size
 
 
-CREATE DATABASE friend_db
-"id":fa6f76bb-6be7-493e-bbdc-caf03cb7eb6a
-"id":494e2d92-26bb-4524-aaeb-46308a412b2a
 
 
 
@@ -71,4 +68,64 @@ SELECT * FROM friend_schema.friendship WHERE (friendship.account_id_to='b3999ffa
 
     }
 
-    fa6f76bb-6be7-493e-bbdc-caf03cb7eb6a
+package social.network.microservice_friend;/*
+
+package social.network.microservice_friend;
+import jakarta.ws.rs.core.Application;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+
+import org.springframework.boot.test.context.SpringBootTest;
+
+
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(
+        webEnvironment = SpringBootTest.WebEnvironment.MOCK,
+        classes = Application.class)
+@AutoConfigureMockMvc
+@TestPropertySource(
+        locations = "classpath:application-integrationtest.properties")
+@TestPropertySource(properties =
+        "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration")
+public abstract class AbstractTestController {
+    @Autowired
+   protected MockMvc mockMvc;
+    protected List<UUID> uuidList (UUID uuid1, UUID uuid2){
+        List<UUID> uuidList=new ArrayList<>();
+        uuidList.add(uuid1);
+        uuidList.add(uuid2);
+        return uuidList;
+    }
+
+}
+
+*/
+       <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.10</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jcc-report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>

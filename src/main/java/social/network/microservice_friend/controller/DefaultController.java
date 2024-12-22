@@ -1,3 +1,4 @@
+/*
 package social.network.microservice_friend.controller;
 
 import lombok.RequiredArgsConstructor;
@@ -29,3 +30,4 @@ public class DefaultController {
     }
 
 }
+*/

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import social.network.microservice_friend.aop.Logger;
 import social.network.microservice_friend.dto.Message;
 import social.network.microservice_friend.exception.BusinessLogicException;
-import social.network.microservice_friend.kafka.ServiceProducer;
 import social.network.microservice_friend.model.Friendship;
 import social.network.microservice_friend.model.en.StatusCode;
 import social.network.microservice_friend.repository.FriendshipRepository;
@@ -20,7 +19,6 @@ import java.util.*;
 @RequiredArgsConstructor
 @Slf4j
 public class FriendServiceOneImpl implements FriendServiceOne {
-    private final ServiceProducer producer;
     private final FriendshipRepository repository;
 
 

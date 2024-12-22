@@ -1,3 +1,4 @@
+/*
 package social.network.microservice_friend.kafka;
 
 
@@ -18,4 +19,4 @@ public class FriendEvent {
     private UUID account_id_to;
     private UUID account_id_from;
     private StatusCode statusBetween;
-}
+}*/
