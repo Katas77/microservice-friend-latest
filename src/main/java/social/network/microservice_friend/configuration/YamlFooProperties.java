@@ -7,7 +7,7 @@ import social.network.microservice_friend.configuration.factory.YamlPropertySour
 
 @Configuration
 @ConfigurationProperties(prefix = "yaml")
-@PropertySource(value = "application-localhost.yml", factory = YamlPropertySourceFactory.class)   //    application-social-network.yml        application-localhost.yml
+@PropertySource(value = "application-social-network.yml", factory = YamlPropertySourceFactory.class)   //    application-social-network.yml        application-localhost.yml
 public class YamlFooProperties {
 }
 
