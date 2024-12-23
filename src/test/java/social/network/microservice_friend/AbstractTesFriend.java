@@ -34,23 +34,25 @@ public abstract class AbstractTesFriend {
     FriendServiceOne friendServiceMock = Mockito.mock(FriendServiceOne.class);
     FriendServiceTwo friendService2Mock = Mockito.mock(FriendServiceTwo.class);
     MockMvc mockMvc;
-    @BeforeEach
-    void setup() {
-        this.mockMvc = standaloneSetup(new FriendController(friendServiceMock, friendService2Mock)).setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver()).build();
-    }
-    @MockBean
-    MapperDTO mapper;
+
     @MockBean
     ClientFeign accountClient;
     @Autowired
     public FriendshipRepository repository;
 
-    public final FriendServiceTwoImpl serviceTwo = new FriendServiceTwoImpl(mapper, repository, accountClient, friendServiceMock);
+
     public static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:14")
             .withDatabaseName("friend_db")
             .withUsername("friend")
             .withPassword("friend")
             .withInitScript("db.sql");
+
+    @DynamicPropertySource
+    public static void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
+    }
     @BeforeAll
     static void beforeAll() {
         postgres.start();
@@ -60,14 +62,10 @@ public abstract class AbstractTesFriend {
     static void afterAll() {
         postgres.stop();
     }
-
-    @DynamicPropertySource
-    public static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
+    @BeforeEach
+    void setup() {
+        this.mockMvc = standaloneSetup(new FriendController(friendServiceMock, friendService2Mock)).setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver()).build();
     }
-
     @BeforeEach
     void init() {
         repository.deleteAll();

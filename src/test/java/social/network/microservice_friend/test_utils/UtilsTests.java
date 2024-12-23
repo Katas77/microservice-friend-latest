@@ -48,7 +48,7 @@ public class UtilsTests {
                 .lastOnlineTime(null)
                 .createdOn(null)
                 .birthDate(null)
-                .photo("best photo")
+                .photo("best photo2")
                 .firstName("Ivan")
                 .isOnline(true)
                 .country("Niger")
@@ -98,7 +98,7 @@ public class UtilsTests {
                 .firstName("Ivan")
                 .lastName("Ivanov")
                 .friendId(UUID.fromString("0bc856ad-b35a-4b19-8969-4cc848fc5198"))
-                .photo("best photo")
+                .photo("best photo2")
                 .build();
         content.add(dt0);
 
@@ -115,7 +115,7 @@ public class UtilsTests {
                 .friendId(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a"))
                 .birthDate(LocalDate.of(2024, 12, 19))
                 .statusCode(StatusCode.REQUEST_FROM)
-                .photo("best photo")
+                .photo("best photo2")
                 .firstName("Ivan")
                 .lastName("Ivanov")
                 .country("Niger")
@@ -183,8 +183,8 @@ public class UtilsTests {
     public static AccountDto accountDto() {
         return AccountDto.builder()
                 .id(UUID.fromString("0bc856ad-b35a-4b19-8969-4cc848fc5198"))
-                .lastOnlineTime(LocalDateTime.now())
-                .createdOn(LocalDateTime.now())
+                .lastOnlineTime(null)
+                .createdOn(null)
                 .birthDate(LocalDate.of(2000, 12, 19))
                 .photo("best photo2")
                 .firstName("Ivan")
@@ -205,4 +205,21 @@ public class UtilsTests {
                 .country("South African Republic")
                 .isOnline(true)
                 .build();}
+
+    public static RecommendationFriendsRs recommendationsS() {
+        List<RecommendationFriendsDto> content = new ArrayList<>();
+        RecommendationFriendsDto dt0 = RecommendationFriendsDto.builder()
+                .firstName("Ivan")
+                .lastName("Ivanov")
+                .friendId(UUID.fromString("0bc856ad-b35a-4b19-8969-4cc848fc5198"))
+                .photo("best photo2")
+                .build();
+        content.add(dt0);
+
+        return RecommendationFriendsRs.builder()
+                .totalPages(1)
+                .totalElements(1L)
+                .content(content)
+                .build();
+    }
 }

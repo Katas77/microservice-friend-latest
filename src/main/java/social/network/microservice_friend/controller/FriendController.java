@@ -10,10 +10,8 @@ import social.network.microservice_friend.dto.responsF.FriendsRs;
 import social.network.microservice_friend.dto.responsF.RecommendationFriendsRs;
 import social.network.microservice_friend.service.FriendServiceOne;
 import social.network.microservice_friend.service.FriendServiceTwo;
-
 import java.text.ParseException;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -52,7 +50,7 @@ public class FriendController {
 
 
     @GetMapping("/recommendations")
-    public RecommendationFriendsRs recommendations(@RequestHeader("authorization") String headerToken,  Pageable pageable) throws ParseException {
+    public RecommendationFriendsRs recommendations(@RequestHeader("authorization") String headerToken, Pageable pageable) throws ParseException {
         return friendService2.recommendationsService(headerToken, pageable);
     }
 
@@ -62,13 +60,18 @@ public class FriendController {
         return friendService.friendIds(headerToken);
     }
 
+    @GetMapping("/friendId/post/{userId}")
+    public List<UUID> friendIdsForPost(@PathVariable UUID userId) throws ParseException {
+        return friendService.friendIdsForPost(userId);
+    }
+
 
     @GetMapping("/count")
     public Integer friendRequestCounter(@RequestHeader("authorization") String headerToken) throws ParseException {
         return friendService.friendRequestCounter(headerToken);
     }
 
-@Logger
+    @Logger
     @GetMapping("/blockFriendId")
     public List<UUID> blockFriendIds(@RequestHeader("authorization") String headerToken) throws ParseException {
         return friendService.blockFriendId(headerToken);
@@ -83,11 +86,10 @@ public class FriendController {
 
     @GetMapping()
     public FriendsRs gettingAllFriends(@ModelAttribute("friendSearchDto") FriendSearchDto friendSearchDto, @RequestHeader("authorization") String headerToken, Pageable pageable) throws ParseException {
-     FriendsRs friendsRs=friendService2.gettingAllFriendsService(headerToken, friendSearchDto,pageable);
-        log.info("                    friendsRs           =        {}",friendsRs.toString());
+        FriendsRs friendsRs = friendService2.gettingAllFriendsService(headerToken, friendSearchDto, pageable);
+        log.info("friendsRs           ={}", friendsRs.toString());
         return friendsRs;
     }
-
 
 
 }

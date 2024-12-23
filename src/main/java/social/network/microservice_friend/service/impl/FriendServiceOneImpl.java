@@ -11,6 +11,7 @@ import social.network.microservice_friend.model.Friendship;
 import social.network.microservice_friend.model.en.StatusCode;
 import social.network.microservice_friend.repository.FriendshipRepository;
 import social.network.microservice_friend.service.FriendServiceOne;
+
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.*;
@@ -25,13 +26,14 @@ public class FriendServiceOneImpl implements FriendServiceOne {
     @Logger
     @Override
     public Message approveService(UUID uuidTo, String headerToken) throws ParseException {
-        if (uuidTo.equals(uuidFrom(headerToken)))
-        {throw new BusinessLogicException("You can't add yourself as a friend");}
+        if (uuidTo.equals(uuidFrom(headerToken))) {
+            throw new BusinessLogicException("You can't add yourself as a friend");
+        }
         Friendship friend = repository.findToAndFrom(uuidTo, uuidFrom(headerToken)).orElseThrow(
                 () -> new BusinessLogicException(MessageFormat.format("Friendship with uuidTo{0} is NOT_FOUND", uuidTo)));
         friend.setStatusBetween(StatusCode.FRIEND);
         repository.save(friend);
-       // producer.sendOrderEvent(friend);
+        // producer.sendOrderEvent(friend);
         return Message.builder()
                 .message(MessageFormat.format("Friendship with uuidTo {0} is approve", uuidTo)).build();
     }
@@ -54,13 +56,13 @@ public class FriendServiceOneImpl implements FriendServiceOne {
             repository.save(friendship2);
         }
         return Message.builder()
-                .message( MessageFormat.format("Friend with ID {0} is blocked", uuidTo)).build();
+                .message(MessageFormat.format("Friend with ID {0} is blocked", uuidTo)).build();
 
     }
 
     @Logger
     @Override
-    public Message request(UUID uuidTo,String headerToken) throws ParseException {
+    public Message request(UUID uuidTo, String headerToken) throws ParseException {
         Optional<Friendship> friendshipOptional = repository.findToAndFrom(uuidTo, uuidFrom(headerToken));
         if (friendshipOptional.isEmpty()) {
             Friendship friendshipNew = Friendship.builder()
@@ -97,14 +99,19 @@ public class FriendServiceOneImpl implements FriendServiceOne {
             repository.save(friendship2);
         }
         return Message.builder()
-                .message( MessageFormat.format("Friendship with uuidTo {0} SUBSCRIBED", uuidTo)).build();
+                .message(MessageFormat.format("Friendship with uuidTo {0} SUBSCRIBED", uuidTo)).build();
 
     }
 
     @Logger
     @Override
-    public List<UUID>  friendIds(String headerToken) throws ParseException {
+    public List<UUID> friendIds(String headerToken) throws ParseException {
         return uuidFriends(uuidFrom(headerToken));
+    }
+
+    @Override
+    public List<UUID> friendIdsForPost(UUID userId) {
+        return uuidFriends(userId);
     }
 
     @Logger
@@ -115,7 +122,7 @@ public class FriendServiceOneImpl implements FriendServiceOne {
 
     @Logger
     @Override
-    public List<UUID>  blockFriendId(String headerToken) throws ParseException {
+    public List<UUID> blockFriendId(String headerToken) throws ParseException {
         UUID uuidFrom = uuidFrom(headerToken);
         List<Friendship> friendships = repository.findsBLOCKED(uuidFrom);
         List<UUID> uuids = new ArrayList<>();
@@ -150,7 +157,6 @@ public class FriendServiceOneImpl implements FriendServiceOne {
         friendships.stream().filter(friendship -> friendship.getAccount_id_to().equals(uuidFrom)).forEach(friendship -> uuidFriends.add(friendship.getAccount_id_from()));
         return uuidFriends;
     }
-
 
 
 }

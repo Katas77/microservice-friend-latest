@@ -48,7 +48,6 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         }
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.REQUEST_FROM)) {
             friendSearchDto.setIds(repository.findIdStatusREQUEST_FROM(uuidFrom(headerToken)));
-
         }
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.WATCHING)) {
             friendSearchDto.setIds(repository.findIdStatusWATCHING(uuidFrom(headerToken)));
@@ -182,14 +181,8 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
     private List<AccountDto> defaultAccountDto(String headerToken) {
         List<AccountDto> filter = new ArrayList<>();
         AccountDto accountDto1 = accountById(UUID.fromString("0bc856ad-b35a-4b19-8969-4cc848fc5198"), headerToken);
-        AccountDto accountDto2 = accountById(UUID.fromString("02f18c32-33a5-4b6c-811d-bc33ffc45312"), headerToken);
-        AccountDto accountDto3 = accountById(UUID.fromString("2636f06b-764c-4c66-87ce-3d2a090d9897"), headerToken);
-        accountDto2.setStatusCode(AccountStatus.REQUEST_FROM);
-        accountDto3.setStatusCode(AccountStatus.REQUEST_FROM);
         accountDto1.setStatusCode(AccountStatus.REQUEST_FROM);
         filter.add(accountDto1);
-        filter.add(accountDto2);
-        filter.add(accountDto3);
         return filter;
     }
 

@@ -19,10 +19,13 @@ public interface FriendServiceOne {
 
     List<UUID> friendIds(String headerToken) throws ParseException;
 
+    List<UUID> friendIdsForPost(UUID userId);
+
     Integer friendRequestCounter(String headerToken) throws ParseException;
 
-    List<UUID>  blockFriendId(String headerToken) throws ParseException;
+    List<UUID> blockFriendId(String headerToken) throws ParseException;
 
     Message dell(UUID uuid, String headerToken) throws ParseException;
+
 
 }
