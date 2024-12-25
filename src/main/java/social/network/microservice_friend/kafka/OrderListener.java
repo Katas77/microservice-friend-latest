@@ -1,3 +1,4 @@
+/*
 
 package social.network.microservice_friend.kafka;
 
@@ -42,6 +43,7 @@ public class OrderListener {
 }
 
 
+*/
 
 
 
