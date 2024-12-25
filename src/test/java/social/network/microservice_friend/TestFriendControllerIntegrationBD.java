@@ -210,7 +210,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
     @DisplayName("Test for service layer arising in method approveService")
     @Test
     public void approveService() throws ParseException {
-        FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository);
+        FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         Message actual = friendServiceOne.approveService(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a"), UtilsTests.token);
         UUID uuidTo= UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a");
         Message expect=Message.builder().message(MessageFormat.format("Friendship with uuidTo {0} is approve", uuidTo)).build();
@@ -220,7 +220,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
     @DisplayName("Test for service layer arising in method blockS")
     @Test
     public void blockS() throws ParseException {
-        FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository);
+        FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         Message actual = friendServiceOne.block(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b4a"), UtilsTests.token);
         UUID uuidTo= UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b4a");
         Message expect=Message.builder()
@@ -232,7 +232,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
     @DisplayName("Test for service layer arising in method  requestS")
     @Test
     public void requestS() throws ParseException {
-        FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository);
+        FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         Message actual = friendServiceOne.request(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b7a"), UtilsTests.token);
         UUID uuidTo= UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b7a");
         Message expect=Message.builder()
@@ -243,7 +243,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
     @DisplayName("Test for service layer arising in method  subscribe")
     @Test
     public void subscribeS() throws ParseException {
-        FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository);
+        FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         Message actual = friendServiceOne.subscribe(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a"), UtilsTests.token);
         UUID uuidTo= UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a");
         Message expect=Message.builder()
@@ -254,7 +254,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
     @DisplayName("Test for service layer arising in method  friendIds")
     @Test
     public void friendIdsS() throws ParseException {
-        FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository);
+        FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         List<UUID> actual = friendServiceOne.friendIds( UtilsTests.token);
         List<UUID> expect=List.of(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a"));
         JsonAssert.assertJsonEquals(expect, actual);
@@ -262,7 +262,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
     @DisplayName("Test for service layer arising in method   friendIdsForPost")
     @Test
     public void  friendIdsForPostS() throws ParseException {
-        FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository);
+        FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         List<UUID> actual = friendServiceOne. friendIdsForPost( (UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5")));
         List<UUID> expect=List.of(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a"));
         JsonAssert.assertJsonEquals(expect, actual);
@@ -271,7 +271,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
     @DisplayName("Test for service layer arising in method  friendRequestCounter")
     @Test
     public void friendRequestCounterS() throws ParseException {
-        FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository);
+        FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         Integer actual = friendServiceOne.friendRequestCounter( UtilsTests.token);
         Integer expect=0;
         JsonAssert.assertJsonEquals(expect, actual);
@@ -280,7 +280,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
     @DisplayName("Test for service layer arising in method blockFriendId")
     @Test
     public void blockFriendIdS() throws ParseException {
-        FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository);
+        FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         List<UUID> actual = friendServiceOne.blockFriendId( UtilsTests.token);
         List<UUID> expect=List.of(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b4a"));
         JsonAssert.assertJsonEquals(expect, actual);
@@ -289,7 +289,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
     @DisplayName("Test for service layer arising in method  dell")
     @Test
     public void dellS() throws ParseException {
-        FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository);
+        FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         Message actual = friendServiceOne.dell(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a"), UtilsTests.token);
         UUID uuidTo= UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a");
         Message expect=Message.builder()
