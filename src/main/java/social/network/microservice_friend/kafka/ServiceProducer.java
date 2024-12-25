@@ -1,5 +1,4 @@
 
-
 package social.network.microservice_friend.kafka;
 
 import lombok.RequiredArgsConstructor;
@@ -18,19 +17,21 @@ import social.network.microservice_friend.kafka.model.FriendRequest;
 public class ServiceProducer {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
+
     private final KafkaTemplateFriend template;
     private final ModelMapper modelMapper;
+
     public void sendOrderEvent(FriendRequest friendRequest) {
         template.sendOrder(modelMapper.map(friendRequest, FriendRequestEvent.class));
-        log.info("Send order from producer {}",friendRequest);
-        System.out.println(ANSI_RED + "Warning! sendOrderEvent" + ANSI_RESET);
+        log.info("Send order from producer {}", friendRequest);
+        System.out.println(ANSI_RED + "Warning ! sendOrderEvent" + ANSI_RESET);
 
     }
 
     public void sendOrderEvent2(FriendBirthday friendBirthday) {
         template.sendOrder(modelMapper.map(friendBirthday, FriendBirthdayEvent.class));
-        log.info("Send FriendBirthday from producer {}",friendBirthday);
-        System.out.println(ANSI_RED + "Warning! sendOrderEvent" + ANSI_RESET);
+        log.info("Send FriendBirthday from producer {}", friendBirthday);
+        System.out.println(ANSI_RED + "Warning ! sendOrderEvent" + ANSI_RESET);
 
     }
 }
