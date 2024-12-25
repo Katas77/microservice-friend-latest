@@ -6,13 +6,9 @@ spring:
           trusted:
             packages: '*'
     bootstrap-servers: 194.67.88.81:9092
-    consumer:
-      group-id: "order-1"
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-  topic: { send-order: notifications-topic, status-order: account-events-topic }
-
   jpa:
     hibernate:
       ddl-auto: none
@@ -43,5 +39,7 @@ server:
 
 
 
-api:
-  url: http://194.67.88.81:8080/api/v1
+app:
+  topic: { account_topic: account-events-topic, send_topic: notifications-topic }
+  groupId: { send_groupId: notifications-group-id, account_groupId: social-network-account-service }
+  url: http://localhost:8080/api/v1

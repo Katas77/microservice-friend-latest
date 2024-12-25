@@ -7,7 +7,7 @@ import social.network.microservice_friend.dto.AccountDto;
 
 import java.util.UUID;
 
-@FeignClient(name = "accountClient", url = "${api.url}")
+@FeignClient(name = "accountClient", url = "${app.url}")
 public interface ClientFeign {
 
     @RequestMapping(method = RequestMethod.GET, value = "/auth/validate-token")

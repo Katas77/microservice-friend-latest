@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 import social.network.microservice_friend.aop.Logger;
 import social.network.microservice_friend.dto.Message;
 import social.network.microservice_friend.exception.BusinessLogicException;
+import social.network.microservice_friend.kafka.ServiceProducer;
+import social.network.microservice_friend.kafka.en.NotificationType;
+import social.network.microservice_friend.kafka.model.FriendBirthday;
+import social.network.microservice_friend.kafka.model.FriendRequest;
 import social.network.microservice_friend.model.Friendship;
 import social.network.microservice_friend.model.en.StatusCode;
 import social.network.microservice_friend.repository.FriendshipRepository;
@@ -21,6 +25,7 @@ import java.util.*;
 @Slf4j
 public class FriendServiceOneImpl implements FriendServiceOne {
     private final FriendshipRepository repository;
+    private final ServiceProducer producer;
 
 
     @Logger
@@ -33,7 +38,8 @@ public class FriendServiceOneImpl implements FriendServiceOne {
                 () -> new BusinessLogicException(MessageFormat.format("Friendship with uuidTo{0} is NOT_FOUND", uuidTo)));
         friend.setStatusBetween(StatusCode.FRIEND);
         repository.save(friend);
-        // producer.sendOrderEvent(friend);
+        FriendBirthday friendBirthday = FriendBirthday.builder().uuid(friend.getUuid()).notificationType(NotificationType.FRIEND_BIRTHDAY).account_id_from(friend.getAccount_id_from()).account_id_to(friend.getAccount_id_from()).build();
+        producer.sendOrderEvent2(friendBirthday);
         return Message.builder()
                 .message(MessageFormat.format("Friendship with uuidTo {0} is approve", uuidTo)).build();
     }
@@ -63,6 +69,7 @@ public class FriendServiceOneImpl implements FriendServiceOne {
     @Logger
     @Override
     public Message request(UUID uuidTo, String headerToken) throws ParseException {
+
         Optional<Friendship> friendshipOptional = repository.findToAndFrom(uuidTo, uuidFrom(headerToken));
         if (friendshipOptional.isEmpty()) {
             Friendship friendshipNew = Friendship.builder()
@@ -71,11 +78,13 @@ public class FriendServiceOneImpl implements FriendServiceOne {
                     .statusBetween(StatusCode.REQUEST_FROM)
                     .uuid(UUID.randomUUID())
                     .build();
+            producer.sendOrderEvent(FriendRequest.builder().uuid(friendshipNew.getUuid()).account_id_from(friendshipNew.getAccount_id_from()).account_id_to(uuidTo).notificationType(NotificationType.FRIEND_REQUEST).build());
             repository.save(friendshipNew);
         } else {
-            Friendship friendship2 = friendshipOptional.get();
-            friendship2.setStatusBetween(StatusCode.REQUEST_FROM);
-            repository.save(friendship2);
+            Friendship friendship = friendshipOptional.get();
+            friendship.setStatusBetween(StatusCode.REQUEST_FROM);
+            repository.save(friendship);
+            producer.sendOrderEvent(FriendRequest.builder().uuid(friendship.getUuid()).account_id_from(friendship.getAccount_id_from()).account_id_to(uuidTo).notificationType(NotificationType.FRIEND_REQUEST).build());
         }
         return Message.builder()
                 .message(MessageFormat.format("Friendship with uuidTo {0} REQUEST_FROM", uuidTo)).build();

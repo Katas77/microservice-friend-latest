@@ -8,8 +8,8 @@ import social.network.microservice_friend.dto.AccountDto;
 import social.network.microservice_friend.dto.FriendDto;
 import social.network.microservice_friend.dto.Message;
 import social.network.microservice_friend.dto.RecommendationFriendsDto;
-import social.network.microservice_friend.dto.responsF.FriendsRs;
-import social.network.microservice_friend.dto.responsF.RecommendationFriendsRs;
+import social.network.microservice_friend.dto.respons_friend.FriendsRs;
+import social.network.microservice_friend.dto.respons_friend.RecommendationFriendsRs;
 import social.network.microservice_friend.model.en.StatusCode;
 
 import java.io.IOException;

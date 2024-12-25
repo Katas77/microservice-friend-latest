@@ -1,5 +1,5 @@
 
-package social.network.microservice_friend.configuration.configurationsecurity;
+package social.network.microservice_friend.configuration.config_security;
 
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package social.network.microservice_friend.dto.responsF;
+package social.network.microservice_friend.dto.respons_friend;
 
 import lombok.*;
 import social.network.microservice_friend.dto.FriendDto;

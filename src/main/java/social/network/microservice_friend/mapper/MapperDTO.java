@@ -1,13 +1,11 @@
 package social.network.microservice_friend.mapper;
 
 import social.network.microservice_friend.dto.*;
-import org.mapstruct.Mapper;
 import social.network.microservice_friend.model.en.StatusCode;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring")
+
 public interface MapperDTO {
 
     FriendDto convertToFriendDto(AccountDto account, StatusCode statusBetween);
