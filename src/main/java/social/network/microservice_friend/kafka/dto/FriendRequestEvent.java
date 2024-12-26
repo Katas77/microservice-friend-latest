@@ -15,7 +15,7 @@ import java.util.UUID;
 public class FriendRequestEvent {
     private UUID authorId;
     private UUID userId;
-    private NotificationType notificationType=NotificationType.FRIEND_REQUEST;
+    private NotificationType notificationType;
     private String content;
 
 }

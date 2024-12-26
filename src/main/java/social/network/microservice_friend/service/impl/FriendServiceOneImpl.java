@@ -9,6 +9,7 @@ import social.network.microservice_friend.dto.Message;
 import social.network.microservice_friend.exception.BusinessLogicException;
 import social.network.microservice_friend.kafka.KafkaTemplateFriend;
 import social.network.microservice_friend.kafka.dto.FriendRequestEvent;
+import social.network.microservice_friend.kafka.en.NotificationType;
 import social.network.microservice_friend.model.Friendship;
 import social.network.microservice_friend.model.en.StatusCode;
 import social.network.microservice_friend.repository.FriendshipRepository;
@@ -72,12 +73,12 @@ public class FriendServiceOneImpl implements FriendServiceOne {
                     .uuid(UUID.randomUUID())
                     .build();
             repository.save(friendshipNew);
-            producer.sendEventToNotification(FriendRequestEvent.builder().authorId(friendshipNew.getAccount_id_from()).userId(uuidTo).build());
+            producer.sendEventToNotification(FriendRequestEvent.builder().authorId(friendshipNew.getAccount_id_from()).userId(uuidTo).notificationType(NotificationType.FRIEND_REQUEST).build());
         } else {
             Friendship friendship = friendshipOptional.get();
             friendship.setStatusBetween(StatusCode.REQUEST_FROM);
             repository.save(friendship);
-            producer.sendEventToNotification(FriendRequestEvent.builder().authorId(friendship.getAccount_id_from()).userId(uuidTo).build());
+            producer.sendEventToNotification(FriendRequestEvent.builder().authorId(friendship.getAccount_id_from()).userId(uuidTo).notificationType(NotificationType.FRIEND_REQUEST).build());
         }
         return Message.builder()
                 .message(MessageFormat.format("Friendship with uuidTo {0} REQUEST_FROM", uuidTo)).build();
