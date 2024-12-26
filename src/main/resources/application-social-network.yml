@@ -1,14 +1,6 @@
 spring:
   kafka:
-    properties:
-      spring:
-        json:
-          trusted:
-            packages: '*'
     bootstrap-servers: 194.67.88.81:9092
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   jpa:
     hibernate:
       ddl-auto: none
@@ -37,9 +29,8 @@ eureka:
 server:
   port: 8087
 
-
-
 app:
+  kafkaMessageGroupId: social-network-friend-service
   topic: { account_topic: account-events-topic, send_topic: notifications-topic }
   groupId: { send_groupId: notifications-group-id, account_groupId: social-network-account-service }
   url: http://194.67.88.81:8080/api/v1

@@ -1,6 +1,7 @@
 /*
 
 
+
 package social.network.microservice_friend.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -42,9 +43,10 @@ public class OrderListener {
 
 
 }
-
-
 */
+
+
+
 
 
 

@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
 import social.network.microservice_friend.clientFeign.ClientFeign;
 import social.network.microservice_friend.controller.FriendController;
+import social.network.microservice_friend.kafka.KafkaTemplateFriend;
 import social.network.microservice_friend.kafka.ServiceProducer;
 import social.network.microservice_friend.mapper.MapperDTO;
 import social.network.microservice_friend.model.Friendship;
@@ -34,7 +35,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 public abstract class AbstractTesFriend {
     FriendServiceOne friendServiceMock = Mockito.mock(FriendServiceOne.class);
     FriendServiceTwo friendService2Mock = Mockito.mock(FriendServiceTwo.class);
-    ServiceProducer producer = Mockito.mock(ServiceProducer.class);;
+    KafkaTemplateFriend producer = Mockito.mock(KafkaTemplateFriend.class);
     MockMvc mockMvc;
 
     @MockBean

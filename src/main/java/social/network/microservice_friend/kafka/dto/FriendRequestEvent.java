@@ -5,18 +5,17 @@ package social.network.microservice_friend.kafka.dto;
 import lombok.*;
 import social.network.microservice_friend.kafka.en.NotificationType;
 
-
 import java.util.UUID;
 
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString
+@AllArgsConstructor
 public class FriendRequestEvent {
-    private UUID uuid;
-    private UUID account_id_to;
-    private UUID account_id_from;
-    private NotificationType notificationType;
+    private UUID authorId;
+    private UUID userId;
+    private NotificationType notificationType=NotificationType.FRIEND_REQUEST;
+    private String content;
+
 }
