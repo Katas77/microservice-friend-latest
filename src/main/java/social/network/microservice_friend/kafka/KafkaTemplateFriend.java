@@ -29,10 +29,11 @@ public class KafkaTemplateFriend {
             String eventJson = objectMapper.writeValueAsString(friendRequestEvent);
             kafkaTemplate.send(sendTopic, eventJson);
             log.info("Send event: {}", eventJson);
+            System.out.println(ANSI_RED + "Warning ! sendOrderEvent"+eventJson + ANSI_RESET);
         } catch (JsonProcessingException e) {
             log.error("Failed to convert account to JSON: {} - don't send", friendRequestEvent.toString(), e);
         }
-        System.out.println(ANSI_RED + "Warning ! sendOrderEvent" + ANSI_RESET);
+
     }
 
 

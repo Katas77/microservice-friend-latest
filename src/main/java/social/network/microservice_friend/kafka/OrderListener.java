@@ -1,6 +1,4 @@
-
-
-
+/*
 
 package social.network.microservice_friend.kafka;
 
@@ -31,7 +29,7 @@ public class OrderListener {
         log.info("Settings for User with notificationType: {} created", userId);
     }
 
-  /*  @KafkaListener(topics = "${app.topic.account_topic}",
+    @KafkaListener(topics = "${app.topic.account_topic}",
             groupId = "${app.groupId.account_groupId}")
     public void receiveAccount(@Payload String data) throws JsonProcessingException {
         log.info("Account: {}", data);
@@ -40,11 +38,11 @@ public class OrderListener {
         });
 
     }
-*/
 
 }
 
 
+*/
 
 
 
