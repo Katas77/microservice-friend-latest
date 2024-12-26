@@ -17,14 +17,11 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import social.network.microservice_friend.clientFeign.ClientFeign;
 import social.network.microservice_friend.controller.FriendController;
 import social.network.microservice_friend.kafka.KafkaTemplateFriend;
-import social.network.microservice_friend.kafka.ServiceProducer;
-import social.network.microservice_friend.mapper.MapperDTO;
 import social.network.microservice_friend.model.Friendship;
 import social.network.microservice_friend.model.en.StatusCode;
 import social.network.microservice_friend.repository.FriendshipRepository;
 import social.network.microservice_friend.service.FriendServiceOne;
 import social.network.microservice_friend.service.FriendServiceTwo;
-import social.network.microservice_friend.service.impl.FriendServiceTwoImpl;
 
 
 import java.util.UUID;
