@@ -60,19 +60,19 @@ public class UtilsTests {
 
     public static Message messageApprove() {
         return Message.builder()
-                .message("Friendship with uuidTo b3999ffa-2df9-469e-9793-ee65e214846e is approve")
+                .report("Friendship with uuidTo b3999ffa-2df9-469e-9793-ee65e214846e is approve")
                 .build();
     }
 
     public static Message messageBlock() {
         return Message.builder()
-                .message("Friendship with uuidTob3999ffa-2df9-469e-9793-ee65e214846e is  blocked")
+                .report("Friendship with uuidTob3999ffa-2df9-469e-9793-ee65e214846e is  blocked")
                 .build();
     }
 
     public static Message messageDell() {
         return Message.builder()
-                .message("friendship with uuidTo b3999ffa-2df9-469e-9793-ee65e214846e is Dell")
+                .report("friendship with uuidTo b3999ffa-2df9-469e-9793-ee65e214846e is Dell")
                 .build();
     }
 
@@ -82,13 +82,13 @@ public class UtilsTests {
 
     public static Message messageRequest() {
         return Message.builder()
-                .message("Friendship with uuidTo b3999ffa-2df9-469e-9793-ee65e214846e REQUEST_FROM")
+                .report("Friendship with uuidTo b3999ffa-2df9-469e-9793-ee65e214846e REQUEST_FROM")
                 .build();
     }
 
     public static Message messageSubscribe() {
         return Message.builder()
-                .message("Friendship with uuidTo 6d175460-27bc-49a3-aa7a-bad5861f9706 SUBSCRIBED")
+                .report("Friendship with uuidTo 6d175460-27bc-49a3-aa7a-bad5861f9706 SUBSCRIBED")
                 .build();
     }
 

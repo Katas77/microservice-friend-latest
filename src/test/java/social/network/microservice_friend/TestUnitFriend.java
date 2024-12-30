@@ -23,7 +23,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RequiredArgsConstructor
-public class TestUnitFriend {
+ class TestUnitFriend {
     FriendServiceOne friendServiceMock = Mockito.mock(FriendServiceOne.class);
 
     MapperDTO mapper = new MapImpl();

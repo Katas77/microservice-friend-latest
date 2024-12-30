@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Slf4j
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
+class TestFriendControllerIntegrationBD extends AbstractTesFriend {
 
     @DisplayName("Test for controller emergent method blockFriendIds")
     @Test
@@ -213,7 +213,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
         FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         Message actual = friendServiceOne.approveService(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a"), UtilsTests.token);
         UUID uuidTo= UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a");
-        Message expect=Message.builder().message(MessageFormat.format("Friendship with uuidTo {0} is approve", uuidTo)).build();
+        Message expect=Message.builder().report(MessageFormat.format("Friendship with uuidTo {0} is approve", uuidTo)).build();
         JsonAssert.assertJsonEquals(expect, actual);
 
     }
@@ -224,7 +224,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
         Message actual = friendServiceOne.block(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b4a"), UtilsTests.token);
         UUID uuidTo= UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b4a");
         Message expect=Message.builder()
-                .message( MessageFormat.format("Friend with ID {0} is blocked", uuidTo)).build();
+                .report( MessageFormat.format("Friend with ID {0} is blocked", uuidTo)).build();
         JsonAssert.assertJsonEquals(expect, actual);
 
     }
@@ -236,7 +236,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
         Message actual = friendServiceOne.request(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b7a"), UtilsTests.token);
         UUID uuidTo= UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b7a");
         Message expect=Message.builder()
-                .message(MessageFormat.format("Friendship with uuidTo {0} REQUEST_FROM", uuidTo)).build();
+                .report(MessageFormat.format("Friendship with uuidTo {0} REQUEST_FROM", uuidTo)).build();
         JsonAssert.assertJsonEquals(expect, actual);
 
     }
@@ -247,7 +247,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
         Message actual = friendServiceOne.subscribe(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a"), UtilsTests.token);
         UUID uuidTo= UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a");
         Message expect=Message.builder()
-                .message( MessageFormat.format("Friendship with uuidTo {0} SUBSCRIBED", uuidTo)).build();
+                .report( MessageFormat.format("Friendship with uuidTo {0} SUBSCRIBED", uuidTo)).build();
         JsonAssert.assertJsonEquals(expect, actual);
 
     }
@@ -261,7 +261,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
     }
     @DisplayName("Test for service layer arising in method   friendIdsForPost")
     @Test
-     void  friendIdsForPostS() throws ParseException {
+     void  friendIdsForPostS()  {
         FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         List<UUID> actual = friendServiceOne. friendIdsForPost( (UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5")));
         List<UUID> expect=List.of(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a"));
@@ -293,7 +293,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
         Message actual = friendServiceOne.dell(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a"), UtilsTests.token);
         UUID uuidTo= UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a");
         Message expect=Message.builder()
-                .message(MessageFormat.format("friendship with uuidTo {0} is Dell", uuidTo)).build();
+                .report(MessageFormat.format("friendship with uuidTo {0} is Dell", uuidTo)).build();
         JsonAssert.assertJsonEquals(expect, actual);
 
     }
@@ -325,7 +325,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
     }
     @DisplayName("Test for service layer arising in method gettingFriendByIdService")
     @Test
-  void gettingFriendByIdService() throws Exception {
+  void gettingFriendByIdService(){
         MapperDTO mapper=new MapImpl();
         FriendServiceTwoImpl serviceTwo = new FriendServiceTwoImpl(mapper, repository, accountClient, friendServiceMock);
         AccountDto expectedResponse=UtilsTests.accountDto();

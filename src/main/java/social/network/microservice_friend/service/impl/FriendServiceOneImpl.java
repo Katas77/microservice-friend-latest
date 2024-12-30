@@ -38,7 +38,7 @@ public class FriendServiceOneImpl implements FriendServiceOne {
         friend.setStatusBetween(StatusCode.FRIEND);
         repository.save(friend);
         return Message.builder()
-                .message(MessageFormat.format("Friendship with uuidTo {0} is approve", uuidTo)).build();
+                .report(MessageFormat.format("Friendship with uuidTo {0} is approve", uuidTo)).build();
     }
     @Logger
     @Override
@@ -58,7 +58,7 @@ public class FriendServiceOneImpl implements FriendServiceOne {
             repository.save(friendship2);
         }
         return Message.builder()
-                .message(MessageFormat.format("Friend with ID {0} is blocked", uuidTo)).build();
+                .report(MessageFormat.format("Friend with ID {0} is blocked", uuidTo)).build();
     }
 
     @Logger
@@ -81,7 +81,7 @@ public class FriendServiceOneImpl implements FriendServiceOne {
             producer.sendEventToNotification(FriendRequestEvent.builder().authorId(friendship.getAccount_id_from()).userId(uuidTo).notificationType(NotificationType.FRIEND_REQUEST).build());
         }
         return Message.builder()
-                .message(MessageFormat.format("Friendship with uuidTo {0} REQUEST_FROM", uuidTo)).build();
+                .report(MessageFormat.format("Friendship with uuidTo {0} REQUEST_FROM", uuidTo)).build();
     }
 
     @Logger
@@ -102,7 +102,7 @@ public class FriendServiceOneImpl implements FriendServiceOne {
             repository.save(friendship2);
         }
         return Message.builder()
-                .message(MessageFormat.format("Friendship with uuidTo {0} SUBSCRIBED", uuidTo)).build();
+                .report(MessageFormat.format("Friendship with uuidTo {0} SUBSCRIBED", uuidTo)).build();
 
     }
 
@@ -144,7 +144,7 @@ public class FriendServiceOneImpl implements FriendServiceOne {
         Friendship friendship = repository.findToAndFrom(uuidTo, uuidFrom).orElseThrow(() -> new BusinessLogicException("Friendship  is NOT_FOUND"));
         repository.delete(friendship);
         return Message.builder()
-                .message(MessageFormat.format("friendship with uuidTo {0} is Dell", uuidTo)).build();
+                .report(MessageFormat.format("friendship with uuidTo {0} is Dell", uuidTo)).build();
 
     }
 

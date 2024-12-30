@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import social.network.microservice_friend.aop.Logger;
-import social.network.microservice_friend.aop.LoggerThrowing;
 import social.network.microservice_friend.clientFeign.ClientFeign;
 import social.network.microservice_friend.dto.AccountDto;
 import social.network.microservice_friend.dto.FriendDto;
@@ -109,7 +108,6 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
 
 
     @Logger
-    @LoggerThrowing
     private AccountDto accountById(UUID id, String headerToken) {
         return Optional.ofNullable(accountClient.getAccountById(id, headerToken))
                 .orElseThrow(() -> new BusinessLogicException(MessageFormat.format("Friend with ID {0} is NOT_FOUND", id)));
