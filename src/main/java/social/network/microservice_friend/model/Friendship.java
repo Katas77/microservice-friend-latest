@@ -3,7 +3,6 @@ package social.network.microservice_friend.model;
 import jakarta.persistence.*;
 import lombok.*;
 import social.network.microservice_friend.model.en.StatusCode;
-
 import java.util.UUID;
 
 @Getter

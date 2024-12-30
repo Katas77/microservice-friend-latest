@@ -206,20 +206,5 @@ public class UtilsTests {
                 .isOnline(true)
                 .build();}
 
-    public static RecommendationFriendsRs recommendationsS() {
-        List<RecommendationFriendsDto> content = new ArrayList<>();
-        RecommendationFriendsDto dt0 = RecommendationFriendsDto.builder()
-                .firstName("Ivan")
-                .lastName("Ivanov")
-                .friendId(UUID.fromString("0bc856ad-b35a-4b19-8969-4cc848fc5198"))
-                .photo("best photo2")
-                .build();
-        content.add(dt0);
 
-        return RecommendationFriendsRs.builder()
-                .totalPages(1)
-                .totalElements(1L)
-                .content(content)
-                .build();
-    }
 }

@@ -40,7 +40,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
 
     @DisplayName("Test for controller emergent method blockFriendIds")
     @Test
-    public void blockTest() throws Exception {
+    void blockTest() throws Exception {
         Mockito.when(friendServiceMock.blockFriendId(UtilsTests.token)).thenReturn(UtilsTests.blockTest());
         String expectedResponse = UtilsTests.readStringFromResource("response/blockFriendIds.json");
         RequestBuilder builder = MockMvcRequestBuilders.get("/api/v1/friends/blockFriendId").accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
@@ -54,7 +54,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
 
     @DisplayName("Test for controller emergent method account_by_id")
     @Test
-    public void account_by_id() throws Exception {
+    void account_by_id() throws Exception {
         Mockito.when(friendService2Mock.gettingFriendByIdService(UUID.fromString("b3999ffa-2df9-469e-9793-ee65e214846e"), UtilsTests.token)).thenReturn(UtilsTests.account_by_id());
         String expectedResponse = UtilsTests.readStringFromResource("response/account_by_id.json");
         RequestBuilder builder = MockMvcRequestBuilders.get("/api/v1/friends/{accountId}", "b3999ffa-2df9-469e-9793-ee65e214846e").accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
@@ -68,7 +68,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
 
     @DisplayName("Test for controller emergent method friendRequestCounter")
     @Test
-    public void friendRequestCounter() throws Exception {
+     void friendRequestCounter() throws Exception {
         Mockito.when(friendServiceMock.friendRequestCounter(UtilsTests.token)).thenReturn(3);
         Integer expectedResponse = 3;
         RequestBuilder builder = MockMvcRequestBuilders.get("/api/v1/friends/count", "b3999ffa-2df9-469e-9793-ee65e214846e").accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
@@ -80,7 +80,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
 
     @DisplayName("Test for controller emergent method approve")
     @Test
-    public void approve() throws Exception {
+     void approve() throws Exception {
         Mockito.when(friendServiceMock.approveService(UUID.fromString("b3999ffa-2df9-469e-9793-ee65e214846e"), UtilsTests.token)).thenReturn(UtilsTests.messageApprove());
         String expectedResponse = UtilsTests.readStringFromResource("response/approve.json");
         RequestBuilder builder = MockMvcRequestBuilders.put("/api/v1/friends/{uuid}/approve", "b3999ffa-2df9-469e-9793-ee65e214846e").accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
@@ -94,7 +94,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
 
     @DisplayName("Test for controller emergent method block ")
     @Test
-    public void block() throws Exception {
+    void block() throws Exception {
         Mockito.when(friendServiceMock.block(UUID.fromString("b3999ffa-2df9-469e-9793-ee65e214846e"), UtilsTests.token)).thenReturn(UtilsTests.messageBlock());
         String expectedResponse = UtilsTests.readStringFromResource("response/block.json");
         RequestBuilder builder = MockMvcRequestBuilders.put("/api/v1/friends/block/{uuid}", "b3999ffa-2df9-469e-9793-ee65e214846e").accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
@@ -108,7 +108,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
 
     @DisplayName("Test for controller emergent method  dell ")
     @Test
-    public void dell() throws Exception {
+     void dell() throws Exception {
         Mockito.when(friendServiceMock.dell(UUID.fromString("b3999ffa-2df9-469e-9793-ee65e214846e"), UtilsTests.token)).thenReturn(UtilsTests.messageDell());
         String expectedResponse = UtilsTests.readStringFromResource("response/dell.json");
         RequestBuilder builder = MockMvcRequestBuilders.delete("/api/v1/friends/{uuid}", "b3999ffa-2df9-469e-9793-ee65e214846e").accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
@@ -122,7 +122,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
 
     @DisplayName("Test for controller emergent method friendIds")
     @Test
-    public void friendIds() throws Exception {
+    void friendIds() throws Exception {
         Mockito.when(friendServiceMock.friendIds(UtilsTests.token)).thenReturn(UtilsTests.friendIds());
         String expectedResponse = UtilsTests.readStringFromResource("response/friendIds.json");
         RequestBuilder builder = MockMvcRequestBuilders.get("/api/v1/friends/friendId").accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
@@ -136,7 +136,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
     }
     @DisplayName("Test for controller emergent method friendIdsForPost")
     @Test
-    public void friendIdsForPost() throws Exception {
+    void friendIdsForPost() throws Exception {
         Mockito.when(friendServiceMock.friendIdsForPost(UUID.fromString("b3999ffa-2df9-469e-9793-ee65e214846e"))).thenReturn(UtilsTests.friendIds());
         String expectedResponse = UtilsTests.readStringFromResource("response/friendIds.json");
         RequestBuilder builder = MockMvcRequestBuilders.get("/api/v1/friends/friendId/post/{userId}","b3999ffa-2df9-469e-9793-ee65e214846e").accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
@@ -148,7 +148,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
 
     @DisplayName("Test for controller emergent method request")
     @Test
-    public void request() throws Exception {
+     void request() throws Exception {
         Mockito.when(friendServiceMock.request(UUID.fromString("b3999ffa-2df9-469e-9793-ee65e214846e"), UtilsTests.token)).thenReturn(UtilsTests.messageRequest());
         String expectedResponse = UtilsTests.readStringFromResource("response/request.json");
         RequestBuilder builder = MockMvcRequestBuilders.post("/api/v1/friends/{uuid}/request", "b3999ffa-2df9-469e-9793-ee65e214846e").accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
@@ -162,7 +162,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
 
     @DisplayName("Test for controller emergent method subscribe")
     @Test
-    public void subscribe() throws Exception {
+    void subscribe() throws Exception {
         Mockito.when(friendServiceMock.subscribe(UUID.fromString("b3999ffa-2df9-469e-9793-ee65e214846e"), UtilsTests.token)).thenReturn(UtilsTests.messageSubscribe());
         String expectedResponse = UtilsTests.readStringFromResource("response/subscribe.json");
         RequestBuilder builder = MockMvcRequestBuilders.post("/api/v1/friends/subscribe/{uuid}", "b3999ffa-2df9-469e-9793-ee65e214846e").accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
@@ -176,7 +176,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
 
     @DisplayName("Test for controller emergent method recommendations")
     @Test
-    public void recommendations() throws Exception {
+     void recommendations() throws Exception {
         Pageable pageable = PageRequest.of(0, 20);
         Mockito.when(friendService2Mock.recommendationsService(UtilsTests.token, pageable)).thenReturn(UtilsTests.recommendations());
         String expectedResponse = UtilsTests.readStringFromResource("response/recommendations.json");
@@ -192,7 +192,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
 
     @DisplayName("Test for controller emergent method gettingAllFriends")
     @Test
-    public void gettingAllFriends() throws Exception {
+     void gettingAllFriends() throws Exception {
         FriendSearchDto friendSearchDto = new FriendSearchDto();
         Pageable pageable = PageRequest.of(0, 20);
         Mockito.when(friendService2Mock.gettingAllFriendsService(UtilsTests.token, friendSearchDto, pageable)).thenReturn(UtilsTests.gettingAllFriends());
@@ -209,7 +209,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
 
     @DisplayName("Test for service layer arising in method approveService")
     @Test
-    public void approveService() throws ParseException {
+     void approveService() throws ParseException {
         FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         Message actual = friendServiceOne.approveService(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a"), UtilsTests.token);
         UUID uuidTo= UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a");
@@ -219,7 +219,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
     }
     @DisplayName("Test for service layer arising in method blockS")
     @Test
-    public void blockS() throws ParseException {
+   void blockS() throws ParseException {
         FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         Message actual = friendServiceOne.block(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b4a"), UtilsTests.token);
         UUID uuidTo= UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b4a");
@@ -231,7 +231,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
 
     @DisplayName("Test for service layer arising in method  requestS")
     @Test
-    public void requestS() throws ParseException {
+     void requestS() throws ParseException {
         FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         Message actual = friendServiceOne.request(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b7a"), UtilsTests.token);
         UUID uuidTo= UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b7a");
@@ -242,7 +242,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
     }
     @DisplayName("Test for service layer arising in method  subscribe")
     @Test
-    public void subscribeS() throws ParseException {
+     void subscribeS() throws ParseException {
         FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         Message actual = friendServiceOne.subscribe(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a"), UtilsTests.token);
         UUID uuidTo= UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a");
@@ -253,7 +253,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
     }
     @DisplayName("Test for service layer arising in method  friendIds")
     @Test
-    public void friendIdsS() throws ParseException {
+    void friendIdsS() throws ParseException {
         FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         List<UUID> actual = friendServiceOne.friendIds( UtilsTests.token);
         List<UUID> expect=List.of(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a"));
@@ -261,7 +261,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
     }
     @DisplayName("Test for service layer arising in method   friendIdsForPost")
     @Test
-    public void  friendIdsForPostS() throws ParseException {
+     void  friendIdsForPostS() throws ParseException {
         FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         List<UUID> actual = friendServiceOne. friendIdsForPost( (UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5")));
         List<UUID> expect=List.of(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a"));
@@ -270,7 +270,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
 
     @DisplayName("Test for service layer arising in method  friendRequestCounter")
     @Test
-    public void friendRequestCounterS() throws ParseException {
+     void friendRequestCounterS() throws ParseException {
         FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         Integer actual = friendServiceOne.friendRequestCounter( UtilsTests.token);
         Integer expect=0;
@@ -279,7 +279,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
 
     @DisplayName("Test for service layer arising in method blockFriendId")
     @Test
-    public void blockFriendIdS() throws ParseException {
+    void blockFriendIdS() throws ParseException {
         FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         List<UUID> actual = friendServiceOne.blockFriendId( UtilsTests.token);
         List<UUID> expect=List.of(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b4a"));
@@ -288,7 +288,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
 
     @DisplayName("Test for service layer arising in method  dell")
     @Test
-    public void dellS() throws ParseException {
+    void dellS() throws ParseException {
         FriendServiceOne friendServiceOne=new FriendServiceOneImpl(repository,producer);
         Message actual = friendServiceOne.dell(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a"), UtilsTests.token);
         UUID uuidTo= UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a");
@@ -300,7 +300,7 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
 
     @DisplayName("Test for service layer arising in method gettingAllFriends")
     @Test
-    public void gettingAllFriendsS() throws Exception {
+     void gettingAllFriendsS() throws Exception {
         MapperDTO mapper=new MapImpl();
         FriendServiceTwoImpl serviceTwo = new FriendServiceTwoImpl(mapper, repository, accountClient, friendServiceMock);
         FriendSearchDto friendSearchDto = new FriendSearchDto();
@@ -314,18 +314,18 @@ public class TestFriendControllerIntegrationBD extends AbstractTesFriend {
 
     @DisplayName("Test for service layer arising in method recommendationsService")
     @Test
-    public void recommendationsService() throws Exception {
+     void recommendationsService() throws Exception {
         MapperDTO mapper=new MapImpl();
         FriendServiceTwoImpl serviceTwo = new FriendServiceTwoImpl(mapper, repository, accountClient, friendServiceMock);
         Pageable pageable = PageRequest.of(0, 20);
-        RecommendationFriendsRs  expectedResponse=UtilsTests.recommendationsS();
+        RecommendationFriendsRs  expectedResponse=UtilsTests.recommendations();
         Mockito.when(accountClient.getAccountById(UUID.fromString("0bc856ad-b35a-4b19-8969-4cc848fc5198"),UtilsTests.token)).thenReturn(UtilsTests.accountDto());
         RecommendationFriendsRs actualResponse = serviceTwo.recommendationsService(UtilsTests.token,pageable);
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
     @DisplayName("Test for service layer arising in method gettingFriendByIdService")
     @Test
-    public void gettingFriendByIdService() throws Exception {
+  void gettingFriendByIdService() throws Exception {
         MapperDTO mapper=new MapImpl();
         FriendServiceTwoImpl serviceTwo = new FriendServiceTwoImpl(mapper, repository, accountClient, friendServiceMock);
         AccountDto expectedResponse=UtilsTests.accountDto();

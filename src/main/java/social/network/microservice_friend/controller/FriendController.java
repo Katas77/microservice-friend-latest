@@ -61,7 +61,7 @@ public class FriendController {
     }
 
     @GetMapping("/friendId/post/{userId}")
-    public List<UUID> friendIdsForPost(@PathVariable UUID userId) throws ParseException {
+    public List<UUID> friendIdsForPost(@PathVariable UUID userId) {
         return friendService.friendIdsForPost(userId);
     }
 
@@ -86,9 +86,7 @@ public class FriendController {
 
     @GetMapping()
     public FriendsRs gettingAllFriends(@ModelAttribute("friendSearchDto") FriendSearchDto friendSearchDto, @RequestHeader("authorization") String headerToken, Pageable pageable) throws ParseException {
-        FriendsRs friendsRs = friendService2.gettingAllFriendsService(headerToken, friendSearchDto, pageable);
-        log.info("friendsRs           ={}", friendsRs.toString());
-        return friendsRs;
+        return friendService2.gettingAllFriendsService(headerToken, friendSearchDto, pageable);
     }
 
 

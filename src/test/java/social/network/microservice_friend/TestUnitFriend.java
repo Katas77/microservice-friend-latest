@@ -36,7 +36,7 @@ public class TestUnitFriend {
 
     @DisplayName("Test for uuidFrom method")
     @Test
-    public void uuidFrom() throws Exception {
+    void uuidFrom() throws Exception {
         String expect = "4a001ad4-52e8-41d2-8170-c28705c765b5";
         String actual = String.valueOf(serviceTwo.uuidFrom(UtilsTests.token));
         assertEquals(expect, actual);
@@ -44,7 +44,7 @@ public class TestUnitFriend {
 
     @DisplayName("Test for validBirthDate method")
     @Test
-    public void validBirthDate() {
+     void validBirthDate() {
         Boolean expect = true;
         Boolean actual = serviceTwo.validBirthDate(LocalDate.of(2014, 10, 8), LocalDate.of(2012, 11, 1), LocalDate.of(2024, 8, 1));
         assertEquals(expect, actual);
@@ -52,7 +52,7 @@ public class TestUnitFriend {
 
     @DisplayName("Test for validAge method")
     @Test
-    public void validAge() {
+     void validAge() {
         Boolean expect = false;
         Boolean actual = serviceTwo.validAge(LocalDate.of(2014, 10, 8), 11, 24);
         assertEquals(expect, actual);
@@ -60,7 +60,7 @@ public class TestUnitFriend {
 
     @DisplayName("Test for accountsListToRecommends method")
     @Test
-    public void accountsListToRecommends() {
+    void accountsListToRecommends() {
         List<RecommendationFriendsDto> expect = UtilsTests.accountsListToRecommends();
         List<RecommendationFriendsDto> actual = mapper.accountsListToRecommends(UtilsTests.accountDtoList());
         JsonAssert.assertJsonEquals(expect, actual);
@@ -69,7 +69,7 @@ public class TestUnitFriend {
 
     @DisplayName("Test for accountsListToFriendDtoList method")
     @Test
-    public void accountsListToFriendDtoList() {
+     void accountsListToFriendDtoList() {
         List<FriendDto> expect = UtilsTests.accountsListToFriendDtoList();
         List<FriendDto> actual = mapper.accountsListToFriendDtoList(UtilsTests.accountDtoList(), StatusCode.REQUEST_FROM);
         JsonAssert.assertJsonEquals(expect, actual);
@@ -77,7 +77,7 @@ public class TestUnitFriend {
 
     @DisplayName("Test for convertToRecommend method")
     @Test
-    public void convertToRecommend() {
+   void convertToRecommend() {
         RecommendationFriendsDto expect = UtilsTests.RecommendationFriendsDto();
         RecommendationFriendsDto actual = mapper.convertToRecommend(UtilsTests.accountDto());
         JsonAssert.assertJsonEquals(expect, actual);
@@ -85,7 +85,7 @@ public class TestUnitFriend {
 
     @DisplayName("Test for convertToFriendDto method")
     @Test
-    public void convertToFriendDto() {
+     void convertToFriendDto() {
         FriendDto expect = UtilsTests.friendDto();
         FriendDto actual = mapper.convertToFriendDto(UtilsTests.accountDto(), StatusCode.REQUEST_FROM);
         JsonAssert.assertJsonEquals(expect, actual);

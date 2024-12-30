@@ -5,7 +5,6 @@ import social.network.microservice_friend.dto.Message;
 
 import java.text.ParseException;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public interface FriendServiceOne {
