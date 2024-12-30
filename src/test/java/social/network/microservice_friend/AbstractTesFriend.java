@@ -14,6 +14,7 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import social.network.microservice_friend.clientFeign.ClientFeign;
 import social.network.microservice_friend.controller.FriendController;
 import social.network.microservice_friend.kafka.KafkaTemplateFriend;
@@ -27,7 +28,7 @@ import social.network.microservice_friend.service.FriendServiceTwo;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-
+@Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class AbstractTesFriend {
     FriendServiceOne friendServiceMock = Mockito.mock(FriendServiceOne.class);

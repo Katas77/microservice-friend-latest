@@ -16,6 +16,8 @@ import java.util.UUID;
 @Slf4j
 @AllArgsConstructor
 public class LogAspect {
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLUE = "\u001B[34m";
 
     @AfterThrowing("@annotation(LoggerThrowing)")
     public void account(JoinPoint joinPoint) {
@@ -28,7 +30,8 @@ public class LogAspect {
 
     @Before("@annotation(Logger)")
     public void searchDto(JoinPoint joinPoint) {
-        log.info("Method  {} is    calling", joinPoint.getSignature().getName());
+        String name=joinPoint.getSignature().getName();
+        System.out.println(ANSI_BLUE + "Warning ! Method  {} is    calling"+name + ANSI_RESET);
         Object[] objects = joinPoint.getArgs();
         Arrays.stream(objects).filter(o -> !o.toString().startsWith("Bearer")).forEach(o -> System.out.println(o.toString()+"     -  parameters" ));
     }
