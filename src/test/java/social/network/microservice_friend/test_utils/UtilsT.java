@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class UtilsTests {
+public class UtilsT {
 
     public static String readStringFromResource(String resourcePath) {
         ResourceLoader resourceLoader = new DefaultResourceLoader();

@@ -23,7 +23,7 @@ import social.network.microservice_friend.repository.FriendshipRepository;
 import social.network.microservice_friend.service.FriendServiceOne;
 import social.network.microservice_friend.service.impl.FriendServiceOneImpl;
 import social.network.microservice_friend.service.impl.FriendServiceTwoImpl;
-import social.network.microservice_friend.test_utils.UtilsTests;
+import social.network.microservice_friend.test_utils.UtilsT;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
     FriendshipRepository repositoryMock= Mockito.mock(FriendshipRepository .class);
     KafkaTemplateFriend producer = Mockito.mock(KafkaTemplateFriend.class);
 
-    ClientFeign accountClient= Mockito.mock(ClientFeign.class);;
+    ClientFeign accountClient= Mockito.mock(ClientFeign.class);
     private final FriendServiceTwoImpl serviceTwo = new FriendServiceTwoImpl(mapper, repositoryMock, accountClient, friendServiceMock);
     private final     FriendServiceOneImpl friendServiceOne=new FriendServiceOneImpl(repositoryMock,producer);
 
@@ -53,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
     @Test
     void uuidFrom() throws Exception {
         String expect = "4a001ad4-52e8-41d2-8170-c28705c765b5";
-        String actual = String.valueOf(serviceTwo.uuidFrom(UtilsTests.token));
+        String actual = String.valueOf(serviceTwo.uuidFrom(UtilsT.token));
         assertEquals(expect, actual);
     }
 
@@ -80,8 +80,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
     @DisplayName("Test for accountsListToRecommends method")
     @Test
     void accountsListToRecommends() {
-        List<RecommendationFriendsDto> expect = UtilsTests.accountsListToRecommends();
-        List<RecommendationFriendsDto> actual = mapper.accountsListToRecommends(UtilsTests.accountDtoList());
+        List<RecommendationFriendsDto> expect = UtilsT.accountsListToRecommends();
+        List<RecommendationFriendsDto> actual = mapper.accountsListToRecommends(UtilsT.accountDtoList());
         JsonAssert.assertJsonEquals(expect, actual);
 
     }
@@ -89,35 +89,35 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
     @DisplayName("Test for accountsListToFriendDtoList method")
     @Test
      void accountsListToFriendDtoList() {
-        List<FriendDto> expect = UtilsTests.accountsListToFriendDtoList();
-        List<FriendDto> actual = mapper.accountsListToFriendDtoList(UtilsTests.accountDtoList(), StatusCode.REQUEST_FROM);
+        List<FriendDto> expect = UtilsT.accountsListToFriendDtoList();
+        List<FriendDto> actual = mapper.accountsListToFriendDtoList(UtilsT.accountDtoList(), StatusCode.REQUEST_FROM);
         JsonAssert.assertJsonEquals(expect, actual);
     }
 
     @DisplayName("Test for convertToRecommend method")
     @Test
    void convertToRecommend() {
-        RecommendationFriendsDto expect = UtilsTests.RecommendationFriendsDto();
-        RecommendationFriendsDto actual = mapper.convertToRecommend(UtilsTests.accountDto());
+        RecommendationFriendsDto expect = UtilsT.RecommendationFriendsDto();
+        RecommendationFriendsDto actual = mapper.convertToRecommend(UtilsT.accountDto());
         JsonAssert.assertJsonEquals(expect, actual);
     }
 
     @DisplayName("Test for convertToFriendDto method")
     @Test
      void convertToFriendDto() {
-        FriendDto expect = UtilsTests.friendDto();
-        FriendDto actual = mapper.convertToFriendDto(UtilsTests.accountDto(), StatusCode.REQUEST_FROM);
+        FriendDto expect = UtilsT.friendDto();
+        FriendDto actual = mapper.convertToFriendDto(UtilsT.accountDto(), StatusCode.REQUEST_FROM);
         JsonAssert.assertJsonEquals(expect, actual);
     }
     @DisplayName("Test for statusCodeNull method")
     @Test
     void statusCodeNull() throws ParseException {
         Pageable pageable = PageRequest.of(0, 20);
-        FriendsRs expect = UtilsTests.statusCodeNull();
-        Mockito.when(repositoryMock.findIdStatusREQUEST_FROM(serviceTwo.uuidFrom(UtilsTests.token))).thenReturn(UtilsTests.friendIds());
-        Mockito.when(accountClient.getAccountById(UUID.fromString("fa6f76bb-6be7-493e-bbdc-caf03cb7eb6a"),UtilsTests.token)).thenReturn(UtilsTests.account_by_id());
-        Mockito.when(accountClient.getAccountById(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a"),UtilsTests.token)).thenReturn(UtilsTests.account_by_id());
-        FriendsRs actual = serviceTwo.statusCodeNull(UtilsTests.token,pageable);
+        FriendsRs expect = UtilsT.statusCodeNull();
+        Mockito.when(repositoryMock.findIdStatusREQUEST_FROM(serviceTwo.uuidFrom(UtilsT.token))).thenReturn(UtilsT.friendIds());
+        Mockito.when(accountClient.getAccountById(UUID.fromString("fa6f76bb-6be7-493e-bbdc-caf03cb7eb6a"), UtilsT.token)).thenReturn(UtilsT.account_by_id());
+        Mockito.when(accountClient.getAccountById(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a"), UtilsT.token)).thenReturn(UtilsT.account_by_id());
+        FriendsRs actual = serviceTwo.statusCodeNull(UtilsT.token,pageable);
         System.out.println(expect);
         System.out.println(actual);
         JsonAssert.assertJsonEquals(expect, actual);
@@ -130,7 +130,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         Mockito.when(repositoryMock.findToAndFrom(UUID.fromString("fa6f76bb-6be7-493e-bbdc-caf03cb7eb6a"),UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))).thenReturn(Optional.empty());
         String mes = "";
         try {
-            friendServiceOne.approveService(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"), UtilsTests.token);
+            friendServiceOne.approveService(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"), UtilsT.token);
         } catch (BusinessLogicException e) {
             mes = e.getMessage();
         }
@@ -138,14 +138,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         Assertions.assertEquals("You can't add yourself as a friend", mes);
 
         try {
-            friendServiceOne.approveService(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"), UtilsTests.token);
+            friendServiceOne.approveService(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"), UtilsT.token);
         } catch (BusinessLogicException e) {
             mes = e.getMessage();
         }
 
         Assertions.assertEquals("You can't add yourself as a friend", mes);
         try {
-            friendServiceOne.approveService(UUID.fromString("fa6f76bb-6be7-493e-bbdc-caf03cb7eb6a"), UtilsTests.token);
+            friendServiceOne.approveService(UUID.fromString("fa6f76bb-6be7-493e-bbdc-caf03cb7eb6a"), UtilsT.token);
         } catch (BusinessLogicException e) {
             mes = e.getMessage();
         }
@@ -156,7 +156,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
     void block() throws ParseException {
         Mockito.when(repositoryMock.findToAndFrom(UUID.fromString("fa6f76bb-6be7-493e-bbdc-caf03cb7eb6a"),UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))).thenReturn(Optional.empty());
         String  expected = "Friend with ID 4a001ad4-52e8-41d2-8170-c28705c765b5 is blocked";
-        Message actual= friendServiceOne.block(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"), UtilsTests.token);
+        Message actual= friendServiceOne.block(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"), UtilsT.token);
         Assertions.assertEquals(expected, actual.getReport());
 
     }
@@ -166,7 +166,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
     void request() throws ParseException {
         Mockito.when(repositoryMock.findToAndFrom(UUID.fromString("fa6f76bb-6be7-493e-bbdc-caf03cb7eb6a"),UUID.fromString("5a001ad4-52e8-41d2-8170-c28705c765b5"))).thenReturn(Optional.empty());
         String  expected = "Friendship with uuidTo 5a001ad4-52e8-41d2-8170-c28705c765b5 REQUEST_FROM";
-        Message actual= friendServiceOne.request(UUID.fromString("5a001ad4-52e8-41d2-8170-c28705c765b5"), UtilsTests.token);
+        Message actual= friendServiceOne.request(UUID.fromString("5a001ad4-52e8-41d2-8170-c28705c765b5"), UtilsT.token);
         Assertions.assertEquals(expected, actual.getReport());
 
         Friendship friendshipNew = Friendship.builder()
@@ -178,7 +178,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
         Mockito.when(repositoryMock.findToAndFrom(UUID.fromString("fa6f76bb-6be7-493e-bbdc-caf03cb7eb6a"),UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))).thenReturn(Optional.of(friendshipNew));
       expected = "Friendship with uuidTo 4a001ad4-52e8-41d2-8170-c28705c765b5 REQUEST_FROM";
-       actual= friendServiceOne.request(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"), UtilsTests.token);
+       actual= friendServiceOne.request(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"), UtilsT.token);
         Assertions.assertEquals(expected, actual.getReport());
 
     }
@@ -187,15 +187,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
     void   subscribe() throws ParseException {
         Mockito.when(repositoryMock.findToAndFrom(UUID.fromString("fa6f76bb-6be7-493e-bbdc-caf03cb7eb6a"),UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))).thenReturn(Optional.empty());
         String  expected = "Friendship with uuidTo 4a001ad4-52e8-41d2-8170-c28705c765b5 SUBSCRIBED";
-        Message actual= friendServiceOne.  subscribe(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"), UtilsTests.token);
+        Message actual= friendServiceOne.  subscribe(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"), UtilsT.token);
         Assertions.assertEquals(expected, actual.getReport());
 
     }
     @DisplayName("Test for readStringFrom")
     @Test
-    void   readStringFromResource() throws ParseException {
+    void   readStringFromResource(){
         Message expectedResponse=Message.builder().report("Friendship with uuidTo b3999ffa-2df9-469e-9793-ee65e214846e is approve").build();
-        String  actualResponse=UtilsTests.readStringFromResource("response/approve.json");;
+        String  actualResponse= UtilsT.readStringFromResource("response/approve.json");
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
 
     }
