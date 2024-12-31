@@ -129,6 +129,35 @@ public class UtilsTests {
                 .build();
     }
 
+    public static FriendsRs statusCodeNull() {
+        List<FriendDto> content = new ArrayList<>();
+        FriendDto dto = FriendDto.builder()
+                .friendId(UUID.fromString("b3999ffa-2df9-469e-9793-ee65e214846e"))
+                .statusCode(StatusCode.REQUEST_FROM)
+                .photo("best photo2")
+                .firstName("Ivan")
+                .lastName("Ivanov")
+                .country("Niger")
+                .isOnline(true)
+                .build();
+        FriendDto dto2 = FriendDto.builder()
+                .friendId(UUID.fromString("b3999ffa-2df9-469e-9793-ee65e214846e"))
+                .statusCode(StatusCode.REQUEST_FROM)
+                .photo("best photo2")
+                .firstName("Ivan")
+                .lastName("Ivanov")
+                .country("Niger")
+                .isOnline(true)
+                .build();
+        content.add(dto);
+        content.add(dto2);
+        return FriendsRs.builder()
+                .totalPages(1)
+                .totalElements(2L)
+                .content(content)
+                .build();
+    }
+
     public static  List<RecommendationFriendsDto> accountsListToRecommends(){
         List<RecommendationFriendsDto> friendsDtoList = new ArrayList<>();
         RecommendationFriendsDto dt0 = RecommendationFriendsDto.builder()

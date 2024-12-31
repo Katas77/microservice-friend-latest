@@ -108,12 +108,12 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
 
 
     @Logger
-    private AccountDto accountById(UUID id, String headerToken) {
+    public AccountDto accountById(UUID id, String headerToken) {
         return Optional.ofNullable(accountClient.getAccountById(id, headerToken))
                 .orElseThrow(() -> new BusinessLogicException(MessageFormat.format("Friend with ID {0} is NOT_FOUND", id)));
     }
 
-    private List<AccountDto> search1(FriendSearchDto friendSearchDto, String headerToken) {
+    public List<AccountDto> search1(FriendSearchDto friendSearchDto, String headerToken) {
         if (friendSearchDto.getIds() == null) {
             friendSearchDto.setIds(new ArrayList<UUID>());
         }
@@ -176,7 +176,7 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
     }
 
 
-    private List<AccountDto> defaultAccountDto(String headerToken) {
+    public List<AccountDto> defaultAccountDto(String headerToken) {
         List<AccountDto> filter = new ArrayList<>();
         AccountDto accountDto1 = accountById(UUID.fromString("0bc856ad-b35a-4b19-8969-4cc848fc5198"), headerToken);
         accountDto1.setStatusCode(AccountStatus.REQUEST_FROM);
@@ -184,7 +184,7 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         return filter;
     }
 
-    private FriendsRs statusCodeNull(String headerToken, Pageable pageable) throws ParseException {
+    public FriendsRs statusCodeNull(String headerToken, Pageable pageable) throws ParseException {
         List<UUID> listREQUEST_FROM = repository.findIdStatusREQUEST_FROM(uuidFrom(headerToken));
         List<AccountDto> accountREQUEST_FROM = listREQUEST_FROM.stream().map(uuid -> accountById(uuid, headerToken)).toList();
         List<FriendDto> friendDtoList = mapper.accountsListToFriendDtoList(accountREQUEST_FROM, StatusCode.REQUEST_FROM);
