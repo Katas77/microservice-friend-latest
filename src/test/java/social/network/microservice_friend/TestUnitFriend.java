@@ -191,7 +191,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         Assertions.assertEquals(expected, actual.getReport());
 
     }
+    @DisplayName("Test for readStringFrom")
+    @Test
+    void   readStringFromResource() throws ParseException {
+        Message expectedResponse=Message.builder().report("Friendship with uuidTo b3999ffa-2df9-469e-9793-ee65e214846e is approve").build();
+        String  actualResponse=UtilsTests.readStringFromResource("response/approve.json");;
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
 
+    }
 
 
 }
