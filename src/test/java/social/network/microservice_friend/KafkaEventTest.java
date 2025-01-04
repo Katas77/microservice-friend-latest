@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.test.context.ActiveProfiles;
 import social.network.microservice_friend.kafka.KafkaTemplateFriend;
 import social.network.microservice_friend.kafka.dto.FriendRequestEvent;
@@ -12,11 +11,11 @@ import social.network.microservice_friend.kafka.en.NotificationType;
 
 
 @ActiveProfiles
-public class KafkaEventTest {
+ class KafkaEventTest {
     @Value("${app.topic.send_topic}")
     private String sendTopic;
     @Test
-    void sendEvenKafka() throws JsonProcessingException {
+    void sendEvenKafka() {
         KafkaTemplate<String, String> kafkaTemplate= Mockito.mock(KafkaTemplate.class);
         KafkaTemplateFriend eventService=new KafkaTemplateFriend(kafkaTemplate);
         FriendRequestEvent event1 = FriendRequestEvent.builder()

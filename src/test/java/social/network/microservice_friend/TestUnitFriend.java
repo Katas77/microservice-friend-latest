@@ -3,6 +3,7 @@ package social.network.microservice_friend;
 import lombok.RequiredArgsConstructor;
 import net.javacrumbs.jsonunit.JsonAssert;
 import org.aspectj.lang.JoinPoint;
+import org.hibernate.NonUniqueResultException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,12 +12,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import social.network.microservice_friend.aop.LogAspect;
 import social.network.microservice_friend.clientFeign.ClientFeign;
 import social.network.microservice_friend.configuration.config_security.RequestHeaderAuthenticationProvider;
 import social.network.microservice_friend.dto.*;
 import social.network.microservice_friend.dto.respons_friend.FriendsRs;
 import social.network.microservice_friend.exception.BusinessLogicException;
+import social.network.microservice_friend.exception.FriendExceptionHandler;
 import social.network.microservice_friend.kafka.KafkaTemplateFriend;
 import social.network.microservice_friend.mapper.MapperDTO;
 import social.network.microservice_friend.mapper.impl.MapImpl;
@@ -156,7 +160,7 @@ class TestUnitFriend {
     }
     @DisplayName("Test for search1 method")
     @Test
-    void search1Null() throws ParseException {
+    void search1Null()  {
         FriendSearchDto friendSearchDto=new FriendSearchDto();
         friendSearchDto.setIds(null);
         List<AccountDto> dtoList= serviceTwo.search1(friendSearchDto,UtilsT.token);
@@ -252,4 +256,61 @@ class TestUnitFriend {
         }
         Assertions.assertEquals("Bad Request invalid or missing token", mes);
     }
+
+    @DisplayName("Test for FriendExceptionHandler")
+    @Test
+    void FriendExceptionHandler() {
+        FriendExceptionHandler friend = new FriendExceptionHandler();
+        BusinessLogicException e = new BusinessLogicException("BusinessLogicException is    calling");
+        String actual = friend.handleException(e).getBody().getReport();
+        Assertions.assertEquals("BusinessLogicException is    calling", actual);
+    }
+
+    @DisplayName("Test for FriendExceptionHandler")
+    @Test
+    void handleExceptionNull() {
+        FriendExceptionHandler friend = new FriendExceptionHandler();
+        NullPointerException e = new NullPointerException("NullPointerException is    calling");
+        String actual = friend.handleExceptionNull(e).getBody().getReport();
+        Assertions.assertEquals("NullPointerException is    calling", actual);
+    }
+
+    @DisplayName("Test for IllegalArgumentException")
+    @Test
+    void IllegalArgumentExceptionF() {
+        FriendExceptionHandler friend = new FriendExceptionHandler();
+        IllegalArgumentException e = new IllegalArgumentException("IllegalArgumentException is    calling");
+        String actual = friend.handleExceptionIllegalA(e).getBody().getReport();
+        Assertions.assertEquals("IllegalArgumentException is    calling", actual);
+    }
+
+    @DisplayName("Test for FriendExceptionHandler")
+    @Test
+    void FriendHttpRequestMethodNotSupportedException() {
+        FriendExceptionHandler friend = new FriendExceptionHandler();
+        HttpRequestMethodNotSupportedException e = new HttpRequestMethodNotSupportedException("HttpRequestMethodNotSupportedException is    calling");
+        String actual = friend.handleException(e).getBody().getReport();
+        Assertions.assertEquals("Request method 'HttpRequestMethodNotSupportedException is    calling' is not supported", actual);
+    }
+
+
+
+    @DisplayName("Test for FriendMissingServletRequestParameterException")
+    @Test
+    void FriendMissingServletRequestParameterException() {
+        FriendExceptionHandler friend = new FriendExceptionHandler();
+        MissingServletRequestParameterException e = new MissingServletRequestParameterException(null, null);
+        String actual = friend.handleExceptionServlet(e).getBody().getReport();
+        Assertions.assertEquals("Required request parameter 'null' for method parameter type null is not present", actual);
+    }
+
+    @DisplayName("Test for FriendMissingServletRequestParameterException")
+    @Test
+    void FriendNonUniqueResultException() {
+        FriendExceptionHandler friend = new FriendExceptionHandler();
+        NonUniqueResultException e = new NonUniqueResultException(1);
+        String actual = friend.handleExceptionServlet(e).getBody().getReport();
+        Assertions.assertEquals("Query did not return a unique result: 1 results were returned", actual);
+    }
+
 }

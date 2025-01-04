@@ -93,12 +93,6 @@ public abstract class AbstractTesFriend {
                 .account_id_from(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))
                 .statusBetween(StatusCode.REQUEST_FROM)
                 .build();
-        Friendship friendship5 = Friendship.builder()
-                .uuid(UUID.randomUUID())
-                .account_id_to(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b5a"))
-                .account_id_from(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))
-                .statusBetween(StatusCode.REQUEST_TO)
-                .build();
         repository.save(friendship);
         repository.save(friendship2);
         repository.save(friendship3);
