@@ -311,6 +311,71 @@ class TestFriendControllerIntegrationBD extends AbstractTesFriend {
         FriendsRs  actualResponse = serviceTwo.gettingAllFriendsService(UtilsT.token,friendSearchDto,pageable);
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
+    @DisplayName("Test for service layer arising in method gettingAllFriends")
+    @Test
+    void gettingAllFriendsWATCHING() throws Exception {
+        MapperDTO mapper=new MapImpl();
+        FriendServiceTwoImpl serviceTwo = new FriendServiceTwoImpl(mapper, repository, accountClient, friendServiceMock);
+        FriendSearchDto friendSearchDto = new FriendSearchDto();
+        friendSearchDto.setStatusCode(StatusCode.WATCHING);
+        Pageable pageable = PageRequest.of(0, 20);
+        FriendsRs expectedResponse=FriendsRs.builder().totalElements(0L).totalPages(0).content(new ArrayList<>()).build();
+        Mockito.when(accountClient.getAccountById(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a"), UtilsT.token)).thenReturn(UtilsT.accountDto());
+        FriendsRs  actualResponse = serviceTwo.gettingAllFriendsService(UtilsT.token,friendSearchDto,pageable);
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+    @DisplayName("Test for service layer arising in method gettingAllFriends")
+    @Test
+    void gettingAllFriendsREQUEST_TO() throws Exception {
+        MapperDTO mapper=new MapImpl();
+        FriendServiceTwoImpl serviceTwo = new FriendServiceTwoImpl(mapper, repository, accountClient, friendServiceMock);
+        FriendSearchDto friendSearchDto = new FriendSearchDto();
+        friendSearchDto.setStatusCode(StatusCode.REQUEST_TO);
+        Pageable pageable = PageRequest.of(0, 20);
+        FriendsRs expectedResponse=FriendsRs.builder().totalElements(1L).totalPages(1).content(List.of(mapper.convertToFriendDto(UtilsT.accountDto(),StatusCode.REQUEST_TO))).build();
+        Mockito.when(accountClient.getAccountById(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b5a"), UtilsT.token)).thenReturn(UtilsT.accountDto());
+        FriendsRs  actualResponse = serviceTwo.gettingAllFriendsService(UtilsT.token,friendSearchDto,pageable);
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+    @DisplayName("Test for service layer arising in method gettingAllFriends")
+    @Test
+    void gettingAllFriendsSUBSCRIBED() throws Exception {
+        MapperDTO mapper=new MapImpl();
+        FriendServiceTwoImpl serviceTwo = new FriendServiceTwoImpl(mapper, repository, accountClient, friendServiceMock);
+        FriendSearchDto friendSearchDto = new FriendSearchDto();
+        friendSearchDto.setStatusCode(StatusCode.SUBSCRIBED);
+        Pageable pageable = PageRequest.of(0, 20);
+        FriendsRs expectedResponse=FriendsRs.builder().totalElements(1L).totalPages(1).content(List.of(mapper.convertToFriendDto(UtilsT.accountDto(),StatusCode.SUBSCRIBED))).build();
+        Mockito.when(accountClient.getAccountById(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a"), UtilsT.token)).thenReturn(UtilsT.accountDto());
+        FriendsRs  actualResponse = serviceTwo.gettingAllFriendsService(UtilsT.token,friendSearchDto,pageable);
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+    @DisplayName("Test for service layer arising in method gettingAllFriends")
+    @Test
+    void gettingAllFriendsBLOCKED() throws Exception {
+        MapperDTO mapper=new MapImpl();
+        FriendServiceTwoImpl serviceTwo = new FriendServiceTwoImpl(mapper, repository, accountClient, friendServiceMock);
+        FriendSearchDto friendSearchDto = new FriendSearchDto();
+        friendSearchDto.setStatusCode(StatusCode.BLOCKED);
+        Pageable pageable = PageRequest.of(0, 20);
+        FriendsRs expectedResponse=FriendsRs.builder().totalElements(0L).totalPages(0).content(new ArrayList<>()).build();
+        Mockito.when(accountClient.getAccountById(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a"), UtilsT.token)).thenReturn(UtilsT.accountDto());
+        FriendsRs  actualResponse = serviceTwo.gettingAllFriendsService(UtilsT.token,friendSearchDto,pageable);
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+    @DisplayName("Test for service layer arising in method gettingAllFriends")
+    @Test
+    void gettingAllFriendsFRIEND() throws Exception {
+        MapperDTO mapper=new MapImpl();
+        FriendServiceTwoImpl serviceTwo = new FriendServiceTwoImpl(mapper, repository, accountClient, friendServiceMock);
+        FriendSearchDto friendSearchDto = new FriendSearchDto();
+        friendSearchDto.setStatusCode(StatusCode.FRIEND);
+        Pageable pageable = PageRequest.of(0, 20);
+        FriendsRs expectedResponse=FriendsRs.builder().totalElements(1L).totalPages(1).content(List.of(mapper.convertToFriendDto(UtilsT.accountDto(),StatusCode.FRIEND))).build();
+        Mockito.when(accountClient.getAccountById(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a"), UtilsT.token)).thenReturn(UtilsT.accountDto());
+        FriendsRs  actualResponse = serviceTwo.gettingAllFriendsService(UtilsT.token,friendSearchDto,pageable);
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
 
     @DisplayName("Test for service layer arising in method recommendationsService")
     @Test

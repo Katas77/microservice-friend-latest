@@ -1,0 +1,4 @@
+kafkaTemplate.send(
+"notifications-topic",
+"{"authorId":"9095c0a2-c546-4742-9817-65cc344406f4","userId":"8aad1bc5-3953-4cba-866b-7cc5b60da661","notificationType":"MESSAGE","content":"Test Content"}"
+);
