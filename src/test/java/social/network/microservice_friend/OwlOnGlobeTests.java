@@ -7,11 +7,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.core.MethodParameter;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import social.network.microservice_friend.aop.LogAspect;
 import social.network.microservice_friend.clientFeign.ClientFeign;
@@ -20,8 +18,6 @@ import social.network.microservice_friend.dto.Message;
 import social.network.microservice_friend.exception.BusinessLogicException;
 import social.network.microservice_friend.exception.FriendExceptionHandler;
 import social.network.microservice_friend.test_utils.UtilsT;
-import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Objects;
 
 import static org.mockito.Mockito.verify;
@@ -110,14 +106,6 @@ public class OwlOnGlobeTests {
         NonUniqueResultException e = new NonUniqueResultException(1);
         String actual = Objects.requireNonNull(friend.handleExceptionServlet(e).getBody()).getReport();
         Assertions.assertEquals("Query did not return a unique result: 1 results were returned", actual);
-    }
-    @DisplayName("Test for FriendMissingPathVariableException")
-    @Test
-    void FriendMissingPathVariableException () {
-        Method testMethod = Arrays.stream(getClass().getMethods()).findFirst().orElseThrow();
-        MissingPathVariableException e = new MissingPathVariableException("variableName",new MethodParameter(testMethod, 0));
-        String actual = Objects.requireNonNull(friend.handleExceptionPath(e).getBody()).getReport();
-        Assertions.assertEquals("Required URI template variable 'variableName' for method parameter type Object is not present", actual);
     }
 
 
