@@ -1,6 +1,5 @@
 package social.network.microservice_friend;
 
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,38 +7,31 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import social.network.microservice_friend.clientFeign.ClientFeign;
-import social.network.microservice_friend.controller.FriendController;
 import social.network.microservice_friend.kafka.KafkaTemplateFriend;
 import social.network.microservice_friend.model.Friendship;
 import social.network.microservice_friend.model.en.StatusCode;
 import social.network.microservice_friend.repository.FriendshipRepository;
 import social.network.microservice_friend.service.FriendServiceOne;
-import social.network.microservice_friend.service.FriendServiceTwo;
 
 
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public abstract class AbstractTesFriend {
+public abstract class FriendAbstractTests {
     FriendServiceOne friendServiceMock = Mockito.mock(FriendServiceOne.class);
-    FriendServiceTwo friendService2Mock = Mockito.mock(FriendServiceTwo.class);
     KafkaTemplateFriend producer = Mockito.mock(KafkaTemplateFriend.class);
-    MockMvc mockMvc;
+
 
     @MockBean
     ClientFeign accountClient;
     @Autowired
     public FriendshipRepository repository;
-
 
     public static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:14")
             .withDatabaseName("friend_db")
@@ -53,6 +45,7 @@ public abstract class AbstractTesFriend {
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
     }
+
     @BeforeAll
     static void beforeAll() {
         postgres.start();
@@ -62,10 +55,7 @@ public abstract class AbstractTesFriend {
     static void afterAll() {
         postgres.stop();
     }
-    @BeforeEach
-    void setup() {
-        this.mockMvc = standaloneSetup(new FriendController(friendServiceMock, friendService2Mock)).setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver()).build();
-    }
+
     @BeforeEach
     void init() {
         repository.deleteAll();
