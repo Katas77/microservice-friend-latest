@@ -68,9 +68,9 @@ SELECT * FROM friend_schema.friendship WHERE (friendship.account_id_to='b3999ffa
 
     }
 
-package social.network.microservice_friend;/*
+package social.network.microserviceFriend;/*
 
-package social.network.microservice_friend;
+package social.network.microserviceFriend;
 import jakarta.ws.rs.core.Application;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,7 +142,7 @@ public abstract class AbstractTestController {
                         </plugin>
 
 
-package social.network.microservice_friend.configurationsecurity;
+package social.network.microserviceFriend.configurationsecurity;
 
 
 import org.springframework.context.annotation.Bean;
