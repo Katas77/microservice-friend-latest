@@ -25,12 +25,12 @@ public interface FriendshipRepository extends JpaRepository<Friendship, UUID> {
     List<Friendship> findsBLOCKED(UUID uuidFrom);
 
     @Query(value = "SELECT friendship.account_id_from FROM friend_schema.friendship WHERE friendship.status_between='REQUEST_FROM' AND friendship.account_id_to=?1", nativeQuery = true)
-    List<UUID> findIdStatusREQUEST_FROM(UUID headerUUID);
+    List<UUID> findIdStatusREQUESTFROM(UUID headerUUID);
 
     @Query(value = "SELECT friendship.account_id_to FROM friend_schema.friendship WHERE friendship.status_between='SUBSCRIBED' AND friendship.account_id_from=?1", nativeQuery = true)
-    List<UUID> findIdStatus_SUBSCRIBED(UUID headerUUID);
+    List<UUID> findIdStatusSUBSCRIBED(UUID headerUUID);
     @Query(value = "SELECT friendship.account_id_to FROM friend_schema.friendship WHERE friendship.status_between='REQUEST_FROM' AND friendship.account_id_from=?1", nativeQuery = true)
-    List<UUID> findIdStatusREQUEST_TO( UUID uuid);
+    List<UUID> findIdStatusREQUESTTO(UUID uuid);
     @Query(value = "SELECT friendship.account_id_from FROM friend_schema.friendship WHERE friendship.status_between='WATCHING' AND friendship.account_id_to=?1", nativeQuery = true)
     List<UUID> findIdStatusWATCHING(UUID uuid);
 }

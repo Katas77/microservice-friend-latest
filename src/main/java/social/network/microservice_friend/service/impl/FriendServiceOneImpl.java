@@ -46,8 +46,8 @@ public class FriendServiceOneImpl implements FriendServiceOne {
         Optional<Friendship> friendshipOptional = repository.findToAndFrom(uuidTo, uuidFrom(headerToken));
         if (friendshipOptional.isEmpty()) {
             Friendship friendshipNew = Friendship.builder()
-                    .account_id_to(uuidTo)
-                    .account_id_from(uuidFrom(headerToken))
+                    .accountIdTo(uuidTo)
+                    .accountIdFrom(uuidFrom(headerToken))
                     .statusBetween(StatusCode.BLOCKED)
                     .uuid(UUID.randomUUID())
                     .build();
@@ -67,18 +67,18 @@ public class FriendServiceOneImpl implements FriendServiceOne {
         Optional<Friendship> friendshipOptional = repository.findToAndFrom(uuidTo, uuidFrom(headerToken));
         if (friendshipOptional.isEmpty()) {
             Friendship friendshipNew = Friendship.builder()
-                    .account_id_to(uuidTo)
-                    .account_id_from(uuidFrom(headerToken))
+                    .accountIdTo(uuidTo)
+                    .accountIdFrom(uuidFrom(headerToken))
                     .statusBetween(StatusCode.REQUEST_FROM)
                     .uuid(UUID.randomUUID())
                     .build();
             repository.save(friendshipNew);
-            producer.sendEventToNotification(FriendRequestEvent.builder().authorId(friendshipNew.getAccount_id_from()).userId(uuidTo).notificationType(NotificationType.FRIEND_REQUEST).build());
+            producer.sendEventToNotification(FriendRequestEvent.builder().authorId(friendshipNew.getAccountIdFrom()).userId(uuidTo).notificationType(NotificationType.FRIEND_REQUEST).build());
         } else {
             Friendship friendship = friendshipOptional.get();
             friendship.setStatusBetween(StatusCode.REQUEST_FROM);
             repository.save(friendship);
-            producer.sendEventToNotification(FriendRequestEvent.builder().authorId(friendship.getAccount_id_from()).userId(uuidTo).notificationType(NotificationType.FRIEND_REQUEST).build());
+            producer.sendEventToNotification(FriendRequestEvent.builder().authorId(friendship.getAccountIdFrom()).userId(uuidTo).notificationType(NotificationType.FRIEND_REQUEST).build());
         }
         return Message.builder()
                 .report(MessageFormat.format("Friendship with uuidTo {0} REQUEST_FROM", uuidTo)).build();
@@ -90,8 +90,8 @@ public class FriendServiceOneImpl implements FriendServiceOne {
         Optional<Friendship> friendshipOptional = repository.findToAndFrom(uuidTo, uuidFrom(headerToken));
         if (friendshipOptional.isEmpty()) {
             Friendship friendship = Friendship.builder()
-                    .account_id_to(uuidTo)
-                    .account_id_from(uuidFrom(headerToken))
+                    .accountIdTo(uuidTo)
+                    .accountIdFrom(uuidFrom(headerToken))
                     .statusBetween(StatusCode.SUBSCRIBED)
                     .uuid(UUID.randomUUID())
                     .build();
@@ -130,9 +130,9 @@ public class FriendServiceOneImpl implements FriendServiceOne {
         List<Friendship> friendships = repository.findsBLOCKED(uuidFrom);
         List<UUID> uuids = new ArrayList<>();
         for (Friendship friendship : friendships) {
-            if (friendship.getAccount_id_from().equals(uuidFrom)) {
-                uuids.add(friendship.getAccount_id_to());
-            } else uuids.add(friendship.getAccount_id_from());
+            if (friendship.getAccountIdFrom().equals(uuidFrom)) {
+                uuids.add(friendship.getAccountIdTo());
+            } else uuids.add(friendship.getAccountIdFrom());
         }
         return uuids;
     }
@@ -156,8 +156,8 @@ public class FriendServiceOneImpl implements FriendServiceOne {
     private List<UUID> uuidFriends(UUID uuidFrom) {
         List<Friendship> friendships = repository.findFRIENDS(uuidFrom);
         List<UUID> uuidFriends = new ArrayList<>();
-        friendships.stream().filter(friendship -> friendship.getAccount_id_from().equals(uuidFrom)).forEach(friendship -> uuidFriends.add(friendship.getAccount_id_to()));
-        friendships.stream().filter(friendship -> friendship.getAccount_id_to().equals(uuidFrom)).forEach(friendship -> uuidFriends.add(friendship.getAccount_id_from()));
+        friendships.stream().filter(friendship -> friendship.getAccountIdFrom().equals(uuidFrom)).forEach(friendship -> uuidFriends.add(friendship.getAccountIdTo()));
+        friendships.stream().filter(friendship -> friendship.getAccountIdTo().equals(uuidFrom)).forEach(friendship -> uuidFriends.add(friendship.getAccountIdFrom()));
         return uuidFriends;
     }
 

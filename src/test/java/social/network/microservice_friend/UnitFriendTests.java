@@ -113,7 +113,7 @@ class UnitFriendTests {
     void statusCodeNull() throws ParseException {
         Pageable pageable = PageRequest.of(0, 20);
         FriendsRs expect = UtilsT.statusCodeNull();
-        Mockito.when(repositoryMock.findIdStatusREQUEST_FROM(serviceTwo.uuidFrom(UtilsT.token))).thenReturn(UtilsT.friendIds());
+        Mockito.when(repositoryMock.findIdStatusREQUESTFROM(serviceTwo.uuidFrom(UtilsT.token))).thenReturn(UtilsT.friendIds());
         Mockito.when(accountClient.getAccountById(UUID.fromString("fa6f76bb-6be7-493e-bbdc-caf03cb7eb6a"), UtilsT.token)).thenReturn(UtilsT.account_by_id());
         Mockito.when(accountClient.getAccountById(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a"), UtilsT.token)).thenReturn(UtilsT.account_by_id());
         FriendsRs actual = serviceTwo.statusCodeNull(UtilsT.token, pageable);
@@ -196,8 +196,8 @@ class UnitFriendTests {
     void request() throws ParseException {
         String expected = "Friendship with uuidTo fa6f76bb-6be7-493e-bbdc-caf03cb7eb6a REQUEST_FROM";
         Friendship friendshipNew = Friendship.builder()
-                .account_id_to(UUID.fromString("fa6f76bb-6be7-493e-bbdc-caf03cb7eb6a"))
-                .account_id_from(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))
+                .accountIdTo(UUID.fromString("fa6f76bb-6be7-493e-bbdc-caf03cb7eb6a"))
+                .accountIdFrom(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))
                 .statusBetween(StatusCode.REQUEST_FROM)
                 .uuid(UUID.randomUUID())
                 .build();

@@ -61,26 +61,26 @@ public abstract class FriendAbstractTests {
         repository.deleteAll();
         Friendship friendship = Friendship.builder()
                 .uuid(UUID.randomUUID())
-                .account_id_to(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a"))
-                .account_id_from(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))
+                .accountIdTo(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a"))
+                .accountIdFrom(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))
                 .statusBetween(StatusCode.FRIEND)
                 .build();
         Friendship friendship2 = Friendship.builder()
                 .uuid(UUID.randomUUID())
-                .account_id_to(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a"))
-                .account_id_from(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))
+                .accountIdTo(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a"))
+                .accountIdFrom(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))
                 .statusBetween(StatusCode.SUBSCRIBED)
                 .build();
         Friendship friendship3 = Friendship.builder()
                 .uuid(UUID.randomUUID())
-                .account_id_to(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b4a"))
-                .account_id_from(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))
+                .accountIdTo(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b4a"))
+                .accountIdFrom(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))
                 .statusBetween(StatusCode.BLOCKED)
                 .build();
         Friendship friendship4 = Friendship.builder()
                 .uuid(UUID.randomUUID())
-                .account_id_to(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b5a"))
-                .account_id_from(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))
+                .accountIdTo(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b5a"))
+                .accountIdFrom(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))
                 .statusBetween(StatusCode.REQUEST_FROM)
                 .build();
         repository.save(friendship);

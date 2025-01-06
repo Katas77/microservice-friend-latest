@@ -17,11 +17,11 @@ public class Friendship {
     private UUID uuid;
 
     @Column(name = "account_id_to")
-    private UUID account_id_to;
+    private UUID accountIdTo;
 
 
     @Column(name = "account_id_from")
-    private UUID account_id_from;
+    private UUID accountIdFrom;
 
 
     @Column(name = "status_between")

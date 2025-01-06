@@ -46,17 +46,17 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
             return statusCodeNull(headerToken, pageable);
         }
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.REQUEST_FROM)) {
-            friendSearchDto.setIds(repository.findIdStatusREQUEST_FROM(uuidFrom(headerToken)));
+            friendSearchDto.setIds(repository.findIdStatusREQUESTFROM(uuidFrom(headerToken)));
         }
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.WATCHING)) {
             friendSearchDto.setIds(repository.findIdStatusWATCHING(uuidFrom(headerToken)));
         }
 
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.REQUEST_TO)) {
-            friendSearchDto.setIds(repository.findIdStatusREQUEST_TO(uuidFrom(headerToken)));
+            friendSearchDto.setIds(repository.findIdStatusREQUESTTO(uuidFrom(headerToken)));
         }
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.SUBSCRIBED)) {
-            friendSearchDto.setIds(repository.findIdStatus_SUBSCRIBED(uuidFrom(headerToken)));
+            friendSearchDto.setIds(repository.findIdStatusSUBSCRIBED(uuidFrom(headerToken)));
         }
         if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.BLOCKED)) {
             friendSearchDto.setIds(friendServiceOne.blockFriendId(headerToken));
@@ -170,8 +170,8 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
     public List<UUID> uuidFriends(UUID uuidFrom) {
         List<Friendship> friendships = repository.findFRIENDS(uuidFrom);
         List<UUID> uuidFriends = new ArrayList<>();
-        friendships.stream().filter(friendship -> friendship.getAccount_id_from().equals(uuidFrom)).forEach(friendship -> uuidFriends.add(friendship.getAccount_id_to()));
-        friendships.stream().filter(friendship -> friendship.getAccount_id_to().equals(uuidFrom)).forEach(friendship -> uuidFriends.add(friendship.getAccount_id_from()));
+        friendships.stream().filter(friendship -> friendship.getAccountIdFrom().equals(uuidFrom)).forEach(friendship -> uuidFriends.add(friendship.getAccountIdTo()));
+        friendships.stream().filter(friendship -> friendship.getAccountIdTo().equals(uuidFrom)).forEach(friendship -> uuidFriends.add(friendship.getAccountIdFrom()));
         return uuidFriends;
     }
 
@@ -185,15 +185,15 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
     }
 
     public FriendsRs statusCodeNull(String headerToken, Pageable pageable) throws ParseException {
-        List<UUID> listREQUEST_FROM = repository.findIdStatusREQUEST_FROM(uuidFrom(headerToken));
+        List<UUID> listREQUEST_FROM = repository.findIdStatusREQUESTFROM(uuidFrom(headerToken));
         List<AccountDto> accountREQUEST_FROM = listREQUEST_FROM.stream().map(uuid -> accountById(uuid, headerToken)).toList();
         List<FriendDto> friendDtoList = mapper.accountsListToFriendDtoList(accountREQUEST_FROM, StatusCode.REQUEST_FROM);
 
-        List<UUID> listREQUEST_TO = repository.findIdStatusREQUEST_TO(uuidFrom(headerToken));
-        List<AccountDto> accountREQUEST_TO = listREQUEST_TO.stream().map(uuid -> accountById(uuid, headerToken)).toList();
-        friendDtoList.addAll(mapper.accountsListToFriendDtoList(accountREQUEST_TO, StatusCode.REQUEST_TO));
+        List<UUID> listREQUESTTO = repository.findIdStatusREQUESTTO(uuidFrom(headerToken));
+        List<AccountDto> accountREQUESTTO = listREQUESTTO.stream().map(uuid -> accountById(uuid, headerToken)).toList();
+        friendDtoList.addAll(mapper.accountsListToFriendDtoList(accountREQUESTTO, StatusCode.REQUEST_TO));
 
-        List<UUID> listSUBSCRIBED = repository.findIdStatus_SUBSCRIBED(uuidFrom(headerToken));
+        List<UUID> listSUBSCRIBED = repository.findIdStatusSUBSCRIBED(uuidFrom(headerToken));
         List<AccountDto> accountSUBSCRIBED = listSUBSCRIBED.stream().map(uuid -> accountById(uuid, headerToken)).toList();
         friendDtoList.addAll(mapper.accountsListToFriendDtoList(accountSUBSCRIBED, StatusCode.SUBSCRIBED));
 
