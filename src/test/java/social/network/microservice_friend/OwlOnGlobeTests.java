@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import social.network.microservice_friend.aop.LogAspect;
-import social.network.microservice_friend.clientFeign.ClientFeign;
+import social.network.microservice_friend.feigns.ClientFeign;
 import social.network.microservice_friend.configuration.security.RequestHeaderAuthenticationProvider;
 import social.network.microservice_friend.dto.Message;
 import social.network.microservice_friend.exception.BusinessLogicException;

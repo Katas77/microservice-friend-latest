@@ -8,7 +8,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import social.network.microservice_friend.aop.Logger;
-import social.network.microservice_friend.clientFeign.ClientFeign;
+import social.network.microservice_friend.feigns.ClientFeign;
 import social.network.microservice_friend.dto.AccountDto;
 import social.network.microservice_friend.dto.FriendDto;
 import social.network.microservice_friend.dto.FriendSearchDto;
@@ -185,9 +185,9 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
     }
 
     public FriendsRs statusCodeNull(String headerToken, Pageable pageable) throws ParseException {
-        List<UUID> listREQUEST_FROM = repository.findIdStatusREQUESTFROM(uuidFrom(headerToken));
-        List<AccountDto> accountREQUEST_FROM = listREQUEST_FROM.stream().map(uuid -> accountById(uuid, headerToken)).toList();
-        List<FriendDto> friendDtoList = mapper.accountsListToFriendDtoList(accountREQUEST_FROM, StatusCode.REQUEST_FROM);
+        List<UUID> listREQUESTFROM = repository.findIdStatusREQUESTFROM(uuidFrom(headerToken));
+        List<AccountDto> accountREQUESTFROM = listREQUESTFROM.stream().map(uuid -> accountById(uuid, headerToken)).toList();
+        List<FriendDto> friendDtoList = mapper.accountsListToFriendDtoList(accountREQUESTFROM, StatusCode.REQUEST_FROM);
 
         List<UUID> listREQUESTTO = repository.findIdStatusREQUESTTO(uuidFrom(headerToken));
         List<AccountDto> accountREQUESTTO = listREQUESTTO.stream().map(uuid -> accountById(uuid, headerToken)).toList();

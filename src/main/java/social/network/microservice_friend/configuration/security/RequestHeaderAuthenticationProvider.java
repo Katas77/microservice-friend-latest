@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
-import social.network.microservice_friend.clientFeign.ClientFeign;
+import social.network.microservice_friend.feigns.ClientFeign;
 
 import java.util.ArrayList;
 

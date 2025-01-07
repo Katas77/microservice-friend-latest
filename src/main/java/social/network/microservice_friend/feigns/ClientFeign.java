@@ -1,4 +1,4 @@
-package social.network.microservice_friend.clientFeign;
+package social.network.microservice_friend.feigns;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
