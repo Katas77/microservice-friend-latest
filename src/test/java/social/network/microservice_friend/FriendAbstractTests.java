@@ -23,7 +23,7 @@ import java.util.UUID;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public abstract class FriendAbstractTests {
+abstract class FriendAbstractTests {
     FriendServiceOne friendServiceMock = Mockito.mock(FriendServiceOne.class);
     KafkaTemplateFriend producer = Mockito.mock(KafkaTemplateFriend.class);
 

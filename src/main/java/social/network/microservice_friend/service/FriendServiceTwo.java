@@ -3,8 +3,8 @@ package social.network.microservice_friend.service;
 import org.springframework.data.domain.Pageable;
 import social.network.microservice_friend.dto.AccountDto;
 import social.network.microservice_friend.dto.FriendSearchDto;
-import social.network.microservice_friend.dto.responseFriend.FriendsRs;
-import social.network.microservice_friend.dto.responseFriend.RecommendationFriendsRs;
+import social.network.microservice_friend.dto.responses.FriendsRs;
+import social.network.microservice_friend.dto.responses.RecommendationFriendsRs;
 import java.text.ParseException;
 import java.util.UUID;
 

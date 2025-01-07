@@ -10,7 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import social.network.microservice_friend.clientFeign.ClientFeign;
 import social.network.microservice_friend.dto.*;
-import social.network.microservice_friend.dto.responseFriend.FriendsRs;
+import social.network.microservice_friend.dto.responses.FriendsRs;
 import social.network.microservice_friend.exception.BusinessLogicException;
 import social.network.microservice_friend.kafka.KafkaTemplateFriend;
 import social.network.microservice_friend.mapper.MapperDTO;

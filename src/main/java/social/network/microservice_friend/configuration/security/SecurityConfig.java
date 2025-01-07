@@ -1,4 +1,4 @@
-package social.network.microservice_friend.configuration.configSecurity;
+package social.network.microservice_friend.configuration.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

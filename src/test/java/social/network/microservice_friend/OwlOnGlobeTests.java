@@ -13,7 +13,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import social.network.microservice_friend.aop.LogAspect;
 import social.network.microservice_friend.clientFeign.ClientFeign;
-import social.network.microservice_friend.configuration.configSecurity.RequestHeaderAuthenticationProvider;
+import social.network.microservice_friend.configuration.security.RequestHeaderAuthenticationProvider;
 import social.network.microservice_friend.dto.Message;
 import social.network.microservice_friend.exception.BusinessLogicException;
 import social.network.microservice_friend.exception.FriendExceptionHandler;
@@ -22,7 +22,7 @@ import java.util.Objects;
 
 import static org.mockito.Mockito.verify;
 
-public class OwlOnGlobeTests {
+class OwlOnGlobeTests {
     ClientFeign accountClient = Mockito.mock(ClientFeign.class);
     FriendExceptionHandler friend = new FriendExceptionHandler();
 

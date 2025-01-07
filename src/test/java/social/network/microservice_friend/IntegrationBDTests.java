@@ -9,8 +9,8 @@ import org.springframework.data.domain.Pageable;
 import social.network.microservice_friend.dto.AccountDto;
 import social.network.microservice_friend.dto.FriendSearchDto;
 import social.network.microservice_friend.dto.Message;
-import social.network.microservice_friend.dto.responseFriend.FriendsRs;
-import social.network.microservice_friend.dto.responseFriend.RecommendationFriendsRs;
+import social.network.microservice_friend.dto.responses.FriendsRs;
+import social.network.microservice_friend.dto.responses.RecommendationFriendsRs;
 import social.network.microservice_friend.mapper.MapperDTO;
 import social.network.microservice_friend.mapper.impl.MapImpl;
 import social.network.microservice_friend.model.en.StatusCode;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class IntegrationBDTests extends FriendAbstractTests {
+ class IntegrationBDTests extends FriendAbstractTests {
     @DisplayName("Test for service layer arising in method approveService")
     @Test
     void approveService() throws ParseException {
