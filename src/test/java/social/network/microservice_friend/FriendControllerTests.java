@@ -50,6 +50,7 @@ class FriendControllerTests {
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
 
+
     @DisplayName("Test for controller emergent method account_by_id")
     @Test
     void account_by_id() throws Exception {
@@ -103,6 +104,21 @@ class FriendControllerTests {
         Mockito.verify(friendServiceMock, Mockito.times(2)).block(UUID.fromString("b3999ffa-2df9-469e-9793-ee65e214846e"), UtilsT.token);
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
+    @DisplayName("Test for controller emergent method block ")
+    @Test
+    void unblock() throws Exception {
+        Mockito.when(friendServiceMock.unblock(UUID.fromString("b3999ffa-2df9-469e-9793-ee65e214846e"), UtilsT.token)).thenReturn(UtilsT.messageBlock());
+        String expectedResponse = UtilsT.readStringFromResource("response/block.json");
+        RequestBuilder builder = MockMvcRequestBuilders.put("/api/v1/friends/unblock/{uuid}", "b3999ffa-2df9-469e-9793-ee65e214846e").accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
+                .header("Authorization", UtilsT.token);
+        var actualResponse = mockMvc.perform(builder).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        MvcResult result = mockMvc.perform(builder).andReturn();
+        log.info("Unblock  HTTP response status: {}", result.getResponse().getStatus());
+        Mockito.verify(friendServiceMock, Mockito.times(2)).unblock(UUID.fromString("b3999ffa-2df9-469e-9793-ee65e214846e"), UtilsT.token);
+        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+    }
+
+
 
     @DisplayName("Test for controller emergent method  dell ")
     @Test

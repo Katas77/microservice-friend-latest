@@ -60,6 +60,14 @@ public class FriendServiceOneImpl implements FriendServiceOne {
         return Message.builder()
                 .report(MessageFormat.format("Friend with ID {0} is blocked", uuidTo)).build();
     }
+    @Override
+    public Message unblock(UUID uuid, String headerToken) throws ParseException {
+        UUID uuidFrom = uuidFrom(headerToken);
+        Friendship friendship = repository.findToAndFrom(uuid, uuidFrom).orElseThrow(() -> new BusinessLogicException("Friendship  is NOT_FOUND"));
+        repository.delete(friendship);
+        return Message.builder()
+                .report(MessageFormat.format("Friendship with uuidTo {0} is unblock", uuid)).build();
+    }
 
     @Logger
     @Override
@@ -147,6 +155,8 @@ public class FriendServiceOneImpl implements FriendServiceOne {
                 .report(MessageFormat.format("friendship with uuidTo {0} is Dell", uuidTo)).build();
 
     }
+
+
 
     public UUID uuidFrom(String headerToken) throws ParseException {
         return UUID.fromString(SignedJWT.parse(headerToken.substring(7)).getPayload().toJSONObject().get("sub").toString());

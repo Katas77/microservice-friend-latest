@@ -26,5 +26,5 @@ public interface FriendServiceOne {
 
     Message dell(UUID uuid, String headerToken) throws ParseException;
 
-
+    Message unblock(UUID uuid, String headerToken) throws ParseException;
 }

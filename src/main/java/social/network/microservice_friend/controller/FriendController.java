@@ -31,6 +31,10 @@ public class FriendController {
     public Message block(@PathVariable UUID uuid, @RequestHeader("authorization") String headerToken) throws ParseException {
         return friendService.block(uuid, headerToken);
     }
+    @PutMapping("/unblock/{uuid}")
+    public Message unblock(@PathVariable UUID uuid, @RequestHeader("authorization") String headerToken) throws ParseException {
+        return friendService.unblock(uuid, headerToken);
+    }
 
     @PostMapping("/{uuid}/request")
     public Message request(@PathVariable UUID uuid, @RequestHeader("authorization") String headerToken) throws ParseException {

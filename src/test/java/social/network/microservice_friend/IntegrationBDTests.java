@@ -48,6 +48,17 @@ import java.util.UUID;
         JsonAssert.assertJsonEquals(expect, actual);
 
     }
+     @DisplayName("Test for service layer arising in method unblockS")
+     @Test
+     void unblockS() throws ParseException {
+         FriendServiceOne friendServiceOne = new FriendServiceOneImpl(repository, producer);
+         Message actual = friendServiceOne.unblock(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b4a"), UtilsT.token);
+         UUID uuidTo = UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b4a");
+         Message expect = Message.builder()
+                 .report(MessageFormat.format("Friendship with uuidTo {0} is unblock", uuidTo)).build();
+         JsonAssert.assertJsonEquals(expect, actual);
+
+     }
 
     @DisplayName("Test for service layer arising in method  requestS")
     @Test
