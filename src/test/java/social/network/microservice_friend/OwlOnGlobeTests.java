@@ -34,7 +34,7 @@ class OwlOnGlobeTests {
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
 
-    @DisplayName("Test for LogAspect")
+    @DisplayName("Test for aspect")
     @Test
     void LogAspect() {
         LogAspect logAspect = Mockito.mock(LogAspect.class);

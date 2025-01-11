@@ -1,5 +1,6 @@
 
 package social.network.microservice_friend.aop;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -14,8 +15,8 @@ import org.springframework.stereotype.Component;
 public class LogAspect {
     @Before("@annotation(Logger)")
     public void methodName(JoinPoint joinPoint) {
-        String name=joinPoint.getSignature().getName();
-        log.info("Warning ! Method  {} is    calling   ",name);
+        String name = joinPoint.getSignature().getName();
+        log.info("Warning ! Method  {} is    calling   ", name);
     }
 }
 
