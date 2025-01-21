@@ -10,6 +10,7 @@
 - Nimbus-jose-jwt
 - Openfeign
 - Spring-kafka
+- spring-cloud-starter-netflix-eureka-client
 
 ## Требования
 
@@ -25,10 +26,11 @@
 -	Удаление  из друзей
 -	Подписку на пользователя
 -	Есть возможность блокировать пользователей
-- Реализована логика рекомендации возможных друзей. В основе логики лежит рекомендация тех пользователей социальной сети,  у которых два и более общих друзей. Возможно изменение параметра.
+- Реализована логика рекомендации возможных друзей. В основе логики лежит рекомендация тех пользователей социальной сети,  у которых два и более общих друзей. Возможно изменение этого параметра.
+- Взаимодействие с другими сервисами производится с помощью технологии  Openfeign. Выбор данного REST-клиент основывался на его декларативности.
 
 
-### Запуск контейнера с базой данных
+### Запуск и  развертывание контейнера 
 
 ```bash
 mvn package 
@@ -36,7 +38,6 @@ docker build -t romakat77/microservice-friend:latest .
 docker login
 docker push romakat77/microservice-friend:latest
 docker pull romakat77/microservice-friend:latest
-docker run romakat77/microservice-friend:latest
 docker run --name friend2 -p 8087:8087 romakat77/microservice-friend:latest
 ```
 
