@@ -1,5 +1,6 @@
 # Командный проект курса «Java-разработчик – Социальная сеть»
-###  В основе проекта лежит Микросервисная архитектура стека Java-технологий 
+###  В основе проекта лежит Микросервисная архитектура стека Java-технологий
+![image](./swagger/3.jpg )
 ### Используемые технологии
 - Spring Boot 2.7
 - Maven 3
@@ -49,6 +50,9 @@ docker run --name friend2 -p 8087:8087 romakat77/microservice-friend:latest
 
 ## Database:
 - Postgresql
+## Tests:
+- Результат покрытия тестами 91%
+##  Sertifico:
 
 
 ![image](./swagger/1.jpg )

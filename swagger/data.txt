@@ -1,6 +1,5 @@
 
-
- http://localhost:8080/api/v1/friends/b3999ffa-2df9-469e-9793-ee65e214846e/approve
+http://localhost:8080/api/v1/friends/b3999ffa-2df9-469e-9793-ee65e214846e/approve
 
 http://localhost:8080/api/v1/friends/b3999ffa-2df9-469e-9793-ee65e214846e/request
 
@@ -11,36 +10,6 @@ http://localhost:8080/api/v1/friends/5c1db40f-8ea8-4b43-9310-3f2357fb5536
 http://localhost:8082/api/v1/default/hello
 
 http://localhost:8082/api/v1/default/size
-
-
-
-
-
-{
-    "id": "4a001ad4-52e8-41d2-8170-c28705c765b5",
-    "email": "eee@ru",
-    "phone": null,
-    "photo": null,
-    "about": null,
-    "city": null,
-    "country": null,
-    "statusCode": null,
-    "firstName": "",
-    "lastName": "",
-    "regDate": "2024-12-04T13:22:32.227782",
-    "birthDate": null,
-    "messagePermission": null,
-    "lastOnlineTime": "2024-12-04T13:22:32.227822",
-    "isOnline": false,
-    "isBlocked": false,
-    "isDeleted": false,
-    "photoId": null,
-    "photoName": null,
-    "role": null,
-    "createdOn": "2024-12-04T13:22:33.531025",
-    "updatedOn": "2024-12-04T13:22:33.531086",
-    "password": null
-}
 
 
 SELECT * FROM friend_schema.friendship WHERE (friendship.account_id_to='b3999ffa-2df9-469e-9793-ee65e214846e' or friendship.account_id_from='b3999ffa-2df9-469e-9793-ee65e214846e') AND (friendship.account_id_to='4a001ad4-52e8-41d2-8170-c28705c765b5' or friendship.account_id_from='4a001ad4-52e8-41d2-8170-c28705c765b5')
@@ -88,28 +57,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(
-        webEnvironment = SpringBootTest.WebEnvironment.MOCK,
-        classes = Application.class)
-@AutoConfigureMockMvc
-@TestPropertySource(
-        locations = "classpath:application-integrationtest.properties")
-@TestPropertySource(properties =
-        "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration")
-public abstract class AbstractTestController {
-    @Autowired
-   protected MockMvc mockMvc;
-    protected List<UUID> uuidList (UUID uuid1, UUID uuid2){
-        List<UUID> uuidList=new ArrayList<>();
-        uuidList.add(uuid1);
-        uuidList.add(uuid2);
-        return uuidList;
-    }
 
-}
-
-*/
        <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -164,6 +112,8 @@ public class DisableSecurity {
 
 
 
+
+Результат покрытия тестами 90%
 
 
 
