@@ -12,52 +12,6 @@ http://localhost:8082/api/v1/default/hello
 http://localhost:8082/api/v1/default/size
 
 
-SELECT * FROM friend_schema.friendship WHERE (friendship.account_id_to='b3999ffa-2df9-469e-9793-ee65e214846e' or friendship.account_id_from='b3999ffa-2df9-469e-9793-ee65e214846e') AND (friendship.account_id_to='4a001ad4-52e8-41d2-8170-c28705c765b5' or friendship.account_id_from='4a001ad4-52e8-41d2-8170-c28705c765b5')
-
-
-    @PostConstruct
-    public void great() {
-        Random random = new Random();
-        int b = random.nextInt(0, 3);
-        StatusCode[] statusCodes = {StatusCode.FRIEND, StatusCode.BLOCKED, StatusCode.REQUEST_TO, StatusCode.SUBSCRIBED};
-        Friendship friendship = Friendship.builder()
-                .uuid(UUID.randomUUID())
-                .account_id_to(UUID.randomUUID())
-                .account_id_from(UUID.randomUUID())
-                .statusBetween(statusCodes[b])
-                .build();
-        repository.save(friendship);
-        Friendship friendship2 = Friendship.builder()
-                .uuid(UUID.randomUUID())
-                .account_id_to(UUID.randomUUID())
-                .account_id_from(UUID.fromString("4a001ad4-52e8-41d2-8170-c28705c765b5"))
-                .statusBetween(StatusCode.REQUEST_FROM)
-                .build();
-        repository.save(friendship2);
-
-    }
-
-package social.network.microservice_friend;/*
-
-package social.network.microservice_friend;
-import jakarta.ws.rs.core.Application;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-
-import org.springframework.boot.test.context.SpringBootTest;
-
-
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-
        <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -77,9 +31,6 @@ import java.util.UUID;
                     </execution>
                 </executions>
             </plugin>
-
-
-
 
 
 
@@ -111,9 +62,6 @@ public class DisableSecurity {
 
 
 
-
-
-Результат покрытия тестами 90%
 
 
 
