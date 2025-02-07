@@ -90,7 +90,7 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
                 }
             }
         }
-        accountDtoList.addAll(defaultAccountDto(headerToken));
+
         List<RecommendationFriendsDto> list = mapper.accountsListToRecommends(accountDtoList);
         Page<RecommendationFriendsDto> friends = convertListToPage(list, pageable);
         return RecommendationFriendsRs.builder()
@@ -173,15 +173,6 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         friendships.stream().filter(friendship -> friendship.getAccountIdFrom().equals(uuidFrom)).forEach(friendship -> uuidFriends.add(friendship.getAccountIdTo()));
         friendships.stream().filter(friendship -> friendship.getAccountIdTo().equals(uuidFrom)).forEach(friendship -> uuidFriends.add(friendship.getAccountIdFrom()));
         return uuidFriends;
-    }
-
-
-    public List<AccountDto> defaultAccountDto(String headerToken) {
-        List<AccountDto> filter = new ArrayList<>();
-        AccountDto accountDto1 = accountById(UUID.fromString("0bc856ad-b35a-4b19-8969-4cc848fc5198"), headerToken);
-        accountDto1.setStatusCode(AccountStatus.REQUEST_FROM);
-        filter.add(accountDto1);
-        return filter;
     }
 
     public FriendsRs statusCodeNull(String headerToken, Pageable pageable) throws ParseException {
