@@ -36,14 +36,22 @@
 
 ```bash
 mvn package
-docker build -t romakat77/microservice-friend:latest .
-docker login
-docker push romakat77/microservice-friend:latest
-docker pull romakat77/microservice-friend:latest
-docker run --name friend2 -p 8087:8087 romakat77/microservice-friend:latest
 ```
-
-
+```bash
+docker build -t romakat77/microservice-friend:latest .
+```
+```bash
+docker login
+```
+```bash
+docker push romakat77/microservice-friend:latest
+```
+````bash
+docker pull romakat77/microservice-friend:latest
+`````
+````bash
+docker run --name friend2 -p 8087:8087 romakat77/microservice-friend:latest
+`````
 ### IntelliJ IDEA
 
 - Для локального запуска проекта откройте файл Application.java и запустите его main-метод.
