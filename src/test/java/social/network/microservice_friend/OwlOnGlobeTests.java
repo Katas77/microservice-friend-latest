@@ -33,15 +33,14 @@ class OwlOnGlobeTests {
         String actualResponse = UtilsT.readStringFromResource("response/approve.json");
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
-
     @DisplayName("Test for aspect")
     @Test
     void LogAspect() {
         LogAspect logAspect = Mockito.mock(LogAspect.class);
         JoinPoint joinPoint = Mockito.mock(JoinPoint.class);
-        logAspect.methodName(joinPoint);
-        Mockito.verify(logAspect, Mockito.times(1)).methodName(joinPoint);
-        verify(logAspect).methodName(joinPoint);
+        logAspect.logMethodCall(joinPoint);
+        Mockito.verify(logAspect, Mockito.times(1)).logMethodCall(joinPoint);
+        verify(logAspect).logMethodCall(joinPoint);
     }
 
     @DisplayName("Test for RequestHeaderAuthenticationProvider")
@@ -70,25 +69,25 @@ class OwlOnGlobeTests {
     @DisplayName("Test for FriendExceptionHandler")
     @Test
     void handleExceptionNull() {
-        NullPointerException e = new NullPointerException("NullPointerException is    calling");
+        NullPointerException e = new NullPointerException();
         String actual = Objects.requireNonNull(friend.handleExceptionNull(e).getBody()).getReport();
-        Assertions.assertEquals("NullPointerException is    calling", actual);
+        Assertions.assertEquals("Null Pointer Exception", actual);
     }
 
     @DisplayName("Test for IllegalArgumentException")
     @Test
     void IllegalArgumentExceptionF() {
-        IllegalArgumentException e = new IllegalArgumentException("IllegalArgumentException is    calling");
+        IllegalArgumentException e = new IllegalArgumentException();
         String actual = Objects.requireNonNull(friend.handleExceptionIllegalA(e).getBody()).getReport();
-        Assertions.assertEquals("IllegalArgumentException is    calling", actual);
+        Assertions.assertEquals("Illegal Argument Exception", actual);
     }
 
     @DisplayName("Test for FriendExceptionHandler")
     @Test
     void FriendHttpRequestMethodNotSupportedException() {
-        HttpRequestMethodNotSupportedException e = new HttpRequestMethodNotSupportedException("HttpRequestMethodNotSupportedException is    calling");
+        HttpRequestMethodNotSupportedException e = new HttpRequestMethodNotSupportedException("HTTP Method Supported ");
         String actual = Objects.requireNonNull(friend.handleException(e).getBody()).getReport();
-        Assertions.assertEquals("Request method 'HttpRequestMethodNotSupportedException is    calling' is not supported", actual);
+        Assertions.assertEquals("HTTP Method Not Supported Exception", actual);
     }
 
 
@@ -97,7 +96,7 @@ class OwlOnGlobeTests {
     void FriendMissingServletRequestParameterException() {
         MissingServletRequestParameterException e = new MissingServletRequestParameterException(null, null);
         String actual = Objects.requireNonNull(friend.handleExceptionServlet(e).getBody()).getReport();
-        Assertions.assertEquals("Required request parameter 'null' for method parameter type null is not present", actual);
+        Assertions.assertEquals("Missing Servlet Request Parameter Exception", actual);
     }
 
     @DisplayName("Test for FriendMissingServletRequestParameterException")
@@ -105,7 +104,7 @@ class OwlOnGlobeTests {
     void FriendNonUniqueResultException() {
         NonUniqueResultException e = new NonUniqueResultException(1);
         String actual = Objects.requireNonNull(friend.handleExceptionServlet(e).getBody()).getReport();
-        Assertions.assertEquals("Query did not return a unique result: 1 results were returned", actual);
+        Assertions.assertEquals("Non Unique Result Exception", actual);
     }
 
 

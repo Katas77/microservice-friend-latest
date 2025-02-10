@@ -45,58 +45,57 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         if (friendSearchDto.getStatusCode() == null) {
             return statusCodeNull(headerToken, pageable);
         }
-        if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.REQUEST_FROM)) {
+
+        if (friendSearchDto.getIds() == null && friendSearchDto.getStatusCode().equals(StatusCode.REQUEST_FROM)) {
             friendSearchDto.setIds(repository.findIdStatusREQUESTFROM(uuidFrom(headerToken)));
         }
-        if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.WATCHING)) {
+        if (friendSearchDto.getIds() == null && friendSearchDto.getStatusCode().equals(StatusCode.WATCHING)) {
             friendSearchDto.setIds(repository.findIdStatusWATCHING(uuidFrom(headerToken)));
         }
-
-        if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.REQUEST_TO)) {
+        if (friendSearchDto.getIds() == null && friendSearchDto.getStatusCode().equals(StatusCode.REQUEST_TO)) {
             friendSearchDto.setIds(repository.findIdStatusREQUESTTO(uuidFrom(headerToken)));
         }
-        if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.SUBSCRIBED)) {
+        if (friendSearchDto.getIds() == null && friendSearchDto.getStatusCode().equals(StatusCode.SUBSCRIBED)) {
             friendSearchDto.setIds(repository.findIdStatusSUBSCRIBED(uuidFrom(headerToken)));
         }
-        if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.BLOCKED)) {
+        if (friendSearchDto.getIds() == null && friendSearchDto.getStatusCode().equals(StatusCode.BLOCKED)) {
             friendSearchDto.setIds(friendServiceOne.blockFriendId(headerToken));
         }
-        if (friendSearchDto.getIds() == null & friendSearchDto.getStatusCode().equals(StatusCode.FRIEND)) {
+        if (friendSearchDto.getIds() == null && friendSearchDto.getStatusCode().equals(StatusCode.FRIEND)) {
             friendSearchDto.setIds(uuidFriends(uuidFrom(headerToken)));
         }
-        List<AccountDto> filter2 = search1(friendSearchDto, headerToken);
-        List<FriendDto> friendDtoList = mapper.accountsListToFriendDtoList(filter2, friendSearchDto.getStatusCode());
-        Page<FriendDto> friendPage2 = convertListToPage(friendDtoList, pageable);
+
+        List<AccountDto> filteredAccounts = search1(friendSearchDto, headerToken);
+
+        List<FriendDto> friendDtoList = mapper.accountsListToFriendDtoList(filteredAccounts, friendSearchDto.getStatusCode());
+        Page<FriendDto> friendPage = convertListToPage(friendDtoList, pageable);
         return FriendsRs.builder()
-                .content(friendPage2.getContent())
-                .totalElements(friendPage2.getTotalElements())
-                .totalPages(friendPage2.getTotalPages())
+                .content(friendPage.getContent())
+                .totalElements(friendPage.getTotalElements())
+                .totalPages(friendPage.getTotalPages())
                 .build();
-
-
     }
 
     @Logger
     @Override
     public RecommendationFriendsRs recommendationsService(String headerToken, Pageable pageable) throws ParseException {
-        List<AccountDto> accountDtoList = new ArrayList<>();
+        List<AccountDto> recommendedFriends = new ArrayList<>();
         List<UUID> uuidFriends = uuidFriends(uuidFrom(headerToken));
         for (UUID uuid : uuidFriends) {
             List<UUID> friendsOfFriend = uuidFriends(uuid);
             for (UUID uuid2 : friendsOfFriend) {
                 List<UUID> friendsOfFriend2 = uuidFriends(uuid2);
                 if (mutualFriends(uuidFriends, friendsOfFriend2) >= 2) {
-                    accountDtoList.add(accountById(uuid2, headerToken));
+                    recommendedFriends.add(accountById(uuid2, headerToken));
                 }
             }
         }
-
-        List<RecommendationFriendsDto> list = mapper.accountsListToRecommends(accountDtoList);
-        Page<RecommendationFriendsDto> friends = convertListToPage(list, pageable);
+        List<RecommendationFriendsDto> recommendationFriendsDtos = mapper.accountsListToRecommends(recommendedFriends);
+        Page<RecommendationFriendsDto> friendsPage = convertListToPage(recommendationFriendsDtos, pageable);
         return RecommendationFriendsRs.builder()
-                .content(friends.getContent())
-                .totalElements(friends.getTotalElements())
-                .totalPages(friends.getTotalPages())
+                .content(friendsPage.getContent())
+                .totalElements(friendsPage.getTotalElements())
+                .totalPages(friendsPage.getTotalPages())
                 .build();
     }
 
@@ -106,7 +105,6 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         return accountById(accountId, headerToken);
     }
 
-
     @Logger
     public AccountDto accountById(UUID id, String headerToken) {
         return Optional.ofNullable(accountClient.getAccountById(id, headerToken))
@@ -115,10 +113,12 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
 
     public List<AccountDto> search1(FriendSearchDto friendSearchDto, String headerToken) {
         if (friendSearchDto.getIds() == null) {
-            friendSearchDto.setIds(new ArrayList<UUID>());
+            friendSearchDto.setIds(new ArrayList<>());
         }
+
         List<AccountDto> accountDtoList = new ArrayList<>();
         friendSearchDto.getIds().forEach(uuid -> accountDtoList.add(accountById(uuid, headerToken)));
+
         return accountDtoList.stream()
                 .filter(accountDto -> friendSearchDto.getFirstName() == null || accountDto.getFirstName().equals(friendSearchDto.getFirstName()))
                 .filter(accountDto -> friendSearchDto.getCity() == null || accountDto.getCity().equals(friendSearchDto.getCity()))
@@ -128,6 +128,13 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
                 .toList();
     }
 
+    /**
+     * Метод для проверки даты рождения в пределах диапазона.
+     * @param birthDate     Дата рождения пользователя.
+     * @param birthDateFrom Начальная дата диапазона.
+     * @param birthDateTo   Конечная дата диапазона.
+     * @return True, если дата рождения находится в диапазоне, иначе False.
+     */
     public boolean validBirthDate(LocalDate birthDate, LocalDate birthDateFrom, LocalDate birthDateTo) {
         if (birthDate == null) {
             return true;
@@ -137,6 +144,13 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         return !(birthDate.isBefore(birthDateFrom) || birthDate.isAfter(birthDateTo));
     }
 
+    /**
+     * Метод для проверки возраста в пределах диапазона.
+     * @param birthDate Дата рождения пользователя.
+     * @param ageFrom   Минимальный возраст.
+     * @param ageTo     Максимальный возраст.
+     * @return True, если возраст находится в диапазоне, иначе False.
+     */
     public boolean validAge(LocalDate birthDate, Integer ageFrom, Integer ageTo) {
         if (birthDate == null) {
             return true;
@@ -147,25 +161,35 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         return !(age < ageFrom || age > ageTo);
     }
 
+    /**
+     * Метод для преобразования списка в страницу с учетом параметров пагинации.
+     * @param list     Исходный список элементов.
+     * @param pageable Параметры пагинации.
+     * @return Страница с элементами согласно параметрам пагинации.
+     */
     public <T> Page<T> convertListToPage(List<T> list, Pageable pageable) {
         int start = (int) pageable.getOffset();
-        int end = Math.min(pageable.getPageSize(), list.size());
+        int end = Math.min((int) pageable.getPageSize(), list.size());
         return new PageImpl<>(list.subList(start, end), pageable, list.size());
     }
 
-
+    /**
+     * Метод для вычисления количества общих друзей между двумя пользователями.
+     * @param uuidFriends     Список друзей первого пользователя.
+     * @param friendsOfFriend Список друзей второго пользователя.
+     * @return Количество общих друзей.
+     */
     public Integer mutualFriends(List<UUID> uuidFriends, List<UUID> friendsOfFriend) {
         List<UUID> all = new ArrayList<>();
         all.addAll(uuidFriends);
         all.addAll(friendsOfFriend);
-        Set<UUID> set = new HashSet<>(all);
-        return (all.size() - set.size());
+        Set<UUID> uniqueFriends = new HashSet<>(all);
+        return (all.size() - uniqueFriends.size());
     }
 
     public UUID uuidFrom(String headerToken) throws ParseException {
         return UUID.fromString(SignedJWT.parse(headerToken.substring(7)).getPayload().toJSONObject().get("sub").toString());
     }
-
 
     public List<UUID> uuidFriends(UUID uuidFrom) {
         List<Friendship> friendships = repository.findFRIENDS(uuidFrom);
@@ -179,29 +203,23 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
         List<UUID> listREQUESTFROM = repository.findIdStatusREQUESTFROM(uuidFrom(headerToken));
         List<AccountDto> accountREQUESTFROM = listREQUESTFROM.stream().map(uuid -> accountById(uuid, headerToken)).toList();
         List<FriendDto> friendDtoList = mapper.accountsListToFriendDtoList(accountREQUESTFROM, StatusCode.REQUEST_FROM);
-
         List<UUID> listREQUESTTO = repository.findIdStatusREQUESTTO(uuidFrom(headerToken));
         List<AccountDto> accountREQUESTTO = listREQUESTTO.stream().map(uuid -> accountById(uuid, headerToken)).toList();
         friendDtoList.addAll(mapper.accountsListToFriendDtoList(accountREQUESTTO, StatusCode.REQUEST_TO));
-
         List<UUID> listSUBSCRIBED = repository.findIdStatusSUBSCRIBED(uuidFrom(headerToken));
         List<AccountDto> accountSUBSCRIBED = listSUBSCRIBED.stream().map(uuid -> accountById(uuid, headerToken)).toList();
         friendDtoList.addAll(mapper.accountsListToFriendDtoList(accountSUBSCRIBED, StatusCode.SUBSCRIBED));
-
         List<UUID> listBLOCKED = friendServiceOne.blockFriendId(headerToken);
         List<AccountDto> accountBLOCKED = listBLOCKED.stream().map(uuid -> accountById(uuid, headerToken)).toList();
         friendDtoList.addAll(mapper.accountsListToFriendDtoList(accountBLOCKED, StatusCode.BLOCKED));
-
         List<UUID> listFRIEND = uuidFriends(uuidFrom(headerToken));
         List<AccountDto> accountFRIEND = listFRIEND.stream().map(uuid -> accountById(uuid, headerToken)).toList();
         friendDtoList.addAll(mapper.accountsListToFriendDtoList(accountFRIEND, StatusCode.FRIEND));
-
         Page<FriendDto> friendPage = convertListToPage(friendDtoList, pageable);
         return FriendsRs.builder()
                 .content(friendPage.getContent())
                 .totalElements(friendPage.getTotalElements())
                 .totalPages(friendPage.getTotalPages())
-                .build();
+                .build(); // Формируем ответ.
     }
-
 }

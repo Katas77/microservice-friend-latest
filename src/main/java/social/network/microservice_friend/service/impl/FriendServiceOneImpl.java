@@ -26,7 +26,6 @@ public class FriendServiceOneImpl implements FriendServiceOne {
     private final FriendshipRepository repository;
     private final KafkaTemplateFriend producer;
 
-
     @Logger
     @Override
     public Message approveService(UUID uuidTo, String headerToken) throws ParseException {
@@ -34,12 +33,15 @@ public class FriendServiceOneImpl implements FriendServiceOne {
             throw new BusinessLogicException("You can't add yourself as a friend");
         }
         Friendship friend = repository.findToAndFrom(uuidTo, uuidFrom(headerToken)).orElseThrow(
-                () -> new BusinessLogicException(MessageFormat.format("Friendship with uuidTo{0} is NOT_FOUND", uuidTo)));
+                () -> new BusinessLogicException(MessageFormat.format("Friendship with uuidTo {0} is NOT_FOUND", uuidTo)));
+
         friend.setStatusBetween(StatusCode.FRIEND);
         repository.save(friend);
         return Message.builder()
-                .report(MessageFormat.format("Friendship with uuidTo {0} is approve", uuidTo)).build();
+                .report(MessageFormat.format("Friendship with uuidTo {0} is approved", uuidTo))
+                .build();
     }
+
     @Logger
     @Override
     public Message block(UUID uuidTo, String headerToken) throws ParseException {
@@ -58,15 +60,18 @@ public class FriendServiceOneImpl implements FriendServiceOne {
             repository.save(friendship2);
         }
         return Message.builder()
-                .report(MessageFormat.format("Friend with ID {0} is blocked", uuidTo)).build();
+                .report(MessageFormat.format("User with ID {0} has been blocked", uuidTo))
+                .build();
     }
+
     @Override
-    public Message unblock(UUID uuid, String headerToken) throws ParseException {
+    public Message unblock(UUID uuidTo, String headerToken) throws ParseException {
         UUID uuidFrom = uuidFrom(headerToken);
-        Friendship friendship = repository.findToAndFrom(uuid, uuidFrom).orElseThrow(() -> new BusinessLogicException("Friendship  is NOT_FOUND"));
+        Friendship friendship = repository.findToAndFrom(uuidTo, uuidFrom).orElseThrow(() -> new BusinessLogicException("Friendship not found"));
         repository.delete(friendship);
         return Message.builder()
-                .report(MessageFormat.format("Friendship with uuidTo {0} is unblock", uuid)).build();
+                .report(MessageFormat.format("User with ID {0} has been unblocked", uuidTo))
+                .build();
     }
 
     @Logger
@@ -81,15 +86,24 @@ public class FriendServiceOneImpl implements FriendServiceOne {
                     .uuid(UUID.randomUUID())
                     .build();
             repository.save(friendshipNew);
-            producer.sendEventToNotification(FriendRequestEvent.builder().authorId(friendshipNew.getAccountIdFrom()).userId(uuidTo).notificationType(NotificationType.FRIEND_REQUEST).build());
+            producer.sendEventToNotification(FriendRequestEvent.builder()
+                    .authorId(friendshipNew.getAccountIdFrom())
+                    .userId(uuidTo)
+                    .notificationType(NotificationType.FRIEND_REQUEST)
+                    .build());
         } else {
             Friendship friendship = friendshipOptional.get();
             friendship.setStatusBetween(StatusCode.REQUEST_FROM);
             repository.save(friendship);
-            producer.sendEventToNotification(FriendRequestEvent.builder().authorId(friendship.getAccountIdFrom()).userId(uuidTo).notificationType(NotificationType.FRIEND_REQUEST).build());
+            producer.sendEventToNotification(FriendRequestEvent.builder()
+                    .authorId(friendship.getAccountIdFrom())
+                    .userId(uuidTo)
+                    .notificationType(NotificationType.FRIEND_REQUEST)
+                    .build());
         }
         return Message.builder()
-                .report(MessageFormat.format("Friendship with uuidTo {0} REQUEST_FROM", uuidTo)).build();
+                .report(MessageFormat.format("Friendship with uuidTo {0} REQUEST_FROM sent", uuidTo))
+                .build();
     }
 
     @Logger
@@ -110,8 +124,8 @@ public class FriendServiceOneImpl implements FriendServiceOne {
             repository.save(friendship2);
         }
         return Message.builder()
-                .report(MessageFormat.format("Friendship with uuidTo {0} SUBSCRIBED", uuidTo)).build();
-
+                .report(MessageFormat.format("Subscription to user with ID {0} successful", uuidTo))
+                .build();
     }
 
     @Logger
@@ -140,8 +154,11 @@ public class FriendServiceOneImpl implements FriendServiceOne {
         for (Friendship friendship : friendships) {
             if (friendship.getAccountIdFrom().equals(uuidFrom)) {
                 uuids.add(friendship.getAccountIdTo());
-            } else uuids.add(friendship.getAccountIdFrom());
+            } else {
+                uuids.add(friendship.getAccountIdFrom());
+            }
         }
+
         return uuids;
     }
 
@@ -149,14 +166,12 @@ public class FriendServiceOneImpl implements FriendServiceOne {
     @Override
     public Message dell(UUID uuidTo, String headerToken) throws ParseException {
         UUID uuidFrom = uuidFrom(headerToken);
-        Friendship friendship = repository.findToAndFrom(uuidTo, uuidFrom).orElseThrow(() -> new BusinessLogicException("Friendship  is NOT_FOUND"));
+        Friendship friendship = repository.findToAndFrom(uuidTo, uuidFrom).orElseThrow(() -> new BusinessLogicException("Friendship not found"));
         repository.delete(friendship);
         return Message.builder()
-                .report(MessageFormat.format("friendship with uuidTo {0} is Dell", uuidTo)).build();
-
+                .report(MessageFormat.format("Friendship with user ID {0} deleted", uuidTo))
+                .build();
     }
-
-
 
     public UUID uuidFrom(String headerToken) throws ParseException {
         return UUID.fromString(SignedJWT.parse(headerToken.substring(7)).getPayload().toJSONObject().get("sub").toString());
@@ -170,7 +185,4 @@ public class FriendServiceOneImpl implements FriendServiceOne {
         friendships.stream().filter(friendship -> friendship.getAccountIdTo().equals(uuidFrom)).forEach(friendship -> uuidFriends.add(friendship.getAccountIdFrom()));
         return uuidFriends;
     }
-
-
 }
-
