@@ -1,5 +1,4 @@
 package social.network.microservice_friend;
-
 import net.javacrumbs.jsonunit.JsonAssert;
 import org.aspectj.lang.JoinPoint;
 import org.hibernate.NonUniqueResultException;
@@ -20,28 +19,32 @@ import social.network.microservice_friend.exception.FriendExceptionHandler;
 import social.network.microservice_friend.test_utils.UtilsT;
 import java.util.Objects;
 
-import static org.mockito.Mockito.verify;
 
 class OwlOnGlobeTests {
     ClientFeign accountClient = Mockito.mock(ClientFeign.class);
     FriendExceptionHandler friend = new FriendExceptionHandler();
 
-    @DisplayName("Test for readStringFrom")
+    @DisplayName("Test for reading string from resource")
     @Test
     void readStringFromResource() {
-        Message expectedResponse = Message.builder().report("Friendship with uuidTo b3999ffa-2df9-469e-9793-ee65e214846e is approve").build();
+        Message expectedResponse = Message.builder()
+                .report("Friendship with uuidTo b3999ffa-2df9-469e-9793-ee65e214846e is approve")
+                .build();
+
         String actualResponse = UtilsT.readStringFromResource("response/approve.json");
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
-    @DisplayName("Test for aspect")
+
+    @DisplayName("Test for LogAspect")
     @Test
-    void LogAspect() {
+    void logAspect() {
         LogAspect logAspect = Mockito.mock(LogAspect.class);
         JoinPoint joinPoint = Mockito.mock(JoinPoint.class);
+
         logAspect.logMethodCall(joinPoint);
         Mockito.verify(logAspect, Mockito.times(1)).logMethodCall(joinPoint);
-        verify(logAspect).logMethodCall(joinPoint);
     }
+
 
     @DisplayName("Test for RequestHeaderAuthenticationProvider")
     @Test
