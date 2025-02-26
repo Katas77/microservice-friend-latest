@@ -2,7 +2,6 @@ package social.network.microservice_friend;
 
 import lombok.RequiredArgsConstructor;
 import net.javacrumbs.jsonunit.JsonAssert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

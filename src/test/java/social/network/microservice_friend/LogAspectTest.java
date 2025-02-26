@@ -1,3 +1,4 @@
+package social.network.microservice_friend;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
