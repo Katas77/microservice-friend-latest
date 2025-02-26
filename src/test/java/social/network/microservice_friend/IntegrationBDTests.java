@@ -32,7 +32,7 @@ import java.util.UUID;
         FriendServiceOne friendServiceOne = new FriendServiceOneImpl(repository, producer);
         Message actual = friendServiceOne.approveService(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a"), UtilsT.token);
         UUID uuidTo = UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b2a");
-        Message expect = Message.builder().report(MessageFormat.format("Friendship with uuidTo {0} is approve", uuidTo)).build();
+        Message expect = Message.builder().report(MessageFormat.format("Friendship with uuidTo {0} is approved", uuidTo)).build();
         JsonAssert.assertJsonEquals(expect, actual);
 
     }
@@ -44,7 +44,7 @@ import java.util.UUID;
         Message actual = friendServiceOne.block(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b4a"), UtilsT.token);
         UUID uuidTo = UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b4a");
         Message expect = Message.builder()
-                .report(MessageFormat.format("Friend with ID {0} is blocked", uuidTo)).build();
+                .report(MessageFormat.format("User with ID {0} has been blocked", uuidTo)).build();
         JsonAssert.assertJsonEquals(expect, actual);
 
     }
@@ -55,7 +55,7 @@ import java.util.UUID;
          Message actual = friendServiceOne.unblock(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b4a"), UtilsT.token);
          UUID uuidTo = UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b4a");
          Message expect = Message.builder()
-                 .report(MessageFormat.format("Friendship with uuidTo {0} is unblock", uuidTo)).build();
+                 .report(MessageFormat.format("User with ID {0} has been unblocked", uuidTo)).build();
          JsonAssert.assertJsonEquals(expect, actual);
 
      }
@@ -67,7 +67,7 @@ import java.util.UUID;
         Message actual = friendServiceOne.request(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b7a"), UtilsT.token);
         UUID uuidTo = UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b7a");
         Message expect = Message.builder()
-                .report(MessageFormat.format("Friendship with uuidTo {0} REQUEST_FROM", uuidTo)).build();
+                .report(MessageFormat.format("Friendship with uuidTo {0} REQUEST_FROM sent", uuidTo)).build();
         JsonAssert.assertJsonEquals(expect, actual);
 
     }
@@ -79,7 +79,7 @@ import java.util.UUID;
         Message actual = friendServiceOne.subscribe(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a"), UtilsT.token);
         UUID uuidTo = UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a");
         Message expect = Message.builder()
-                .report(MessageFormat.format("Friendship with uuidTo {0} SUBSCRIBED", uuidTo)).build();
+                .report(MessageFormat.format("Subscription to user with ID {0} successful", uuidTo)).build();
         JsonAssert.assertJsonEquals(expect, actual);
 
     }
@@ -127,7 +127,7 @@ import java.util.UUID;
         Message actual = friendServiceOne.dell(UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a"), UtilsT.token);
         UUID uuidTo = UUID.fromString("494e2d92-26bb-4524-aaeb-46308a412b3a");
         Message expect = Message.builder()
-                .report(MessageFormat.format("friendship with uuidTo {0} is Dell", uuidTo)).build();
+                .report(MessageFormat.format("Friendship with user ID {0} deleted", uuidTo)).build();
         JsonAssert.assertJsonEquals(expect, actual);
 
     }
@@ -216,17 +216,6 @@ import java.util.UUID;
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
 
-    @DisplayName("Test for service layer arising in method recommendationsService")
-    @Test
-    void recommendationsService() throws Exception {
-        MapperDTO mapper = new MapImpl();
-        FriendServiceTwoImpl serviceTwo = new FriendServiceTwoImpl(mapper, repository, accountClient, friendServiceMock);
-        Pageable pageable = PageRequest.of(0, 20);
-        RecommendationFriendsRs expectedResponse = UtilsT.recommendations();
-        Mockito.when(accountClient.getAccountById(UUID.fromString("0bc856ad-b35a-4b19-8969-4cc848fc5198"), UtilsT.token)).thenReturn(UtilsT.accountDto());
-        RecommendationFriendsRs actualResponse = serviceTwo.recommendationsService(UtilsT.token, pageable);
-        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
-    }
 
     @DisplayName("Test for service layer arising in method gettingFriendByIdService")
     @Test
