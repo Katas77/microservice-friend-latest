@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import social.network.microservice_friend.dto.AccountDto;
 import social.network.microservice_friend.dto.FriendSearchDto;
 import social.network.microservice_friend.dto.Message;
+import social.network.microservice_friend.dto.RecommendationFriendsDto;
 import social.network.microservice_friend.dto.responses.FriendsRs;
 import social.network.microservice_friend.dto.responses.RecommendationFriendsRs;
 import social.network.microservice_friend.mapper.MapperDTO;
@@ -215,6 +216,16 @@ import java.util.UUID;
         FriendsRs actualResponse = serviceTwo.gettingAllFriendsService(UtilsT.token, friendSearchDto, pageable);
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
+     @DisplayName("Test for service layer arising in method recommendationsService")
+     @Test
+     void recommendationsService() throws Exception {
+         MapperDTO mapper = new MapImpl();
+         FriendServiceTwoImpl serviceTwo = new FriendServiceTwoImpl(mapper, repository, accountClient, friendServiceMock);
+         Pageable pageable = PageRequest.of(0, 20);
+         RecommendationFriendsRs expectedResponse = RecommendationFriendsRs.builder().totalElements(0L).totalPages(0).content(new ArrayList<>()).build();
+         RecommendationFriendsRs actualResponse = serviceTwo.recommendationsService(UtilsT.token, pageable);
+         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+     }
 
 
     @DisplayName("Test for service layer arising in method gettingFriendByIdService")

@@ -1,6 +1,7 @@
 package social.network.microservice_friend;
 import net.javacrumbs.jsonunit.JsonAssert;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.hibernate.NonUniqueResultException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -18,6 +19,7 @@ import social.network.microservice_friend.exception.BusinessLogicException;
 import social.network.microservice_friend.exception.FriendExceptionHandler;
 import social.network.microservice_friend.test_utils.UtilsT;
 import java.util.Objects;
+
 
 
 class OwlOnGlobeTests {
@@ -109,6 +111,13 @@ class OwlOnGlobeTests {
         String actual = Objects.requireNonNull(friend.handleExceptionServlet(e).getBody()).getReport();
         Assertions.assertEquals("Non Unique Result Exception", actual);
     }
+    @Test
+    void testLogExecutionTime() throws Throwable {
+        LogAspect logAspect = Mockito.mock(LogAspect.class);
+        ProceedingJoinPoint joinPoint = Mockito.mock(ProceedingJoinPoint .class);
 
+        logAspect.logExecutionTime(joinPoint);
+        Mockito.verify(logAspect, Mockito.times(1)).logExecutionTime(joinPoint);
+    }
 
 }
