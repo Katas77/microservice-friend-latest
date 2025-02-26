@@ -9,11 +9,11 @@ import org.springframework.data.domain.Pageable;
 import social.network.microservice_friend.dto.AccountDto;
 import social.network.microservice_friend.dto.FriendSearchDto;
 import social.network.microservice_friend.dto.Message;
-import social.network.microservice_friend.dto.RecommendationFriendsDto;
 import social.network.microservice_friend.dto.responses.FriendsRs;
 import social.network.microservice_friend.dto.responses.RecommendationFriendsRs;
 import social.network.microservice_friend.mapper.MapperDTO;
 import social.network.microservice_friend.mapper.impl.MapImpl;
+import social.network.microservice_friend.model.Friendship;
 import social.network.microservice_friend.model.en.StatusCode;
 import social.network.microservice_friend.service.FriendServiceOne;
 import social.network.microservice_friend.service.impl.FriendServiceOneImpl;
@@ -26,7 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
- class IntegrationBDTests extends FriendAbstractTests {
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+class IntegrationBDTests extends FriendAbstractTests {
     @DisplayName("Test for service layer arising in method approveService")
     @Test
     void approveService() throws ParseException {
@@ -238,5 +240,9 @@ import java.util.UUID;
         AccountDto actualResponse = serviceTwo.gettingFriendByIdService(UUID.fromString("0bc856ad-b35a-4b19-8969-4cc848fc5198"), UtilsT.token);
         JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
     }
-
+     @Test
+     void shouldSaveFriendships() {
+         List<Friendship> friendships = repository.findAll();
+         assertThat(friendships.size()).isEqualTo(4);
+     }
 }

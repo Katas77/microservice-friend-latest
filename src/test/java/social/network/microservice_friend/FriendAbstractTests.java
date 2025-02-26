@@ -1,5 +1,6 @@
 package social.network.microservice_friend;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import social.network.microservice_friend.feigns.ClientFeign;
 import social.network.microservice_friend.kafka.KafkaTemplateFriend;
@@ -23,6 +25,7 @@ import java.util.UUID;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Slf4j
 abstract class FriendAbstractTests {
     FriendServiceOne friendServiceMock = Mockito.mock(FriendServiceOne.class);
     KafkaTemplateFriend producer = Mockito.mock(KafkaTemplateFriend.class);
@@ -32,7 +35,7 @@ abstract class FriendAbstractTests {
     ClientFeign accountClient;
     @Autowired
     public FriendshipRepository repository;
-
+    @Container
     public static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:14")
             .withDatabaseName("friend_db")
             .withUsername("friend")
@@ -87,7 +90,7 @@ abstract class FriendAbstractTests {
         repository.save(friendship2);
         repository.save(friendship3);
         repository.save(friendship4);
-        System.out.println(repository.count());
+        log.info("Количество записей в репозитории: {}", repository.count());
     }
 }
 
