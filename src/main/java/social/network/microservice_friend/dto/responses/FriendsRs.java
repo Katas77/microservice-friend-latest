@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class FriendsRs {
+
     private Long totalElements;
     private Integer totalPages;
     private List<FriendDto> content;
