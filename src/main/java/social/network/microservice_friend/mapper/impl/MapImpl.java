@@ -1,4 +1,3 @@
-
 package social.network.microservice_friend.mapper.impl;
 
 import org.springframework.context.annotation.Primary;

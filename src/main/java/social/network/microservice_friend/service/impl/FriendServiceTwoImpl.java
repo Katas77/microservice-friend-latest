@@ -13,7 +13,6 @@ import social.network.microservice_friend.dto.AccountDto;
 import social.network.microservice_friend.dto.FriendDto;
 import social.network.microservice_friend.dto.FriendSearchDto;
 import social.network.microservice_friend.dto.RecommendationFriendsDto;
-import social.network.microservice_friend.dto.en.AccountStatus;
 import social.network.microservice_friend.dto.responses.FriendsRs;
 import social.network.microservice_friend.dto.responses.RecommendationFriendsRs;
 import social.network.microservice_friend.exception.BusinessLogicException;
@@ -130,6 +129,7 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
 
     /**
      * Метод для проверки даты рождения в пределах диапазона.
+     *
      * @param birthDate     Дата рождения пользователя.
      * @param birthDateFrom Начальная дата диапазона.
      * @param birthDateTo   Конечная дата диапазона.
@@ -146,6 +146,7 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
 
     /**
      * Метод для проверки возраста в пределах диапазона.
+     *
      * @param birthDate Дата рождения пользователя.
      * @param ageFrom   Минимальный возраст.
      * @param ageTo     Максимальный возраст.
@@ -163,6 +164,7 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
 
     /**
      * Метод для преобразования списка в страницу с учетом параметров пагинации.
+     *
      * @param list     Исходный список элементов.
      * @param pageable Параметры пагинации.
      * @return Страница с элементами согласно параметрам пагинации.
@@ -175,6 +177,7 @@ public class FriendServiceTwoImpl implements FriendServiceTwo {
 
     /**
      * Метод для вычисления количества общих друзей между двумя пользователями.
+     *
      * @param uuidFriends     Список друзей первого пользователя.
      * @param friendsOfFriend Список друзей второго пользователя.
      * @return Количество общих друзей.

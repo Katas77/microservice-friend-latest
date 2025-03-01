@@ -19,8 +19,6 @@ import social.network.microservice_friend.model.Friendship;
 import social.network.microservice_friend.model.en.StatusCode;
 import social.network.microservice_friend.repository.FriendshipRepository;
 import social.network.microservice_friend.service.FriendServiceOne;
-
-
 import java.util.UUID;
 
 @Testcontainers

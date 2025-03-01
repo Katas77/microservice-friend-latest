@@ -1,4 +1,5 @@
 package social.network.microservice_friend;
+
 import net.javacrumbs.jsonunit.JsonAssert;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -19,8 +20,6 @@ import social.network.microservice_friend.exception.BusinessLogicException;
 import social.network.microservice_friend.exception.FriendExceptionHandler;
 import social.network.microservice_friend.test_utils.UtilsT;
 import java.util.Objects;
-
-
 
 class OwlOnGlobeTests {
     ClientFeign accountClient = Mockito.mock(ClientFeign.class);

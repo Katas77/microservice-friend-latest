@@ -8,9 +8,7 @@ import org.junit.jupiter.api.Test;
 import social.network.microservice_friend.aop.LogAspect;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
-
 import static org.mockito.Mockito.*;
-
 
 public class LogAspectTest {
 

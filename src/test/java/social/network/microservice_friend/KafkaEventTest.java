@@ -1,4 +1,5 @@
 package social.network.microservice_friend;
+
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -8,7 +9,6 @@ import org.springframework.test.context.ActiveProfiles;
 import social.network.microservice_friend.kafka.KafkaTemplateFriend;
 import social.network.microservice_friend.kafka.dto.FriendRequestEvent;
 import social.network.microservice_friend.kafka.en.NotificationType;
-
 
 @ActiveProfiles("test")
 class KafkaEventTest {

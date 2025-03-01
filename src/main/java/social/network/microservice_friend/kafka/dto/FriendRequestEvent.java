@@ -1,10 +1,7 @@
-
 package social.network.microservice_friend.kafka.dto;
-
 
 import lombok.*;
 import social.network.microservice_friend.kafka.en.NotificationType;
-
 import java.util.UUID;
 
 @Getter

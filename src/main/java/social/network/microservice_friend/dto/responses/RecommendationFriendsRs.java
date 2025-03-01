@@ -2,8 +2,8 @@ package social.network.microservice_friend.dto.responses;
 
 import lombok.*;
 import social.network.microservice_friend.dto.RecommendationFriendsDto;
-
 import java.util.List;
+
 @Getter
 @Setter
 @Builder

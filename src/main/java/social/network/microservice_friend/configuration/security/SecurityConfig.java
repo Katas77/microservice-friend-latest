@@ -15,9 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter;
 import org.springframework.security.web.header.HeaderWriterFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.util.Collections;
 
 @Configuration

@@ -3,7 +3,6 @@ package social.network.microservice_friend.dto;
 import lombok.*;
 import social.network.microservice_friend.dto.en.AccountStatus;
 import social.network.microservice_friend.dto.en.RoleType;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;

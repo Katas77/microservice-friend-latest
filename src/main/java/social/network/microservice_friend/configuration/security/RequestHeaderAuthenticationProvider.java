@@ -1,4 +1,3 @@
-
 package social.network.microservice_friend.configuration.security;
 
 import io.micrometer.common.util.StringUtils;
@@ -11,7 +10,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 import social.network.microservice_friend.feigns.ClientFeign;
-
 import java.util.ArrayList;
 
 

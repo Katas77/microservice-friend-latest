@@ -9,7 +9,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import social.network.microservice_friend.kafka.dto.FriendRequestEvent;
 
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
