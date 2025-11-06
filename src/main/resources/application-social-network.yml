@@ -1,39 +1,42 @@
 spring:
-  kafka:
-    bootstrap-servers: 194.67.88.81:9092
+  application:
+    name: social-network-friend
+
+  datasource:
+    url: jdbc:postgresql://194.67.88.81:5432/friend_db?currentSchema=friend_schema
+    username: postgres
+    password: rkljerkgjerhgperoewkgreoierpgrelil
+    hikari:
+      connection-timeout: 10000
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS friend_schema
+
   jpa:
     hibernate:
       ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        default_schema: friend_schema
 
   liquibase:
     enabled: true
     change-log: classpath:db/db.changelog-master.yaml
 
-  application:
-    name: social-network-friend
-
-  datasource:
-    password: rkljerkgjerhgperoewkgreoierpgrelil
-    username: postgres
-    url: jdbc:postgresql://194.67.88.81:5432/friend_db
-    hikari:
-      schema: friend_schema
-      connection-init-sql: create schema if not exists friend_schema
-      connection-timeout: 10000
+server:
+  port: 8087
 
 eureka:
   client:
     service-url:
       defaultZone: http://194.67.88.81:8761/eureka/
     fetch-registry: true
-server:
-  port: 8087
+    register-with-eureka: true
 
 app:
-  kafkaMessageGroupId: social-network-friend-service
   topic: { account_topic: account-events-topic, send_topic: notifications-topic }
-  groupId: { send_groupId: notifications-group-id, account_groupId: social-network-account-service }
   url: http://194.67.88.81:8080/api/v1
+
 sonar:
   jacoco:
     reportPaths: target/site/jacoco/jacoco.xml

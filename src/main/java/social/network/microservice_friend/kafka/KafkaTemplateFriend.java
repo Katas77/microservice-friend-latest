@@ -14,7 +14,7 @@ import social.network.microservice_friend.kafka.dto.FriendRequestEvent;
 @Slf4j
 public class KafkaTemplateFriend {
 
-    @Value("${app.topic.send_topic}")
+    @Value("${app.topics.send_topic}")
     private String sendTopic;
     private final KafkaTemplate<String, String> kafkaTemplate;
 
@@ -30,8 +30,6 @@ public class KafkaTemplateFriend {
         }
 
     }
-
-
 }
 
 

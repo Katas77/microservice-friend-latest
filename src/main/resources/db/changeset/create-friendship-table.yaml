@@ -1,10 +1,11 @@
 databaseChangeLog:
   - changeSet:
-      id: create-friendship
+      id: create-friendship-table
       author: Roman
       changes:
         - createTable:
             tableName: friendship
+            schemaName: friend_schema
             columns:
               - column:
                   name: uuid
@@ -25,6 +26,6 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: status_between
-                  type: VARCHAR(255)
+                  type: VARCHAR(50)
                   constraints:
                     nullable: false
