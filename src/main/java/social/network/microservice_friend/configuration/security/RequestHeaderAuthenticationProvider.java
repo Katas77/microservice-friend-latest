@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import social.network.microservice_friend.feigns.ClientFeign;
 import java.util.ArrayList;
 
-
 @Component
 @RequiredArgsConstructor
 @Slf4j

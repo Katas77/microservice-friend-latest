@@ -1,0 +1,78 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: social-network-friend
+  jpa:
+    hibernate:
+      ddl-auto: none
+  liquibase:
+    enabled: true
+    change-log: classpath:db/db.changelog-master.yaml
+  main:
+    allow-circular-references: true
+  # Установите профиль (prod, dev)
+  profiles:
+    active: dev
+
+eureka:
+  instance:
+    prefer-ip-address: true
+
+app:
+  topics:
+    account_topic: account-events-topic
+    send_topic: notifications-topic
+
+sonar:
+  jacoco:
+    reportPaths: target/site/jacoco/jacoco.xml
+
+---
+# Профиль: dev
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:postgresql://localhost:5432/friend_db
+    username: friend
+    password: friend
+    hikari:
+      schema: friend_schema
+      connection-init-sql: create schema if not exists friend_schema
+      connection-timeout: 10000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+
+app:
+  url: http://localhost:8080/api/v1
+
+---
+# Профиль: prod
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:postgresql://194.67.88.81:5432/friend_db
+    username: postgres
+    password: rkljerkgjerhgperoewkgreoierpgrelil
+    hikari:
+      schema: friend_schema
+      connection-init-sql: create schema if not exists friend_schema
+      connection-timeout: 10000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://194.67.88.81:8761/eureka/
+    fetch-registry: true
+
+app:
+  url: http://194.67.88.81:8080/api/v1
