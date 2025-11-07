@@ -1,6 +1,5 @@
 package social.network.microservice_friend.configuration.security;
 
-import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -10,7 +9,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 import social.network.microservice_friend.feigns.ClientFeign;
-import java.util.ArrayList;
+
+import java.util.Collections;
 
 @Component
 @RequiredArgsConstructor
@@ -21,17 +21,32 @@ public class RequestHeaderAuthenticationProvider implements AuthenticationProvid
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String authToken = String.valueOf(authentication.getPrincipal());
-        if (StringUtils.isBlank(authToken) || !client.validToken(authToken)) {
-            log.error("   Bad Request invalid or missing token      {}", authentication.getName());
-            throw new BadCredentialsException("Bad Request invalid or missing token");
+        Object principalObj = authentication.getPrincipal();
+        String token = (principalObj == null) ? null : principalObj.toString();
+        if (!org.springframework.util.StringUtils.hasText(token)) {
+            log.warn("Missing authorization header for request (principal is empty)");
+            throw new BadCredentialsException("Bad Request: invalid or missing token");
         }
-        return new PreAuthenticatedAuthenticationToken(authentication.getPrincipal(), null, new ArrayList<>());
+        boolean valid;
+        try {
+            valid = client.validToken(token);
+        } catch (Exception e) {
+            log.error("Token validation failed (remote service error): {}", e.getMessage());
+            throw new BadCredentialsException("Bad Request: token validation error");
+        }
+
+        if (!valid) {
+            log.warn("Invalid token presented for authentication");
+            throw new BadCredentialsException("Bad Request: invalid or missing token");
+        }
+
+        // Здесь можно получить дополнительные данные (userId/roles) от client и установить authorities
+        return new PreAuthenticatedAuthenticationToken(token, null, Collections.emptyList());
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return authentication.equals(PreAuthenticatedAuthenticationToken.class);
+        return PreAuthenticatedAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }
 

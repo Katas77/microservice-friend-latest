@@ -2,19 +2,23 @@ server:
   port: 8087
 
 spring:
-  application:
-    name: social-network-friend
-  jpa:
-    hibernate:
-      ddl-auto: none
-  liquibase:
-    enabled: true
-    change-log: classpath:db/db.changelog-master.yaml
-  main:
-    allow-circular-references: true
   # Установите профиль (prod, dev)
   profiles:
     active: dev
+
+  application:
+    name: social-network-friend
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/db.changelog-master.yaml
+
+  main:
+    allow-circular-references: true
 
 eureka:
   instance:
@@ -35,6 +39,7 @@ spring:
   config:
     activate:
       on-profile: dev
+
   datasource:
     url: jdbc:postgresql://localhost:5432/friend_db
     username: friend
@@ -59,6 +64,7 @@ spring:
   config:
     activate:
       on-profile: prod
+
   datasource:
     url: jdbc:postgresql://194.67.88.81:5432/friend_db
     username: postgres

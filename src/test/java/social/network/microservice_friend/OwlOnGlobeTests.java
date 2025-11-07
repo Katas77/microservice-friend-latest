@@ -1,5 +1,6 @@
 package social.network.microservice_friend;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.javacrumbs.jsonunit.JsonAssert;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -19,26 +20,30 @@ import social.network.microservice_friend.dto.Message;
 import social.network.microservice_friend.exception.BusinessLogicException;
 import social.network.microservice_friend.exception.FriendExceptionHandler;
 import social.network.microservice_friend.test_utils.UtilsT;
+
 import java.util.Objects;
 
 class OwlOnGlobeTests {
-    ClientFeign accountClient = Mockito.mock(ClientFeign.class);
-    FriendExceptionHandler friend = new FriendExceptionHandler();
+    private final ClientFeign accountClient = Mockito.mock(ClientFeign.class);
+    private final FriendExceptionHandler friend = new FriendExceptionHandler();
+    private final ObjectMapper mapper = new ObjectMapper();
 
-    @DisplayName("Test for reading string from resource")
+    @DisplayName("Read string from resource and compare JSON")
     @Test
-    void readStringFromResource() {
+    void readStringFromResource() throws Exception {
         Message expectedResponse = Message.builder()
                 .report("Friendship with uuidTo b3999ffa-2df9-469e-9793-ee65e214846e is approve")
                 .build();
 
         String actualResponse = UtilsT.readStringFromResource("response/approve.json");
-        JsonAssert.assertJsonEquals(expectedResponse, actualResponse);
+
+        String expectedJson = mapper.writeValueAsString(expectedResponse);
+        JsonAssert.assertJsonEquals(expectedJson, actualResponse);
     }
 
-    @DisplayName("Test for LogAspect")
+    @DisplayName("LogAspect: method call (mock verification)")
     @Test
-    void logAspect() {
+    void logAspectMethodCall() {
         LogAspect logAspect = Mockito.mock(LogAspect.class);
         JoinPoint joinPoint = Mockito.mock(JoinPoint.class);
 
@@ -46,31 +51,29 @@ class OwlOnGlobeTests {
         Mockito.verify(logAspect, Mockito.times(1)).logMethodCall(joinPoint);
     }
 
-
-    @DisplayName("Test for RequestHeaderAuthenticationProvider")
+    @DisplayName("RequestHeaderAuthenticationProvider should throw BadCredentialsException on invalid token")
     @Test
-    void RequestHeaderAuthenticationProvider() {
-        String mes = "";
+    void requestHeaderAuthenticationProviderThrows() {
         RequestHeaderAuthenticationProvider provider = new RequestHeaderAuthenticationProvider(accountClient);
         Authentication authentication = Mockito.mock(Authentication.class);
         Mockito.when(authentication.getPrincipal()).thenReturn(UtilsT.token);
-        try {
-            provider.authenticate(authentication);
-        } catch (BadCredentialsException e) {
-            mes = e.getMessage();
-        }
-        Assertions.assertEquals("Bad Request invalid or missing token", mes);
+
+        String message = Assertions.assertThrows(BadCredentialsException.class,
+                        () -> provider.authenticate(authentication))
+                .getMessage();
+
+        Assertions.assertEquals("Bad Request invalid or missing token", message);
     }
 
-    @DisplayName("Test for FriendExceptionHandler")
+    @DisplayName("FriendExceptionHandler handles BusinessLogicException")
     @Test
-    void FriendExceptionHandler() {
+    void friendExceptionHandlerBusinessLogic() {
         BusinessLogicException e = new BusinessLogicException("BusinessLogicException is    calling");
         String actual = Objects.requireNonNull(friend.handleException(e).getBody()).getReport();
         Assertions.assertEquals("BusinessLogicException is    calling", actual);
     }
 
-    @DisplayName("Test for FriendExceptionHandler")
+    @DisplayName("FriendExceptionHandler handles NullPointerException")
     @Test
     void handleExceptionNull() {
         NullPointerException e = new NullPointerException();
@@ -78,45 +81,45 @@ class OwlOnGlobeTests {
         Assertions.assertEquals("Null Pointer Exception", actual);
     }
 
-    @DisplayName("Test for IllegalArgumentException")
+    @DisplayName("FriendExceptionHandler handles IllegalArgumentException")
     @Test
-    void IllegalArgumentExceptionF() {
+    void illegalArgumentExceptionHandler() {
         IllegalArgumentException e = new IllegalArgumentException();
         String actual = Objects.requireNonNull(friend.handleExceptionIllegalA(e).getBody()).getReport();
         Assertions.assertEquals("Illegal Argument Exception", actual);
     }
 
-    @DisplayName("Test for FriendExceptionHandler")
+    @DisplayName("FriendExceptionHandler handles HttpRequestMethodNotSupportedException")
     @Test
-    void FriendHttpRequestMethodNotSupportedException() {
+    void friendHttpRequestMethodNotSupportedException() {
         HttpRequestMethodNotSupportedException e = new HttpRequestMethodNotSupportedException("HTTP Method Supported ");
         String actual = Objects.requireNonNull(friend.handleException(e).getBody()).getReport();
         Assertions.assertEquals("HTTP Method Not Supported Exception", actual);
     }
 
-
-    @DisplayName("Test for FriendMissingServletRequestParameterException")
+    @DisplayName("FriendExceptionHandler handles MissingServletRequestParameterException")
     @Test
-    void FriendMissingServletRequestParameterException() {
-        MissingServletRequestParameterException e = new MissingServletRequestParameterException(null, null);
+    void friendMissingServletRequestParameterException() {
+        MissingServletRequestParameterException e = new MissingServletRequestParameterException("param", "type");
         String actual = Objects.requireNonNull(friend.handleExceptionServlet(e).getBody()).getReport();
         Assertions.assertEquals("Missing Servlet Request Parameter Exception", actual);
     }
 
-    @DisplayName("Test for FriendMissingServletRequestParameterException")
+    @DisplayName("FriendExceptionHandler handles NonUniqueResultException")
     @Test
-    void FriendNonUniqueResultException() {
+    void friendNonUniqueResultException() {
         NonUniqueResultException e = new NonUniqueResultException(1);
         String actual = Objects.requireNonNull(friend.handleExceptionServlet(e).getBody()).getReport();
         Assertions.assertEquals("Non Unique Result Exception", actual);
     }
+
+    @DisplayName("LogAspect: logExecutionTime (mock verification)")
     @Test
     void testLogExecutionTime() throws Throwable {
         LogAspect logAspect = Mockito.mock(LogAspect.class);
-        ProceedingJoinPoint joinPoint = Mockito.mock(ProceedingJoinPoint .class);
+        ProceedingJoinPoint joinPoint = Mockito.mock(ProceedingJoinPoint.class);
 
         logAspect.logExecutionTime(joinPoint);
         Mockito.verify(logAspect, Mockito.times(1)).logExecutionTime(joinPoint);
     }
-
 }

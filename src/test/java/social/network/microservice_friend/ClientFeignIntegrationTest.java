@@ -62,11 +62,11 @@ class ClientFeignIntegrationTest {
         AccountDto expectedAccount = new AccountDto();
         expectedAccount.setEmail(testEmail);
 
-        when(clientFeign.getAccountBayEmail(testEmail)).thenReturn(expectedAccount);
+        when(clientFeign.getAccountByEmail(testEmail)).thenReturn(expectedAccount);
 
-        AccountDto response = clientFeign.getAccountBayEmail(testEmail);
+        AccountDto response = clientFeign.getAccountByEmail(testEmail);
 
         assertSame(expectedAccount, response);
-        verify(clientFeign, times(1)).getAccountBayEmail(testEmail);
+        verify(clientFeign, times(1)).getAccountByEmail(testEmail);
     }
 }
